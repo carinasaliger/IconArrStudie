@@ -8,14 +8,18 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -85,6 +89,14 @@ public class Test1_ddrop extends Activity {
         // Listen
         List<Entry> entries = new LinkedList<Entry>();
 
+        // booleans
+        in_use = new boolean[4][4];
+        for(int x = 0; x < 4; x++){
+            for(int y = 0; y < 4; y++){
+                in_use[x][y] = false;
+            }
+        }
+
         // Auslesen und speichern der relevanten Werte in ContentValues
         ContentValues[] row_values = new ContentValues[c.getCount()];
         int iterator = 0;
@@ -130,6 +142,8 @@ public class Test1_ddrop extends Activity {
         }
 
         // Views aus R holen und in imageArray speichern
+
+        final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
         Log.d(TAG, "creating and filling ImageView-Array");
         final ImageView[][][] imageArray= new ImageView[8][6][2];
         imageArray[0][0][0] = (ImageView) findViewById(R.id.row0_cell0_low);
@@ -183,45 +197,60 @@ public class Test1_ddrop extends Activity {
         imageArray[6][5][1] = (ImageView) findViewById(R.id.row5_cell6_high);
         imageArray[7][5][1] = (ImageView) findViewById(R.id.row5_cell7_high);
 
-
-        // onDragListener-Test
-        imageArray[0][4][1].setTag("0,4,1");
-        imageArray[0][4][1].setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                ClipData.Item item = new ClipData.Item((String) view.getTag());
-                ClipData dragData = new ClipData((String) view.getTag(), new String[] {ClipDescription.MIMETYPE_TEXT_PLAIN},item);
-                View.DragShadowBuilder myShadow = new View.DragShadowBuilder(view);
-                view.startDrag(dragData, myShadow, null, 0);
-                return true;
+        // onDragListener für Grid-Elemente setzen
+        for(int x = 0; x < 4; x++){
+            for(int y = 0; y < 4; y++){
+                final int finalX = x;
+                final int finalY = y;
+                imageArray[x][y][1].setOnDragListener(new View.OnDragListener() {
+                    @Override
+                    public boolean onDrag(View view, DragEvent dragEvent) {
+                        final int action = dragEvent.getAction();
+                        // Drawable der auf die View gezogenen View holen
+                        Drawable icon = (Drawable) dragEvent.getLocalState();
+                        switch(action){
+                            // falls Drag gerade beginnt mögliche Felder blau färben
+                            case DragEvent.ACTION_DRAG_STARTED:
+                                if (!in_use[finalX][finalY]){
+                                    imageArray[finalX][finalY][0].setColorFilter(Color.BLUE);
+                                    imageArray[finalX][finalY][0].invalidate();
+                                    return true;
+                                }
+                                else return false;
+                            // falls Element über einem möglichen Feld liegt dieses grün färben
+                            // if unterscheidung nicht nötig da die View schon bei ACTION_DRAG_STARTED false returnt und nicht mehr auf weitere events listent
+                            case DragEvent.ACTION_DRAG_ENTERED:
+                                imageArray[finalX][finalY][0].setColorFilter(Color.GREEN);
+                                imageArray[finalX][finalY][0].invalidate();
+                                scrollView.smoothScrollTo(0, 0);
+                                return true;
+                            // falls Element wieder herausgezogen wird wieder blau färben
+                            case DragEvent.ACTION_DRAG_EXITED:
+                                imageArray[finalX][finalY][0].setColorFilter(Color.BLUE);
+                                imageArray[finalX][finalY][0].invalidate();
+                                return true;
+                            // falls Element in einer View losgelassen wird, das Icon übernehmen und setzen, sowie in in_use eintragen
+                            case DragEvent.ACTION_DROP:
+                                if(!in_use[finalX][finalY]){
+                                    imageArray[finalX][finalY][1].setImageDrawable(icon);
+                                    imageArray[finalX][finalY][0].clearColorFilter();
+                                    imageArray[finalX][finalY][0].invalidate();
+                                    imageArray[finalX][finalY][1].invalidate();
+                                    in_use[finalX][finalY] = true;
+                                    return true;
+                                }
+                                else return false;
+                            // falls Drag endet und Icon nicht in der View gedroppt wurde wieder zurück in Ausgangszustand
+                            case DragEvent.ACTION_DRAG_ENDED:
+                                imageArray[finalX][finalY][0].clearColorFilter();
+                                imageArray[finalX][finalY][0].invalidate();
+                                return true;
+                        }
+                        return false;
+                    }
+                });
             }
-        });
-//        imageArray[0][4][1].setOnDragListener(new View.OnDragListener() {
-//            @Override
-//            public boolean onDrag(View view, DragEvent dragEvent) {
-//                int action = dragEvent.getAction();
-//                return true;
-//            }
-//        });
-
-        // onDragListener-Test
-        imageArray[0][4][1].setTag("0,4,1");
-        imageArray[0][4][1].setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                ClipData.Item item = new ClipData.Item((String) view.getTag());
-                ClipData dragData = new ClipData((String) view.getTag(), new String[] {ClipDescription.MIMETYPE_TEXT_PLAIN},item);
-                View.DragShadowBuilder myShadow = new View.DragShadowBuilder(view);
-                return false;
-            }
-        });
-        imageArray[0][4][1].setOnDragListener(new View.OnDragListener() {
-            @Override
-            public boolean onDrag(View view, DragEvent dragEvent) {
-                int action = dragEvent.getAction();
-                return false;
-            }
-        });
+        }
 
         // Abfragen und Zeichnen der Elemente
         int x = 0;
@@ -230,12 +259,26 @@ public class Test1_ddrop extends Activity {
         for(Entry e : entries){
             Log.d(TAG, "in for loop for icons + folders");
             boolean wrote = false;
-            // falls e ein Icon ist
+            // falls e ein Icon ist und direkt auf dem Desktop liegt (nicht in der Startleiste)
             if((e.getTag() == 0 || e.getTag() == 1) && e.getContainer() == (-100)){
                 Log.d(TAG, "found Icon");
                 Bitmap bmp = BitmapFactory.decodeByteArray(e.getIcon(), 0, e.getIcon().length);
                 Log.d(TAG, "x: " + x + " y: " + y);
                 imageArray[x][y][1].setImageBitmap(bmp);
+                // longclicklistener setzen
+                final int finalX = x;
+                final int finalY = y;
+                imageArray[x][y][1].setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        Log.d(TAG, "LONGPRESS");
+                        ClipData.Item item = new ClipData.Item((String) view.getTag());
+                        ClipData dragData = new ClipData((String) view.getTag(), new String[] {ClipDescription.MIMETYPE_TEXT_PLAIN},item);
+                        View.DragShadowBuilder myShadow = new View.DragShadowBuilder(view);
+                        view.startDrag(dragData, myShadow, imageArray[finalX][finalY][1].getDrawable(), 0);
+                        return true;
+                    }
+                });
                 imageArray[x][y][1].invalidate();
                 wrote = true;
             }
@@ -244,6 +287,20 @@ public class Test1_ddrop extends Activity {
                 Log.d(TAG, "found folder");
                 Log.d(TAG, "x: " + x + " y: " + y);
                 imageArray[x][y][1].setImageResource(R.drawable.portal_ring_inner_holo);
+                // longclicklistener setzen
+                final int finalX1 = x;
+                final int finalY1 = y;
+                imageArray[x][y][1].setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        Log.d(TAG, "LONGPRESS");
+                        ClipData.Item item = new ClipData.Item((String) view.getTag());
+                        ClipData dragData = new ClipData((String) view.getTag(), new String[] {ClipDescription.MIMETYPE_TEXT_PLAIN},item);
+                        View.DragShadowBuilder myShadow = new View.DragShadowBuilder(view);
+                        view.startDrag(dragData, myShadow, imageArray[finalX1][finalY1][1].getDrawable(), 0);
+                        return true;
+                    }
+                });
                 imageArray[x][y][1].invalidate();
                 wrote = true;
             }
@@ -350,6 +407,7 @@ public class Test1_ddrop extends Activity {
         // Buttonfunktionen festlegen
         Button confirm = (Button) findViewById(R.id.confirm);
         Button back = (Button) findViewById(R.id.back);
+        Button clear = (Button) findViewById(R.id.clear);
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -363,6 +421,20 @@ public class Test1_ddrop extends Activity {
             public void onClick(View view) {
                 Log.d(TAG, "back button pressed");
                 finish();
+            }
+        });
+        clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "clear button pressed");
+                for(int x = 0; x < 4; x++){
+                    for(int y = 0; y < 4; y++){
+                        imageArray[x][y][1].setImageResource(R.drawable.contour);
+                        imageArray[x][y][1].invalidate();
+                        in_use[x][y] = false;
+
+                    }
+                }
             }
         });
     }

@@ -19,12 +19,13 @@
         android:text="@string/confirm"
         android:id="@+id/confirm"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/clear"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/task2"
+        android:text="@string/task1"
         android:id="@+id/textView"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -717,4 +718,12 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/clear"
+        android:id="@+id/clear"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/back"/>
 </RelativeLayout>
