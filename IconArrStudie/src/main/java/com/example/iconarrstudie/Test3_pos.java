@@ -282,6 +282,9 @@ public class Test3_pos extends Activity {
                         }
                     }
                 }
+                else if(temp.getTag() == Entry.WIDGET){
+                    continue;
+                }
                 else{
                     Log.d(TAG, "drawing icon with tag " + temp.getTag() + " , title: " + temp.getTitle() + " to x: " + x + ", y: " + y);
                     Bitmap bmp = BitmapFactory.decodeByteArray(temp.getIcon(), 0, temp.getIcon().length);
