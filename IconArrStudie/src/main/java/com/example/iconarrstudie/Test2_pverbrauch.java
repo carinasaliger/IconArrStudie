@@ -98,6 +98,7 @@ public class Test2_pverbrauch extends Activity {
                 row_values[iterator++] = values;
             }
         }
+        c.close();
 
         Log.i(TAG, "parsed " + iterator + " rows of launcher.db");
 
