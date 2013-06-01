@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d(TAG, "onCreate()");
+        Log.i(TAG, "onCreate()");
 
         // Views aus R holen und anpassen
         TextView debug_infos = (TextView) findViewById(R.id.text_debug);
@@ -93,7 +93,7 @@ public class MainActivity extends Activity {
                 Intent i1 = new Intent(MainActivity.this, Test1_ddrop.class);
                 i1.putExtra("uri", content_uri.toString());
                 i1.putExtra("screen", selected_screen);
-                Log.d(TAG, "starting Test1_ddrop");
+                Log.i(TAG, "starting Test1_ddrop");
                 startActivity(i1);
             }
         });
@@ -104,7 +104,7 @@ public class MainActivity extends Activity {
                 Intent i2 = new Intent(MainActivity.this, Test2_pverbrauch.class);
                 i2.putExtra("uri", content_uri.toString());
                 i2.putExtra("screen", selected_screen);
-                Log.d(TAG, "starting Test2_pverbrauch");
+                Log.i(TAG, "starting Test2_pverbrauch");
                 startActivity(i2);
             }
         });
@@ -115,7 +115,7 @@ public class MainActivity extends Activity {
                 Intent i3 = new Intent(MainActivity.this, Test3_pos.class);
                 i3.putExtra("uri", content_uri.toString());
                 i3.putExtra("screen", selected_screen);
-                Log.d(TAG, "starting Test3_pos");
+                Log.i(TAG, "starting Test3_pos");
                 startActivity(i3);
             }
         });
@@ -123,7 +123,7 @@ public class MainActivity extends Activity {
         button_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "calling send ");
+                Log.i(TAG, "calling send ");
                 // neues Intent zum Teilen des Cursordumps
                 Intent i4 = new Intent(android.content.Intent.ACTION_SEND);
                 i4.setType("text/plain");
@@ -148,9 +148,9 @@ public class MainActivity extends Activity {
                 ProviderInfo[] providers = pack.providers;
                 if (providers != null){
                     for (ProviderInfo provider : providers){
-                        Log.d(TAG, "providername: " + provider.packageName + " , providerpermission: " + provider.readPermission);
-                        Log.d(TAG, "permission.equals(provider.readPermission):  " + permission.equals(provider.readPermission));
-                        Log.d(TAG, "provider.packageName.equals(PACKAGE_NAME): " + provider.packageName.equals(PACKAGE_NAME));
+//                        Log.d(TAG, "providername: " + provider.packageName + " , providerpermission: " + provider.readPermission);
+//                        Log.d(TAG, "permission.equals(provider.readPermission):  " + permission.equals(provider.readPermission));
+//                        Log.d(TAG, "provider.packageName.equals(PACKAGE_NAME): " + provider.packageName.equals(PACKAGE_NAME));
                         if (provider.readPermission != null) {
                             if(provider.readPermission.contains(permission) && provider.packageName.equals(PACKAGE_NAME)){
                                 return provider.authority;

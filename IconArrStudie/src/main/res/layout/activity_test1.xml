@@ -43,10 +43,7 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_above="@+id/back">
+            android:layout_alignParentStart="true">
 
             <!-- row0 -->
             <LinearLayout
@@ -54,7 +51,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/row0"
-                android:layout_weight="0">
+                android:layout_weight="0"
+                android:baselineAligned="false">
 
                 <FrameLayout
                     android:orientation="vertical"
@@ -175,7 +173,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/row1"
-                android:layout_weight="0">
+                android:layout_weight="0"
+                android:baselineAligned="false">
 
                 <FrameLayout
                     android:orientation="vertical"
@@ -296,7 +295,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/row2"
-                android:layout_weight="0">
+                android:layout_weight="0"
+                android:baselineAligned="false">
 
                 <FrameLayout
                     android:orientation="vertical"
@@ -417,7 +417,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/row3"
-                android:layout_weight="0">
+                android:layout_weight="0"
+                android:baselineAligned="false">
 
                 <FrameLayout
                     android:orientation="vertical"
@@ -554,7 +555,6 @@
                     android:adjustViewBounds="true"
                     android:maxWidth="100dp"
                     android:maxHeight="200dp">
-
                 </ImageView>
 
                 <ImageView

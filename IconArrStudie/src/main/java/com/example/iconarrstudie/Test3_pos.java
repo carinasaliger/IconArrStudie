@@ -41,7 +41,7 @@ public class Test3_pos extends Activity {
     static final String CONTAINER = "container";
 
     public void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "Test3_pos started");
+        Log.i(TAG, "Test3_pos started");
         setContentView(R.layout.activity_test3);
         super.onCreate(savedInstanceState);
 
@@ -120,7 +120,7 @@ public class Test3_pos extends Activity {
         }
         c.close();
 
-        Log.d(TAG, "parsed " + iterator + " rows of launcher.db");
+        Log.i(TAG, "parsed " + iterator + " rows of launcher.db");
 
         // Füllen von entries anhand der ausgelesenen Werte
         for(ContentValues cv : row_values){
@@ -137,7 +137,6 @@ public class Test3_pos extends Activity {
                         cv.getAsInteger(ITEM_TYPE),
                         cv.getAsString(TITLE),
                         cv.getAsInteger(CONTAINER));
-                Log.d(TAG, "adding entry: \n" + temp.toString());
                 entries.add(temp);
             }
         }
@@ -202,7 +201,6 @@ public class Test3_pos extends Activity {
         // vergleichen von entries mit bibliothek generated auf duplikate
         List<Entry> toRemove = new LinkedList<Entry>();
         for(int j = 0; j<entries.size(); j++){
-            Log.d(TAG, "in vergleich, j:" + j + " entries.size" + entries.size());
             Entry e = entries.get(j);
             int x = e.getX();
             int y = e.getY();
@@ -219,7 +217,6 @@ public class Test3_pos extends Activity {
             // falls entry ein Widget beschreibt
             if(e.getTag() == Entry.WIDGET){
                 // das Widget entfernen
-                Log.d(TAG, "tagging widget to remove");
                 toRemove.add(e);
             }
         }
@@ -229,7 +226,6 @@ public class Test3_pos extends Activity {
 
         // prüfen ob genug entries vorhanden sind
         if(entries.size() < 2){
-            Log.d(TAG,"entries.size " + entries.size());
             Toast.makeText(getApplicationContext(), R.string.not_enough_elements, Toast.LENGTH_LONG).show();
             finish();
             return;
@@ -247,16 +243,13 @@ public class Test3_pos extends Activity {
 
         // für zufallszahl einträge aus entries auswählen und in correct_answers eintragen
         for(int asd = 0; asd < random; asd++){
-            Log.d(TAG, "calling returnrandomelement with entries.size() = " + entries.size());
             Entry temp = returnRandomElement(entries);
-            Log.d(TAG, "title of correct answer: " + temp.getTitle());
             correct_answers.add(temp);
             entries.remove(temp);
         }
 
         // entries und generated joinen, sollte danach größer als 16 sein
         entries.addAll(generated);
-        Log.d(TAG, "size of entries after join with generated: " + entries.size());
 
         // Views aus R holen und in imageArray speichern
         Log.d(TAG, "creating and filling ImageView-Array");
@@ -308,7 +301,6 @@ public class Test3_pos extends Activity {
                     // falls an x,y in echt auch ein ordner liegt
                     for(Entry e : entries){
                         if(e.getTag() == Entry.FOLDER && e.getX() == x && e.getY() == y){
-                            Log.d(TAG, "aosenridaoesinrdaoeiSNRDEISNROEDI x: " + x + " , y: " + y);
                             answer[x][y] = true;
                         }
                     }
@@ -324,7 +316,7 @@ public class Test3_pos extends Activity {
         }
         // correct answers zeichnen
         for (Entry e : correct_answers){
-            Log.d(TAG, "number of correct answers: " + correct_answers.size());
+            Log.i(TAG, "number of correct answers: " + correct_answers.size());
             if(e.getTag() == Entry.ICON){
                 Bitmap bmp = BitmapFactory.decodeByteArray(e.getIcon(), 0, e.getIcon().length);
                 imageArray[e.getX()][e.getY()][1].setImageBitmap(bmp);
@@ -334,7 +326,6 @@ public class Test3_pos extends Activity {
                 imageArray[e.getX()][e.getY()][1].setImageResource(R.drawable.portal_ring_inner_holo);
                 imageArray[e.getX()][e.getY()][1].invalidate();
             }
-            Log.d(TAG, "setting x:" + e.getX() + " y:" + e.getY() + " to true");
             answer[e.getX()][e.getY()] = true;
         }
 
@@ -368,14 +359,14 @@ public class Test3_pos extends Activity {
             @Override
             public void onClick(View view) {
                 //TODO: compare & save data
-                Log.d(TAG, "result of test 3 for screen " + selected_screen + " :");
-                Log.d(TAG, "value of input[][] after confirm: \n" +
+                Log.i(TAG, "result of test 3 for screen " + selected_screen + " :");
+                Log.i(TAG, "value of input[][] after confirm: \n" +
                         input[0][0] + "\t" +  input[1][0] + "\t" +  input[2][0] + "\t" +  input[3][0] + "\n" +
                         input[0][1] + "\t" +  input[1][1] + "\t" +  input[2][1] + "\t" +  input[3][1] + "\n" +
                         input[0][2] + "\t" +  input[1][2] + "\t" +  input[2][2] + "\t" +  input[3][2] + "\n" +
                         input[0][3] + "\t" +  input[1][3] + "\t" +  input[2][3] + "\t" +  input[3][3]
                 );
-                Log.d(TAG, "value of answer[][] after parse: \n" +
+                Log.i(TAG, "value of answer[][] after parse: \n" +
                         answer[0][0] + "\t" + answer[1][0] + "\t" + answer[2][0] + "\t" + answer[3][0] + "\n" +
                         answer[0][1] + "\t" + answer[1][1] + "\t" + answer[2][1] + "\t" + answer[3][1] + "\n" +
                         answer[0][2] + "\t" + answer[1][2] + "\t" + answer[2][2] + "\t" + answer[3][2] + "\n" +
@@ -389,14 +380,14 @@ public class Test3_pos extends Activity {
                         }
                     }
                 }
-                Log.d(TAG, "number of errors: " + errors);
+                Log.i(TAG, "number of errors: " + errors);
                 finish();
             }
         });
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "back button pressed");
+                Log.i(TAG, "back button pressed");
                 finish();
             }
         });

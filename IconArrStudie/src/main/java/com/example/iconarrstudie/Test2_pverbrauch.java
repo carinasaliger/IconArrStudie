@@ -31,7 +31,7 @@ public class Test2_pverbrauch extends Activity {
     static boolean[][] answer;
 
     public void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "Test2_pverbrauch started");
+        Log.i(TAG, "Test2_pverbrauch started");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test2);
 
@@ -99,7 +99,7 @@ public class Test2_pverbrauch extends Activity {
             }
         }
 
-        Log.d(TAG, "parsed " + iterator + " rows of launcher.db");
+        Log.i(TAG, "parsed " + iterator + " rows of launcher.db");
 
         // Füllen des boolean[][] anhand der ausgelesenen Werte
         for(ContentValues cv : row_values){
@@ -125,7 +125,7 @@ public class Test2_pverbrauch extends Activity {
             }
         }
 
-        Log.d(TAG, "value of answer[][] after parse: \n" +
+        Log.i(TAG, "value of answer[][] after parse: \n" +
                 answer[0][0] + "\t" + answer[1][0] + "\t" + answer[2][0] + "\t" + answer[3][0] + "\n" +
                 answer[0][1] + "\t" + answer[1][1] + "\t" + answer[2][1] + "\t" + answer[3][1] + "\n" +
                 answer[0][2] + "\t" + answer[1][2] + "\t" + answer[2][2] + "\t" + answer[3][2] + "\n" +
@@ -187,14 +187,14 @@ public class Test2_pverbrauch extends Activity {
             @Override
             public void onClick(View view) {
                 //TODO: compare & save data
-                Log.d(TAG, "result of test 2 for screen " + selected_screen + " :");
-                Log.d(TAG, "value of input[][] after confirm: \n" +
+                Log.i(TAG, "result of test 2 for screen " + selected_screen + " :");
+                Log.i(TAG, "value of input[][] after confirm: \n" +
                         input[0][0] + "\t" +  input[1][0] + "\t" +  input[2][0] + "\t" +  input[3][0] + "\n" +
                         input[0][1] + "\t" +  input[1][1] + "\t" +  input[2][1] + "\t" +  input[3][1] + "\n" +
                         input[0][2] + "\t" +  input[1][2] + "\t" +  input[2][2] + "\t" +  input[3][2] + "\n" +
                         input[0][3] + "\t" +  input[1][3] + "\t" +  input[2][3] + "\t" +  input[3][3]
                 );
-                Log.d(TAG, "value of answer[][] after parse: \n" +
+                Log.i(TAG, "value of answer[][] after parse: \n" +
                         answer[0][0] + "\t" + answer[1][0] + "\t" + answer[2][0] + "\t" + answer[3][0] + "\n" +
                         answer[0][1] + "\t" + answer[1][1] + "\t" + answer[2][1] + "\t" + answer[3][1] + "\n" +
                         answer[0][2] + "\t" + answer[1][2] + "\t" + answer[2][2] + "\t" + answer[3][2] + "\n" +
@@ -208,14 +208,14 @@ public class Test2_pverbrauch extends Activity {
                         }
                     }
                 }
-                Log.d(TAG, "number of errors: " + errors);
+                Log.i(TAG, "number of errors: " + errors);
                 finish();
             }
         });
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "back button pressed");
+                Log.i(TAG, "back button pressed");
                 finish();
             }
         });

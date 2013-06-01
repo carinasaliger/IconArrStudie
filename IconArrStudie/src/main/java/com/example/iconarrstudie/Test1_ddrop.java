@@ -44,7 +44,7 @@ public class Test1_ddrop extends Activity {
     static final ImageView[][][] imageArray = new ImageView[8][6][2];
 
     public void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "Test1_ddrop started!");
+        Log.i(TAG, "Test1_ddrop started!");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test1);
 
@@ -122,7 +122,7 @@ public class Test1_ddrop extends Activity {
         }
         c.close();
 
-        Log.d(TAG, "parsed " + iterator + " rows of launcher.db");
+        Log.i(TAG, "parsed " + iterator + " rows of launcher.db");
 
         // Füllen von entries anhand der ausgelesenen Werte
         for(ContentValues cv : row_values){
@@ -140,7 +140,7 @@ public class Test1_ddrop extends Activity {
                     cv.getAsInteger(ITEM_TYPE),
                     cv.getAsString(TITLE),
                     cv.getAsInteger(CONTAINER));
-                Log.d(TAG, "adding entry: \n" + temp.toString());
+//                Log.d(TAG, "adding entry: \n" + temp.toString());
                 entries.add(temp);
             }
         }
@@ -232,7 +232,6 @@ public class Test1_ddrop extends Activity {
                                 if(last[0] > 0 && last[1] > 0){
                                     // falls es überstehen würde
                                     if(finalX + last[0] > 4 || finalY + last[1] > 4){
-                                        Log.d(TAG, "x: " + finalX + " y: " + finalY + " würde überstehen");
                                         imageArray[finalX][finalY][0].setColorFilter(Color.RED);
                                         imageArray[finalX][finalY][0].invalidate();
                                         return false;
@@ -242,7 +241,6 @@ public class Test1_ddrop extends Activity {
                                     for(int startx = 0; startx < last[0]; startx++){
                                         for(int starty = 0; starty < last[1]; starty++){
                                             if(in_use[finalX + startx][finalY + starty]){
-                                                Log.d(TAG, "checking in_use for x:" + (finalX + startx) + " y: " + (finalY + starty));
                                                 space_used = true;
                                             }
                                         }
@@ -302,10 +300,8 @@ public class Test1_ddrop extends Activity {
                                 // in_use anpassen
                                 else{
                                     Log.d(TAG, "widget dropped on x:" + finalX + " y:" + finalY);
-                                    Log.d(TAG, "starte schleife für last[0]=" + last[0] + " , last[1]=" + last[1] );
                                     for(int startx = 0; startx < last[0]; startx++){
                                         for(int starty = 0; starty < last[1]; starty++){
-                                            Log.d(TAG, "setze feld x=" + (finalX + starty) + " , y=" + (finalY + starty) );
                                             imageArray[finalX + startx][finalY + starty][1].setImageResource(R.drawable.widget_1x1);
                                             imageArray[finalX + startx][finalY + starty][0].clearColorFilter();
                                             imageArray[finalX + startx][finalY + starty][0].invalidate();
@@ -334,14 +330,12 @@ public class Test1_ddrop extends Activity {
         int y = 4;
 
         for(final Entry e : entries){
-            Log.d(TAG, "in for loop for icons + folders");
             // flag zum Anzeigen von Änderungen
             boolean wrote = false;
             // falls e ein Icon ist und direkt auf dem Desktop liegt (nicht im Dock)
             if((e.getTag() == 0 || e.getTag() == 1) && e.getContainer() == (-100)){
-                Log.d(TAG, "found Icon");
+                Log.d(TAG, "found Icon " + "x: " + x + " y: " + y);
                 Bitmap bmp = BitmapFactory.decodeByteArray(e.getIcon(), 0, e.getIcon().length);
-                Log.d(TAG, "x: " + x + " y: " + y);
                 imageArray[x][y][1].setImageBitmap(bmp);
 
                 // in solution eintragen
@@ -351,7 +345,7 @@ public class Test1_ddrop extends Activity {
                 imageArray[x][y][1].setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View view) {
-                        Log.d(TAG, "longpress on Icon " + e.getTitle());
+                        Log.i(TAG, "Beginning Drag on Icon " + e.getTitle());
                         Integer[] temp = new Integer[]{0, 0};
                         lastaction.add(temp);
                         ClipData.Item item = new ClipData.Item((CharSequence) view.getTag());
@@ -366,8 +360,7 @@ public class Test1_ddrop extends Activity {
             }
             // falls e ein ordner ist und nicht im Dock sitzt
             if(e.getTag() == Entry.FOLDER && e.getContainer() == (-100)){
-                Log.d(TAG, "found folder");
-                Log.d(TAG, "x: " + x + " y: " + y);
+                Log.d(TAG, "found folder " + "x: " + x + " y: " + y);
                 imageArray[x][y][1].setImageResource(R.drawable.portal_ring_inner_holo);
 
                 // in solution eintragen
@@ -377,7 +370,7 @@ public class Test1_ddrop extends Activity {
                 imageArray[x][y][1].setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View view) {
-                        Log.d(TAG, "Longpress on folder");
+                        Log.i(TAG, "Beginning Drag on folder");
                         Integer[] temp = new Integer[]{0, 0};
                         lastaction.add(temp);
                         ClipData.Item item = new ClipData.Item((String) view.getTag());
@@ -425,14 +418,14 @@ public class Test1_ddrop extends Activity {
             @Override
             public void onClick(View view) {
                 //TODO: compare & save data
-                Log.d(TAG, "result of test 2 for screen " + selected_screen + " :");
-                Log.d(TAG, "value of input[][] after confirm: \n" +
+                Log.i(TAG, "result of test 2 for screen " + selected_screen + " :");
+                Log.i(TAG, "value of input[][] after confirm: \n" +
                         input[0][0] + "\t" +  input[1][0] + "\t" +  input[2][0] + "\t" +  input[3][0] + "\n" +
                         input[0][1] + "\t" +  input[1][1] + "\t" +  input[2][1] + "\t" +  input[3][1] + "\n" +
                         input[0][2] + "\t" +  input[1][2] + "\t" +  input[2][2] + "\t" +  input[3][2] + "\n" +
                         input[0][3] + "\t" +  input[1][3] + "\t" +  input[2][3] + "\t" +  input[3][3]
                 );
-                Log.d(TAG, "value of solution[][] after parse: \n" +
+                Log.i(TAG, "value of solution[][] after parse: \n" +
                         solution[0][0] + "\t" + solution[1][0] + "\t" + solution[2][0] + "\t" + solution[3][0] + "\n" +
                         solution[0][1] + "\t" + solution[1][1] + "\t" + solution[2][1] + "\t" + solution[3][1] + "\n" +
                         solution[0][2] + "\t" + solution[1][2] + "\t" + solution[2][2] + "\t" + solution[3][2] + "\n" +
@@ -446,21 +439,21 @@ public class Test1_ddrop extends Activity {
                         }
                     }
                 }
-                Log.d(TAG, "number of errors: " + errors);
+                Log.i(TAG, "number of errors: " + errors);
                 finish();
             }
         });
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "back button pressed");
+                Log.i(TAG, "back button pressed");
                 finish();
             }
         });
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "clear button pressed");
+                Log.i(TAG, "clear button pressed");
                 for(int x = 0; x < 4; x++){
                     for(int y = 0; y < 4; y++){
                         imageArray[x][y][1].setImageResource(R.drawable.contour);
@@ -581,8 +574,7 @@ public class Test1_ddrop extends Activity {
         iview.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                Log.d(TAG, "longpress on widget");
-                Log.d(TAG, "adding x:" + temp[0] + " y:" + temp[1] + " to lastaction" );
+                Log.i(TAG, "longpress on widget");
                 lastaction.add(temp);
                 ClipData.Item item = new ClipData.Item((CharSequence) view.getTag());
                 ClipData dragData = new ClipData((String) view.getTag(), new String[] {ClipDescription.MIMETYPE_TEXT_PLAIN}, item);
