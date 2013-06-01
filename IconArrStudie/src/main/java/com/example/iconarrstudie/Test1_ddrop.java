@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -265,7 +264,9 @@ public class Test1_ddrop extends Activity {
                             case DragEvent.ACTION_DRAG_ENTERED:
                                 imageArray[finalX][finalY][0].setColorFilter(Color.GREEN);
                                 imageArray[finalX][finalY][0].invalidate();
-                                scrollView.smoothScrollTo(0, 0);
+                                if(finalY < 2){
+                                    scrollView.smoothScrollTo(0, 0);
+                                }
                                 return true;
                             // falls Element wieder herausgezogen wird wieder blau färben
                             case DragEvent.ACTION_DRAG_EXITED:
@@ -361,7 +362,6 @@ public class Test1_ddrop extends Activity {
                         return true;
                     }
                 });
-                imageArray[x][y][1].invalidate();
                 wrote = true;
             }
             // falls e ein ordner ist und nicht im Dock sitzt
@@ -388,7 +388,6 @@ public class Test1_ddrop extends Activity {
                         return true;
                     }
                 });
-                imageArray[x][y][1].invalidate();
                 wrote = true;
             }
             // falls e ein widget ist
@@ -406,6 +405,7 @@ public class Test1_ddrop extends Activity {
             }
             // counter MAGIC
             if(wrote){
+                imageArray[x][y][1].invalidate();
                 if(y == 4){
                     y++;
                 }
@@ -466,7 +466,13 @@ public class Test1_ddrop extends Activity {
                         imageArray[x][y][1].setImageResource(R.drawable.contour);
                         imageArray[x][y][1].invalidate();
                         in_use[x][y] = false;
-
+                        input[x][y] = "empty";
+                    }
+                }
+                lastaction.clear();
+                for(int x = 0; x < 4; x++){
+                    for(int y = 4; y < 6; y++){
+                        imageArray[x][y][1].setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -481,25 +487,21 @@ public class Test1_ddrop extends Activity {
                         temp[0] = 1;
                         temp[1] = 1;
                         iview.setImageResource(R.drawable.widget_1x1);
-                        iview.invalidate();
                         break;
                     case 2:
                         temp[0] = 1;
                         temp[1] = 2;
                         iview.setImageResource(R.drawable.widget_1x2);
-                        iview.invalidate();
                         break;
                     case 3:
                         temp[0] = 1;
                         temp[1] = 3;
                         iview.setImageResource(R.drawable.widget_1x3);
-                        iview.invalidate();
                         break;
                     case 4:
                         temp[0] = 1;
                         temp[1] = 4;
                         iview.setImageResource(R.drawable.widget_1x4);
-                        iview.invalidate();
                         break;
                 }
                 break;
@@ -509,25 +511,21 @@ public class Test1_ddrop extends Activity {
                         temp[0] = 2;
                         temp[1] = 1;
                         iview.setImageResource(R.drawable.widget_2x1);
-                        iview.invalidate();
                         break;
                     case 2:
                         temp[0] = 2;
                         temp[1] = 2;
                         iview.setImageResource(R.drawable.widget_2x2);
-                        iview.invalidate();
                         break;
                     case 3:
                         temp[0] = 2;
                         temp[1] = 3;
                         iview.setImageResource(R.drawable.widget_2x3);
-                        iview.invalidate();
                         break;
                     case 4:
                         temp[0] = 2;
                         temp[1] = 4;
                         iview.setImageResource(R.drawable.widget_2x4);
-                        iview.invalidate();
                         break;
                 }
                 break;
@@ -537,25 +535,21 @@ public class Test1_ddrop extends Activity {
                         temp[0] = 3;
                         temp[1] = 1;
                         iview.setImageResource(R.drawable.widget_3x1);
-                        iview.invalidate();
                         break;
                     case 2:
                         temp[0] = 3;
                         temp[1] = 2;
                         iview.setImageResource(R.drawable.widget_3x2);
-                        iview.invalidate();
                         break;
                     case 3:
                         temp[0] = 3;
                         temp[1] = 3;
                         iview.setImageResource(R.drawable.widget_3x3);
-                        iview.invalidate();
                         break;
                     case 4:
                         temp[0] = 3;
                         temp[1] = 4;
                         iview.setImageResource(R.drawable.widget_3x4);
-                        iview.invalidate();
                         break;
                 }
                 break;
@@ -565,25 +559,21 @@ public class Test1_ddrop extends Activity {
                         temp[0] = 4;
                         temp[1] = 1;
                         iview.setImageResource(R.drawable.widget_4x1);
-                        iview.invalidate();
                         break;
                     case 2:
                         temp[0] = 4;
                         temp[1] = 2;
                         iview.setImageResource(R.drawable.widget_4x2);
-                        iview.invalidate();
                         break;
                     case 3:
                         temp[0] = 4;
                         temp[1] = 3;
                         iview.setImageResource(R.drawable.widget_4x3);
-                        iview.invalidate();
                         break;
                     case 4:
                         temp[0] = 4;
                         temp[1] = 4;
                         iview.setImageResource(R.drawable.widget_4x4);
-                        iview.invalidate();
                         break;
                 }
                 break;

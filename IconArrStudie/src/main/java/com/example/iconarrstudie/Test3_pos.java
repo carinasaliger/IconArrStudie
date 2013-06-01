@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.util.LinkedList;
@@ -124,7 +125,7 @@ public class Test3_pos extends Activity {
         // Füllen von entries anhand der ausgelesenen Werte
         for(ContentValues cv : row_values){
             if (cv != null){
-                if(cv.getAsInteger(CELLX) > 3 || cv.getAsInteger(CELLY) > 3){
+                if(cv.getAsInteger(CELLX) > 3 || cv.getAsInteger(CELLY) > 3 || cv.getAsInteger(CONTAINER) != (-100)){
                     continue;
                 }
                 Entry temp = new Entry(
@@ -141,42 +142,7 @@ public class Test3_pos extends Activity {
             }
         }
 
-        // Views aus R holen und in imageArray speichern
-        Log.d(TAG, "creating and filling ImageView-Array");
-        final ImageView[][][] imageArray= new ImageView[4][4][2];
-        imageArray[0][0][0] = (ImageView) findViewById(R.id.row0_cell0_low);
-        imageArray[1][0][0] = (ImageView) findViewById(R.id.row0_cell1_low);
-        imageArray[2][0][0] = (ImageView) findViewById(R.id.row0_cell2_low);
-        imageArray[3][0][0] = (ImageView) findViewById(R.id.row0_cell3_low);
-        imageArray[0][1][0] = (ImageView) findViewById(R.id.row1_cell0_low);
-        imageArray[1][1][0] = (ImageView) findViewById(R.id.row1_cell1_low);
-        imageArray[2][1][0] = (ImageView) findViewById(R.id.row1_cell2_low);
-        imageArray[3][1][0] = (ImageView) findViewById(R.id.row1_cell3_low);
-        imageArray[0][2][0] = (ImageView) findViewById(R.id.row2_cell0_low);
-        imageArray[1][2][0] = (ImageView) findViewById(R.id.row2_cell1_low);
-        imageArray[2][2][0] = (ImageView) findViewById(R.id.row2_cell2_low);
-        imageArray[3][2][0] = (ImageView) findViewById(R.id.row2_cell3_low);
-        imageArray[0][3][0] = (ImageView) findViewById(R.id.row3_cell0_low);
-        imageArray[1][3][0] = (ImageView) findViewById(R.id.row3_cell1_low);
-        imageArray[2][3][0] = (ImageView) findViewById(R.id.row3_cell2_low);
-        imageArray[3][3][0] = (ImageView) findViewById(R.id.row3_cell3_low);
 
-        imageArray[0][0][1] = (ImageView) findViewById(R.id.row0_cell0_high);
-        imageArray[1][0][1] = (ImageView) findViewById(R.id.row0_cell1_high);
-        imageArray[2][0][1] = (ImageView) findViewById(R.id.row0_cell2_high);
-        imageArray[3][0][1] = (ImageView) findViewById(R.id.row0_cell3_high);
-        imageArray[0][1][1] = (ImageView) findViewById(R.id.row1_cell0_high);
-        imageArray[1][1][1] = (ImageView) findViewById(R.id.row1_cell1_high);
-        imageArray[2][1][1] = (ImageView) findViewById(R.id.row1_cell2_high);
-        imageArray[3][1][1] = (ImageView) findViewById(R.id.row1_cell3_high);
-        imageArray[0][2][1] = (ImageView) findViewById(R.id.row2_cell0_high);
-        imageArray[1][2][1] = (ImageView) findViewById(R.id.row2_cell1_high);
-        imageArray[2][2][1] = (ImageView) findViewById(R.id.row2_cell2_high);
-        imageArray[3][2][1] = (ImageView) findViewById(R.id.row2_cell3_high);
-        imageArray[0][3][1] = (ImageView) findViewById(R.id.row3_cell0_high);
-        imageArray[1][3][1] = (ImageView) findViewById(R.id.row3_cell1_high);
-        imageArray[2][3][1] = (ImageView) findViewById(R.id.row3_cell2_high);
-        imageArray[3][3][1] = (ImageView) findViewById(R.id.row3_cell3_high);
 
         // generated füllen
         int[] icon_library = {
@@ -234,7 +200,10 @@ public class Test3_pos extends Activity {
         }
 
         // vergleichen von entries mit bibliothek generated auf duplikate
-        for(Entry e : entries){
+        List<Entry> toRemove = new LinkedList<Entry>();
+        for(int j = 0; j<entries.size(); j++){
+            Log.d(TAG, "in vergleich, j:" + j + " entries.size" + entries.size());
+            Entry e = entries.get(j);
             int x = e.getX();
             int y = e.getY();
             // falls entry ein Icon beschreibt
@@ -247,15 +216,40 @@ public class Test3_pos extends Activity {
                     }
                 }
             }
+            // falls entry ein Widget beschreibt
+            if(e.getTag() == Entry.WIDGET){
+                // das Widget entfernen
+                Log.d(TAG, "tagging widget to remove");
+                toRemove.add(e);
+            }
+        }
+        for(Entry e : toRemove){
+            entries.remove(e);
+        }
+
+        // prüfen ob genug entries vorhanden sind
+        if(entries.size() < 2){
+            Log.d(TAG,"entries.size " + entries.size());
+            Toast.makeText(getApplicationContext(), R.string.not_enough_elements, Toast.LENGTH_LONG).show();
+            finish();
+            return;
         }
 
         // Zufallszahl zwischen 1 und 4
-        int random = 1 + (int)(Math.random() * ((4 - 1) + 1));
+        int random;
+        if(iterator < 4){
+            random = 1 + (int)(Math.random() * ((iterator - 1) + 1));
+        }
+        else{
+            random = 1 + (int)(Math.random() * ((4 - 1) + 1));
+        }
         Log.d(TAG, "random = " + random);
+
         // für zufallszahl einträge aus entries auswählen und in correct_answers eintragen
         for(int asd = 0; asd < random; asd++){
             Log.d(TAG, "calling returnrandomelement with entries.size() = " + entries.size());
             Entry temp = returnRandomElement(entries);
+            Log.d(TAG, "title of correct answer: " + temp.getTitle());
             correct_answers.add(temp);
             entries.remove(temp);
         }
@@ -263,6 +257,43 @@ public class Test3_pos extends Activity {
         // entries und generated joinen, sollte danach größer als 16 sein
         entries.addAll(generated);
         Log.d(TAG, "size of entries after join with generated: " + entries.size());
+
+        // Views aus R holen und in imageArray speichern
+        Log.d(TAG, "creating and filling ImageView-Array");
+        final ImageView[][][] imageArray= new ImageView[4][4][2];
+        imageArray[0][0][0] = (ImageView) findViewById(R.id.row0_cell0_low);
+        imageArray[1][0][0] = (ImageView) findViewById(R.id.row0_cell1_low);
+        imageArray[2][0][0] = (ImageView) findViewById(R.id.row0_cell2_low);
+        imageArray[3][0][0] = (ImageView) findViewById(R.id.row0_cell3_low);
+        imageArray[0][1][0] = (ImageView) findViewById(R.id.row1_cell0_low);
+        imageArray[1][1][0] = (ImageView) findViewById(R.id.row1_cell1_low);
+        imageArray[2][1][0] = (ImageView) findViewById(R.id.row1_cell2_low);
+        imageArray[3][1][0] = (ImageView) findViewById(R.id.row1_cell3_low);
+        imageArray[0][2][0] = (ImageView) findViewById(R.id.row2_cell0_low);
+        imageArray[1][2][0] = (ImageView) findViewById(R.id.row2_cell1_low);
+        imageArray[2][2][0] = (ImageView) findViewById(R.id.row2_cell2_low);
+        imageArray[3][2][0] = (ImageView) findViewById(R.id.row2_cell3_low);
+        imageArray[0][3][0] = (ImageView) findViewById(R.id.row3_cell0_low);
+        imageArray[1][3][0] = (ImageView) findViewById(R.id.row3_cell1_low);
+        imageArray[2][3][0] = (ImageView) findViewById(R.id.row3_cell2_low);
+        imageArray[3][3][0] = (ImageView) findViewById(R.id.row3_cell3_low);
+
+        imageArray[0][0][1] = (ImageView) findViewById(R.id.row0_cell0_high);
+        imageArray[1][0][1] = (ImageView) findViewById(R.id.row0_cell1_high);
+        imageArray[2][0][1] = (ImageView) findViewById(R.id.row0_cell2_high);
+        imageArray[3][0][1] = (ImageView) findViewById(R.id.row0_cell3_high);
+        imageArray[0][1][1] = (ImageView) findViewById(R.id.row1_cell0_high);
+        imageArray[1][1][1] = (ImageView) findViewById(R.id.row1_cell1_high);
+        imageArray[2][1][1] = (ImageView) findViewById(R.id.row1_cell2_high);
+        imageArray[3][1][1] = (ImageView) findViewById(R.id.row1_cell3_high);
+        imageArray[0][2][1] = (ImageView) findViewById(R.id.row2_cell0_high);
+        imageArray[1][2][1] = (ImageView) findViewById(R.id.row2_cell1_high);
+        imageArray[2][2][1] = (ImageView) findViewById(R.id.row2_cell2_high);
+        imageArray[3][2][1] = (ImageView) findViewById(R.id.row2_cell3_high);
+        imageArray[0][3][1] = (ImageView) findViewById(R.id.row3_cell0_high);
+        imageArray[1][3][1] = (ImageView) findViewById(R.id.row3_cell1_high);
+        imageArray[2][3][1] = (ImageView) findViewById(R.id.row3_cell2_high);
+        imageArray[3][3][1] = (ImageView) findViewById(R.id.row3_cell3_high);
 
         // zufällig zeichnen
         for(int x = 0; x < 4; x++){
@@ -281,9 +312,6 @@ public class Test3_pos extends Activity {
                             answer[x][y] = true;
                         }
                     }
-                }
-                else if(temp.getTag() == Entry.WIDGET){
-                    continue;
                 }
                 else{
                     Log.d(TAG, "drawing icon with tag " + temp.getTag() + " , title: " + temp.getTitle() + " to x: " + x + ", y: " + y);
@@ -306,6 +334,7 @@ public class Test3_pos extends Activity {
                 imageArray[e.getX()][e.getY()][1].setImageResource(R.drawable.portal_ring_inner_holo);
                 imageArray[e.getX()][e.getY()][1].invalidate();
             }
+            Log.d(TAG, "setting x:" + e.getX() + " y:" + e.getY() + " to true");
             answer[e.getX()][e.getY()] = true;
         }
 

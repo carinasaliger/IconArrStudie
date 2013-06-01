@@ -14,7 +14,7 @@
         Test 3 - Positionen
     </string>
     <string name="save_file">
-        Daten Teilen
+        launcher.db Teilen
     </string>
     <string name="debug">
         Debug-Informationen
@@ -45,6 +45,9 @@
     </string>
     <string name="action_settings" >
         Settings
+    </string>
+    <string name="not_enough_elements">
+        Nicht genügend Elemente auf dem Screen vorhanden
     </string>
     <string name="hello_world" >
         Hello world!
