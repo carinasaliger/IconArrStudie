@@ -28,7 +28,8 @@
         android:id="@+id/textView"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:gravity="center"/>
 
     <LinearLayout
         android:orientation="vertical"
