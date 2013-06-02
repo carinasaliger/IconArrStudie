@@ -141,8 +141,6 @@ public class Test3_pos extends Activity {
             }
         }
 
-
-
         // generated füllen
         int[] icon_library = {
                 R.drawable.amazon,
@@ -205,7 +203,7 @@ public class Test3_pos extends Activity {
             int x = e.getX();
             int y = e.getY();
             // falls entry ein Icon beschreibt
-            if(e.getTag() == 1){
+            if(e.getTag() == 1 || e.getTag() == 0){
                 // falls icon in Bildbibliothek vorhanden
                 for(int i = 0; i < generated.size(); i++){
                     if(e.getTitle().equals(generated.get(i).getTitle())){
@@ -226,7 +224,6 @@ public class Test3_pos extends Activity {
 
         // prüfen ob genug entries vorhanden sind
         if(entries.size() < 2){
-            Toast.makeText(getApplicationContext(), R.string.not_enough_elements, Toast.LENGTH_LONG).show();
             finish();
             return;
         }
@@ -317,7 +314,7 @@ public class Test3_pos extends Activity {
         // correct answers zeichnen
         for (Entry e : correct_answers){
             Log.i(TAG, "number of correct answers: " + correct_answers.size());
-            if(e.getTag() == Entry.ICON){
+            if(e.getTag() == Entry.ICON || e.getTag() == 0){
                 Bitmap bmp = BitmapFactory.decodeByteArray(e.getIcon(), 0, e.getIcon().length);
                 imageArray[e.getX()][e.getY()][1].setImageBitmap(bmp);
                 imageArray[e.getX()][e.getY()][1].invalidate();
