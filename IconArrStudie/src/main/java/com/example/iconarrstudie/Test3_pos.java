@@ -291,7 +291,7 @@ public class Test3_pos extends Activity {
                 // falls temp ein Ordner ist
                 if (temp.getTag() == Entry.FOLDER){
                     Log.d(TAG, "drawing folder, title: " + temp.getTitle() + " to x: " + x + ", y: " + y);
-                    imageArray[x][y][1].setImageResource(R.drawable.portal_ring_inner_holo);
+                    imageArray[x][y][1].setImageResource(R.drawable.folder);
                     imageArray[x][y][1].invalidate();
                     entries.remove(temp);
                     // falls an x,y in echt auch ein ordner liegt
@@ -319,7 +319,7 @@ public class Test3_pos extends Activity {
                 imageArray[e.getX()][e.getY()][1].invalidate();
             }
             if(e.getTag() == Entry.FOLDER){
-                imageArray[e.getX()][e.getY()][1].setImageResource(R.drawable.portal_ring_inner_holo);
+                imageArray[e.getX()][e.getY()][1].setImageResource(R.drawable.folder);
                 imageArray[e.getX()][e.getY()][1].invalidate();
             }
             answer[e.getX()][e.getY()] = true;

@@ -544,9 +544,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/row4"
-                    android:layout_above="@+id/row5"
-                    android:padding="1dp"
-                    android:layout_weight="0.5">
+                    android:layout_weight="0.5"
+                    >
 
                 <ImageView
                         android:layout_width="wrap_content"
@@ -554,6 +553,7 @@
                         android:id="@+id/row4_cell0_high"
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"
+                        android:layout_margin="5dp"
                         android:maxWidth="100dp"
                         android:maxHeight="100dp">
                 </ImageView>
@@ -564,6 +564,7 @@
                         android:id="@+id/row4_cell1_high"
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"
+                        android:layout_margin="5dp"
                         android:maxWidth="100dp"
                         android:maxHeight="100dp">
 
@@ -575,6 +576,7 @@
                         android:id="@+id/row4_cell2_high"
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"
+                        android:layout_margin="5dp"
                         android:maxWidth="100dp"
                         android:maxHeight="100dp">
 
@@ -586,6 +588,7 @@
                         android:id="@+id/row4_cell3_high"
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"
+                        android:layout_margin="5dp"
                         android:maxWidth="100dp"
                         android:maxHeight="100dp">
 
@@ -597,6 +600,7 @@
                         android:id="@+id/row4_cell4_high"
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"
+                        android:layout_margin="5dp"
                         android:maxWidth="100dp"
                         android:maxHeight="100dp">
 
@@ -608,6 +612,7 @@
                         android:id="@+id/row4_cell5_high"
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"
+                        android:layout_margin="5dp"
                         android:maxWidth="100dp"
                         android:maxHeight="100dp">
 
@@ -619,6 +624,7 @@
                         android:id="@+id/row4_cell6_high"
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"
+                        android:layout_margin="5dp"
                         android:maxWidth="100dp"
                         android:maxHeight="100dp">
 
@@ -630,6 +636,7 @@
                         android:id="@+id/row4_cell7_high"
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"
+                        android:layout_margin="5dp"
                         android:maxWidth="100dp"
                         android:maxHeight="100dp">
 
@@ -642,16 +649,15 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/row5"
-                    android:layout_above="@+id/button_row"
-                    android:padding="1dp"
-                    android:layout_weight="0.5">
-
+                    android:layout_weight="0.5"
+                    >
                 <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:id="@+id/row5_cell0_high"
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"
+                        android:layout_margin="5dp"
                         android:maxWidth="100dp"
                         android:maxHeight="100dp">
 
@@ -663,6 +669,7 @@
                         android:id="@+id/row5_cell1_high"
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"
+                        android:layout_margin="5dp"
                         android:maxWidth="100dp"
                         android:maxHeight="100dp">
 
@@ -674,6 +681,7 @@
                         android:id="@+id/row5_cell2_high"
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"
+                        android:layout_margin="5dp"
                         android:maxWidth="100dp"
                         android:maxHeight="100dp">
 
@@ -685,6 +693,7 @@
                         android:id="@+id/row5_cell3_high"
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"
+                        android:layout_margin="5dp"
                         android:maxWidth="100dp"
                         android:maxHeight="100dp">
 
@@ -696,6 +705,7 @@
                         android:id="@+id/row5_cell4_high"
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"
+                        android:layout_margin="5dp"
                         android:maxWidth="100dp"
                         android:maxHeight="100dp">
 
@@ -707,6 +717,7 @@
                         android:id="@+id/row5_cell5_high"
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"
+                        android:layout_margin="5dp"
                         android:maxWidth="100dp"
                         android:maxHeight="100dp">
 
@@ -718,6 +729,7 @@
                         android:id="@+id/row5_cell6_high"
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"
+                        android:layout_margin="5dp"
                         android:maxWidth="100dp"
                         android:maxHeight="100dp">
 
@@ -729,6 +741,7 @@
                         android:id="@+id/row5_cell7_high"
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"
+                        android:layout_margin="5dp"
                         android:maxWidth="100dp"
                         android:maxHeight="100dp">
 

@@ -278,7 +278,7 @@ public class Test1_ddrop extends Activity {
                                     Log.d(TAG, "icon dropped on x:" + finalX + " y:" + finalY);
                                     if(!in_use[finalX][finalY]){
                                         if(e.getTag() == Entry.FOLDER){
-                                            imageArray[finalX][finalY][1].setImageResource(R.drawable.portal_ring_inner_holo);
+                                            imageArray[finalX][finalY][1].setImageResource(R.drawable.folder);
                                             input[finalX][finalY] = "Folder";
 
                                         }
@@ -361,7 +361,7 @@ public class Test1_ddrop extends Activity {
             // falls e ein ordner ist und nicht im Dock sitzt
             if(e.getTag() == Entry.FOLDER && e.getContainer() == (-100)){
                 Log.d(TAG, "found folder " + "x: " + x + " y: " + y);
-                imageArray[x][y][1].setImageResource(R.drawable.portal_ring_inner_holo);
+                imageArray[x][y][1].setImageResource(R.drawable.folder);
 
                 // in solution eintragen
                 solution[e.getX()][e.getY()] = "Folder";
