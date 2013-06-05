@@ -49,6 +49,9 @@
     <string name="action_settings" >
         Settings
     </string>
+    <string name="no_more_elements">
+        Keine Änderungen vorhanden
+    </string>
     <string name="not_enough_elements">
         Nicht genügend Elemente auf dem Screen vorhanden
     </string>

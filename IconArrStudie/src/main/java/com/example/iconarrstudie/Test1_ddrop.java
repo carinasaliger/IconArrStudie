@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -25,11 +26,14 @@ import java.util.List;
  * Created by john-louis on 17.05.13.
  */
 public class Test1_ddrop extends Activity {
+//    format für lastaction: {art / tag, x, y, spanx, spany, invoker_x, invoker_y)
+//    invoker ist die view von der die aktion ausging
     private final static String TAG = Test1_ddrop.class.getSimpleName();
     private int selected_screen;
     private static boolean[][] in_use;
     private static String[][] input;
     private static List<Integer[]> lastaction;
+    private static List<Integer[]> modified;
     private static String[][] solution;
     static final String TITLE = "title";
     static final String ITEM_TYPE = "itemType";
@@ -52,7 +56,7 @@ public class Test1_ddrop extends Activity {
         Log.d(TAG, "setting Wallpaper");
 //        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
 //        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-        //getWindow().setBackgroundDrawable(getWallpaper());
+        getWindow().setBackgroundDrawable(getWallpaper());
 
         // content_uri aus MainActivity holen
         String newString = null;
@@ -88,6 +92,7 @@ public class Test1_ddrop extends Activity {
         // Listen
         List<Entry> entries = new LinkedList<Entry>();
         lastaction = new LinkedList<Integer[]>();
+        modified = new LinkedList<Integer[]>();
 
         // Arrays initialisieren und füllen
         in_use = new boolean[4][4];
@@ -221,25 +226,30 @@ public class Test1_ddrop extends Activity {
                             case DragEvent.ACTION_DRAG_STARTED:
                                 // Unterscheidung zwischen Icons und Widgets
                                 // falls ein Icon
-                                if(last[0] == 0 && last[1] == 0){
+                                if(last[0] == Entry.ICON || last[0] == 0 || last[0] == Entry.FOLDER){
                                     if (!in_use[finalX][finalY]){
                                         imageArray[finalX][finalY][0].setColorFilter(Color.BLUE);
                                         imageArray[finalX][finalY][0].invalidate();
                                         return true;
                                     }
-                                }
-                                // falls ein widget
-                                if(last[0] > 0 && last[1] > 0){
-                                    // falls es überstehen würde
-                                    if(finalX + last[0] > 4 || finalY + last[1] > 4){
+                                    else {
                                         imageArray[finalX][finalY][0].setColorFilter(Color.RED);
                                         imageArray[finalX][finalY][0].invalidate();
                                         return false;
                                     }
-                                    // falls im bereich bereits etwa liegt
+                                }
+                                // falls ein widget
+                                if(last[0] == Entry.WIDGET){
+                                    // falls es überstehen würde
+                                    if(finalX + last[3] > 4 || finalY + last[4] > 4){
+                                        imageArray[finalX][finalY][0].setColorFilter(Color.RED);
+                                        imageArray[finalX][finalY][0].invalidate();
+                                        return false;
+                                    }
+                                    // falls im bereich bereits etwas liegt
                                     boolean space_used = false;
-                                    for(int startx = 0; startx < last[0]; startx++){
-                                        for(int starty = 0; starty < last[1]; starty++){
+                                    for(int startx = 0; startx < last[3]; startx++){
+                                        for(int starty = 0; starty < last[4]; starty++){
                                             if(in_use[finalX + startx][finalY + starty]){
                                                 space_used = true;
                                             }
@@ -274,17 +284,20 @@ public class Test1_ddrop extends Activity {
                             // falls Element in einer View losgelassen wird, das Icon übernehmen und setzen, sowie in in_use eintragen
                             case DragEvent.ACTION_DROP:
                                 // prüfen ob ein icon gedroppt wurde
-                                if(last[0] == 0 && last[1] == 0){
+                                if(last[0] == Entry.ICON || last[0] == 0 || last[0] == Entry.FOLDER){
                                     Log.d(TAG, "icon dropped on x:" + finalX + " y:" + finalY);
                                     if(!in_use[finalX][finalY]){
                                         if(e.getTag() == Entry.FOLDER){
                                             imageArray[finalX][finalY][1].setImageResource(R.drawable.folder);
                                             input[finalX][finalY] = "Folder";
-
+                                            Integer[] modification = {Entry.FOLDER, finalX, finalY, 0, 0};
+                                            modified.add(modification);
                                         }
                                         else{
                                             imageArray[finalX][finalY][1].setImageBitmap(icon);
                                             input[finalX][finalY] = e.getTitle();
+                                            Integer[] modification = {last[0], finalX, finalY, 0, 0};
+                                            modified.add(modification);
 
                                         }
                                         imageArray[finalX][finalY][0].clearColorFilter();
@@ -300,8 +313,10 @@ public class Test1_ddrop extends Activity {
                                 // in_use anpassen
                                 else{
                                     Log.d(TAG, "widget dropped on x:" + finalX + " y:" + finalY);
-                                    for(int startx = 0; startx < last[0]; startx++){
-                                        for(int starty = 0; starty < last[1]; starty++){
+                                    Integer[] modification = {Entry.WIDGET, finalX, finalY, last[3], last[4]};
+                                    modified.add(modification);
+                                    for(int startx = 0; startx < last[3]; startx++){
+                                        for(int starty = 0; starty < last[4]; starty++){
                                             imageArray[finalX + startx][finalY + starty][1].setImageResource(R.drawable.widget_1x1);
                                             imageArray[finalX + startx][finalY + starty][0].clearColorFilter();
                                             imageArray[finalX + startx][finalY + starty][0].invalidate();
@@ -309,6 +324,7 @@ public class Test1_ddrop extends Activity {
                                             // In Input eintragen
                                             input[finalX + startx][finalY + starty] = "Widget";
                                             in_use[finalX + startx][finalY + starty] = true;
+
                                         }
                                     }
                                     return true;
@@ -325,7 +341,7 @@ public class Test1_ddrop extends Activity {
             }
         }
 
-        // Abfragen und Zeichnen der Elemente
+        // Abfragen und Zeichnen der Elemente im Dock
         int x = 0;
         int y = 4;
 
@@ -342,23 +358,47 @@ public class Test1_ddrop extends Activity {
                 solution[e.getX()][e.getY()] = e.getTitle();
 
                 // longclicklistener setzen
+                final int finalX = x;
+                final int finalY = y;
                 imageArray[x][y][1].setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View view) {
                         Log.i(TAG, "Beginning Drag on Icon " + e.getTitle());
-                        Integer[] temp = new Integer[]{0, 0};
+                        Integer[] temp = new Integer[]{e.getTag(), e.getX(), e.getY(), e.getSpan_x(), e.getSpan_y(), finalX, finalY};
                         lastaction.add(temp);
                         ClipData.Item item = new ClipData.Item((CharSequence) view.getTag());
                         ClipData dragData = new ClipData((String) view.getTag(), new String[] {ClipDescription.MIMETYPE_TEXT_PLAIN}, item);
                         View.DragShadowBuilder myShadow = new View.DragShadowBuilder(view);
                         view.startDrag(dragData, myShadow, e, 0);
-                        view.setVisibility(View.INVISIBLE);
+                        return true;
+                    }
+                });
+                imageArray[x][y][1].setOnDragListener(new View.OnDragListener() {
+                    @Override
+                    public boolean onDrag(View view, DragEvent dragEvent) {
+                        int event = dragEvent.getAction();
+                        // falls der drag beendet wurde
+                        if(event == DragEvent.ACTION_DRAG_STARTED){
+                            return false;
+                        }
+                        if(event == DragEvent.ACTION_DRAG_ENDED &&
+                                // und er erfolgreich war
+                                dragEvent.getResult() &&
+                                // und das tag 0 oder 1 war
+                                ((lastaction.get(lastaction.size()-1)[0] == 0) || (lastaction.get(lastaction.size()-1)[0] == 1)) &&
+                                // und x der lastaction = diesem x
+                                (lastaction.get(lastaction.size()-1)[1] == e.getX()) &&
+                                // und y der lastaction = diesem y
+                                (lastaction.get(lastaction.size()-1)[2] == e.getY())){
+                            // setze die View (unten) unsichtbar
+                            view.setVisibility(View.INVISIBLE);
+                        }
                         return true;
                     }
                 });
                 wrote = true;
             }
-            // falls e ein ordner ist und nicht im Dock sitzt
+            // falls e ein ORDNER ist und nicht im Dock sitzt
             if(e.getTag() == Entry.FOLDER && e.getContainer() == (-100)){
                 Log.d(TAG, "found folder " + "x: " + x + " y: " + y);
                 imageArray[x][y][1].setImageResource(R.drawable.folder);
@@ -368,11 +408,13 @@ public class Test1_ddrop extends Activity {
 
                 final ClipData.Item[] item = new ClipData.Item[1];
                 // longclicklistener setzen
+                final int finalY1 = y;
+                final int finalX1 = x;
                 imageArray[x][y][1].setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View view) {
                         Log.i(TAG, "Beginning Drag on folder");
-                        Integer[] temp = new Integer[]{0, 0};
+                        Integer[] temp = new Integer[]{e.getTag(), e.getX(), e.getY(), e.getSpan_x(), e.getSpan_y(), finalX1, finalY1};
                         lastaction.add(temp);
                         item[0] = new ClipData.Item((String) view.getTag());
                         ClipData dragData = new ClipData((String) view.getTag(), new String[] {ClipDescription.MIMETYPE_TEXT_PLAIN}, item[0]);
@@ -381,32 +423,41 @@ public class Test1_ddrop extends Activity {
                         return true;
                     }
                 });
-                // ondraglistener um festzustellen ob das dragevent erfolgreich war
-                final int finalX = x;
-                final int finalY = y;
                 imageArray[x][y][1].setOnDragListener(new View.OnDragListener() {
                     @Override
                     public boolean onDrag(View view, DragEvent dragEvent) {
-                        int action = dragEvent.getAction();
-                        if(action == DragEvent.ACTION_DRAG_ENDED && dragEvent.getResult() == true && dragEvent.getClipData().getItemAt(0).equals(item)){
-                            imageArray[finalX][finalY][1].setVisibility(View.INVISIBLE);
+                        int event = dragEvent.getAction();
+                        if(event == DragEvent.ACTION_DRAG_STARTED){
+                            return false;
                         }
-                        return false;
+                        // falls der drag beendet wurde
+                        if(event == DragEvent.ACTION_DRAG_ENDED &&
+                                // und er erfolgreich war
+                                dragEvent.getResult() &&
+                                // und das tag 2 (ein ordner) war
+                                (lastaction.get(lastaction.size()-1)[0] == Entry.FOLDER) &&
+                                // und x der lastaction = diesem x
+                                (lastaction.get(lastaction.size()-1)[1] == e.getX()) &&
+                                // und y der lastaction = diesem y
+                                (lastaction.get(lastaction.size()-1)[2] == e.getY())){
+                            // setze die View (unten) unsichtbar
+                            view.setVisibility(View.INVISIBLE);
+                        }
+                        return true;
                     }
                 });
                 wrote = true;
             }
             // falls e ein widget ist
             if(e.getTag() == Entry.WIDGET){
-                Log.d(TAG, "found Widget, calling setWidgetDrawable with x: " + x + " ,y: " + y);
                 // in solution eintragen
-                for(int xx = e.getX(); xx < e.getSpan_x(); xx++){
-                    for(int yy = e.getY(); yy < e.getSpan_y(); yy++){
-                        solution[e.getX() + xx][e.getX() + yy] = "Widget";
+                for(int xx = 0; xx < e.getSpan_x(); xx++){
+                    for(int yy = 0; yy < e.getSpan_y(); yy++){
+                        solution[e.getX() + xx][e.getY() + yy] = "Widget";
                     }
                 }
                 // Drawable setzen
-                setWidgetDrawable(e.getSpan_x(), e.getSpan_y(), imageArray[x][y][1], e);
+                setWidgetDrawable(e.getSpan_x(), e.getSpan_y(), imageArray[x][y][1], e.getX(), e.getY(), x, y, e);
                 wrote = true;
             }
             // counter MAGIC
@@ -427,6 +478,7 @@ public class Test1_ddrop extends Activity {
         Button confirm = (Button) findViewById(R.id.confirm);
         Button back = (Button) findViewById(R.id.back);
         Button clear = (Button) findViewById(R.id.clear);
+        Button undo = (Button) findViewById(R.id.undo);
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -483,102 +535,160 @@ public class Test1_ddrop extends Activity {
                 }
             }
         });
+        undo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(TAG, "undoing latest activity");
+                if(lastaction.size() == 0){
+                    //TOAST
+                    Toast.makeText(getApplicationContext(), R.string.no_more_elements, Toast.LENGTH_LONG).show();
+                    return;
+                }
+                // letzen Eintrag in lastaction holen
+                Integer[] last = lastaction.get(lastaction.size() - 1);
+                Integer[] modification = modified.get(modified.size() - 1);
+//                int counter = 0;
+//                for(Integer i : last){
+//                    Log.d(TAG, "last: " + i + "  counter:" + counter);
+//                    counter++;
+//                }
+
+
+                // falls es ein Widget war
+                if(last[0] == Entry.WIDGET){
+                    Log.d(TAG, "found widget to clean");
+                    for(int x = 0; x < last[3]; x++){
+                        for(int y = 0; y < last[4]; y++){
+                            // Grid säubern
+                            Log.d(TAG, "resetting x:" + (last[1] + x) + ", y:" + (last[2] +y));
+                            imageArray[modification[1] + x][modification[2] + y][1].setImageResource(R.drawable.contour);
+                            imageArray[modification[1] + x][modification[2] + y][1].invalidate();
+                            // Arrays bereinigen
+                            in_use[modification[1] + x][modification[2] + y] = false;
+                            input[modification[1] + x][modification[2] + y] = "empty";
+                        }
+                    }
+                }
+                else{
+                    Log.d(TAG, "found something else to clean");
+                    // Grid säubern
+                    Log.d(TAG, "resetting x:" + last[1] + ", y:" + last[2]);
+                    imageArray[modification[1]][modification[2]][1].setImageResource(R.drawable.contour);
+                    imageArray[modification[1]][modification[2]][1].invalidate();
+                    // Arrays bereinigen
+                    in_use[modification[1]][modification[2]] = false;
+                    input[modification[1]][modification[2]] = "empty";
+                }
+
+                // Sichtbarkeit im Dock wiederherstellen
+                imageArray[last[5]][last[6]][1].setVisibility(View.VISIBLE);
+
+                // aus lastaction entfernen
+                lastaction.remove(last);
+                modified.remove(modification);
+            }
+        });
     }
-    private void setWidgetDrawable(int x, int y, final ImageView iview, final Entry e){
-        final Integer[] temp = new Integer[2];
-        switch(x){
+    private void setWidgetDrawable(int span_x, int span_y, final ImageView iview, int x, int y,int invoker_x, int invoker_y,  final Entry e){
+        final Integer[] temp = new Integer[7];
+        temp[0] = Entry.WIDGET;
+        temp[1] = x;
+        temp[2] = y;
+        temp[5] = invoker_x;
+        temp[6] = invoker_y;
+        switch(span_x){
             case 1:
-                switch(y){
+                switch(span_y){
                     case 1:
-                        temp[0] = 1;
-                        temp[1] = 1;
+                        temp[3] = 1;
+                        temp[4] = 1;
                         iview.setImageResource(R.drawable.widget_1x1);
                         break;
                     case 2:
-                        temp[0] = 1;
-                        temp[1] = 2;
+                        temp[3] = 1;
+                        temp[4] = 2;
                         iview.setImageResource(R.drawable.widget_1x2);
                         break;
                     case 3:
-                        temp[0] = 1;
-                        temp[1] = 3;
+                        temp[3] = 1;
+                        temp[4] = 3;
                         iview.setImageResource(R.drawable.widget_1x3);
                         break;
                     case 4:
-                        temp[0] = 1;
-                        temp[1] = 4;
+                        temp[3] = 1;
+                        temp[4] = 4;
                         iview.setImageResource(R.drawable.widget_1x4);
                         break;
                 }
                 break;
             case 2:
-                switch(y){
+                switch(span_y){
                     case 1:
-                        temp[0] = 2;
-                        temp[1] = 1;
+                        temp[3] = 2;
+                        temp[4] = 1;
                         iview.setImageResource(R.drawable.widget_2x1);
                         break;
                     case 2:
-                        temp[0] = 2;
-                        temp[1] = 2;
+                        temp[3] = 2;
+                        temp[4] = 2;
                         iview.setImageResource(R.drawable.widget_2x2);
                         break;
                     case 3:
-                        temp[0] = 2;
-                        temp[1] = 3;
+                        temp[3] = 2;
+                        temp[4] = 3;
                         iview.setImageResource(R.drawable.widget_2x3);
                         break;
                     case 4:
-                        temp[0] = 2;
-                        temp[1] = 4;
+                        temp[3] = 2;
+                        temp[4] = 4;
                         iview.setImageResource(R.drawable.widget_2x4);
                         break;
                 }
                 break;
             case 3:
-                switch(y){
+                switch(span_y){
                     case 1:
-                        temp[0] = 3;
-                        temp[1] = 1;
+                        temp[3] = 3;
+                        temp[4] = 1;
                         iview.setImageResource(R.drawable.widget_3x1);
                         break;
                     case 2:
-                        temp[0] = 3;
-                        temp[1] = 2;
+                        temp[3] = 3;
+                        temp[4] = 2;
                         iview.setImageResource(R.drawable.widget_3x2);
                         break;
                     case 3:
-                        temp[0] = 3;
-                        temp[1] = 3;
+                        temp[3] = 3;
+                        temp[4] = 3;
                         iview.setImageResource(R.drawable.widget_3x3);
                         break;
                     case 4:
-                        temp[0] = 3;
-                        temp[1] = 4;
+                        temp[3] = 3;
+                        temp[4] = 4;
                         iview.setImageResource(R.drawable.widget_3x4);
                         break;
                 }
                 break;
             case 4:
-                switch(y){
+                switch(span_y){
                     case 1:
-                        temp[0] = 4;
-                        temp[1] = 1;
+                        temp[3] = 4;
+                        temp[4] = 1;
                         iview.setImageResource(R.drawable.widget_4x1);
                         break;
                     case 2:
-                        temp[0] = 4;
-                        temp[1] = 2;
+                        temp[3] = 4;
+                        temp[4] = 2;
                         iview.setImageResource(R.drawable.widget_4x2);
                         break;
                     case 3:
-                        temp[0] = 4;
-                        temp[1] = 3;
+                        temp[3] = 4;
+                        temp[4] = 3;
                         iview.setImageResource(R.drawable.widget_4x3);
                         break;
                     case 4:
-                        temp[0] = 4;
-                        temp[1] = 4;
+                        temp[3] = 4;
+                        temp[4] = 4;
                         iview.setImageResource(R.drawable.widget_4x4);
                         break;
                 }
@@ -593,7 +703,30 @@ public class Test1_ddrop extends Activity {
                 ClipData dragData = new ClipData((String) view.getTag(), new String[] {ClipDescription.MIMETYPE_TEXT_PLAIN}, item);
                 View.DragShadowBuilder myShadow = new View.DragShadowBuilder(view);
                 view.startDrag(dragData, myShadow, e, 0);
-                view.setVisibility(View.INVISIBLE);
+                return true;
+            }
+        });
+        iview.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View view, DragEvent dragEvent) {
+                int event = dragEvent.getAction();
+                if(event == DragEvent.ACTION_DRAG_STARTED){
+                    return false;
+                }
+                // falls der drag beendet wurde
+                if(event == DragEvent.ACTION_DRAG_ENDED &&
+                        // und er erfolgreich war
+                        dragEvent.getResult() &&
+                        // und das tag 4 (ein widget) war
+                        (lastaction.get(lastaction.size()-1)[0] == Entry.WIDGET) &&
+                        // und x der lastaction = diesem x
+                        (lastaction.get(lastaction.size()-1)[1] == e.getX()) &&
+                        // und y der lastaction = diesem y
+                        (lastaction.get(lastaction.size()-1)[2] == e.getY())){
+                    // setze die View (unten) unsichtbar
+                    Log.d(TAG, "setting view for x:" + e.getX() + ", y:" + e.getY() + " invisible");
+                    view.setVisibility(View.INVISIBLE);
+                }
                 return true;
             }
         });

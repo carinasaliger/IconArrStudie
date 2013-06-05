@@ -531,7 +531,8 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight=".8"
-            android:gravity="bottom">
+            android:gravity="bottom"
+            android:id="@id/dock">
 
         <LinearLayout
                 android:orientation="vertical"
@@ -772,7 +773,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
                     android:text="@string/undo"
-                    android:id="@+id/undo"/>
+                    android:id="@id/undo"/>
 
             <Button
                     android:layout_width="wrap_content"
