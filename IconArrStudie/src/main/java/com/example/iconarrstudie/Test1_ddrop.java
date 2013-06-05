@@ -52,7 +52,7 @@ public class Test1_ddrop extends Activity {
         Log.d(TAG, "setting Wallpaper");
 //        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
 //        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-        getWindow().setBackgroundDrawable(getWallpaper());
+        //getWindow().setBackgroundDrawable(getWallpaper());
 
         // content_uri aus MainActivity holen
         String newString = null;

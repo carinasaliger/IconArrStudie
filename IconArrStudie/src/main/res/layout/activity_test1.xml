@@ -1,169 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/back"
-        android:id="@+id/back"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/confirm"
-        android:id="@+id/confirm"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/clear"/>
+<LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/task1"
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textAlignment="center"
-        android:typeface="normal"
-        android:gravity="center"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/task1"
+            android:id="@+id/textView"
+            android:textAlignment="center"
+            android:typeface="normal"
+            android:gravity="center"/>
 
     <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/scrollView"
-        android:layout_below="@+id/textView"
-        android:layout_above="@+id/back"
-        android:layout_alignRight="@+id/confirm">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollView"
+            android:layout_weight=".1">
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true">
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true">
 
             <!-- row0 -->
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/row0"
-                android:layout_weight="0"
-                android:baselineAligned="false">
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/row0"
+                    android:layout_weight="0"
+                    android:baselineAligned="false">
 
                 <FrameLayout
-                    android:orientation="vertical"
-                    android:layout_height="fill_parent"
-                    android:layout_width="fill_parent"
-                    android:id="@+id/row0_cell0"
-                    android:layout_weight="0.25">
+                        android:orientation="vertical"
+                        android:layout_height="fill_parent"
+                        android:layout_width="fill_parent"
+                        android:id="@+id/row0_cell0"
+                        android:layout_weight="0.25">
 
                     <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row0_cell0_low"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row0_cell0_low"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
 
                     </ImageView>
 
                     <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row0_cell0_high"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row0_cell0_high"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
 
                     </ImageView>
                 </FrameLayout>
 
                 <FrameLayout
-                    android:orientation="vertical"
-                    android:layout_height="fill_parent"
-                    android:layout_width="fill_parent"
-                    android:id="@+id/row0_cell1"
-                    android:layout_weight="0.25">
+                        android:orientation="vertical"
+                        android:layout_height="fill_parent"
+                        android:layout_width="fill_parent"
+                        android:id="@+id/row0_cell1"
+                        android:layout_weight="0.25">
 
                     <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row0_cell1_low"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row0_cell1_low"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
 
                     </ImageView>
 
                     <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row0_cell1_high"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
-
-                    </ImageView>
-                </FrameLayout>
-
-                <FrameLayout
-                    android:orientation="vertical"
-                    android:layout_height="fill_parent"
-                    android:layout_width="fill_parent"
-                    android:id="@+id/row0_cell2"
-                    android:layout_weight="0.25">
-
-                    <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row0_cell2_low"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
-
-                    </ImageView>
-
-                    <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row0_cell2_high"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row0_cell1_high"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
 
                     </ImageView>
                 </FrameLayout>
 
                 <FrameLayout
-                    android:orientation="vertical"
-                    android:layout_height="fill_parent"
-                    android:layout_width="fill_parent"
-                    android:id="@+id/row0_cell3"
-                    android:layout_weight="0.25">
+                        android:orientation="vertical"
+                        android:layout_height="fill_parent"
+                        android:layout_width="fill_parent"
+                        android:id="@+id/row0_cell2"
+                        android:layout_weight="0.25">
 
                     <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row0_cell3_low"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row0_cell2_low"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
 
                     </ImageView>
 
                     <ImageView
-                        android:layout_width="fill_parent"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row0_cell2_high"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
+
+                    </ImageView>
+                </FrameLayout>
+
+                <FrameLayout
+                        android:orientation="vertical"
                         android:layout_height="fill_parent"
-                        android:id="@+id/row0_cell3_high"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
+                        android:layout_width="fill_parent"
+                        android:id="@+id/row0_cell3"
                         android:layout_weight="0.25">
+
+                    <ImageView
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row0_cell3_low"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
+
+                    </ImageView>
+
+                    <ImageView
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row0_cell3_high"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
 
                     </ImageView>
                 </FrameLayout>
@@ -171,121 +151,121 @@
 
             <!-- row1 -->
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/row1"
-                android:layout_weight="0"
-                android:baselineAligned="false">
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/row1"
+                    android:layout_weight="0"
+                    android:baselineAligned="false">
 
                 <FrameLayout
-                    android:orientation="vertical"
-                    android:layout_height="fill_parent"
-                    android:layout_width="fill_parent"
-                    android:id="@+id/row1_cell0"
-                    android:layout_weight="0.25">
+                        android:orientation="vertical"
+                        android:layout_height="fill_parent"
+                        android:layout_width="fill_parent"
+                        android:id="@+id/row1_cell0"
+                        android:layout_weight="0.25">
 
                     <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row1_cell0_low"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row1_cell0_low"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
 
                     </ImageView>
 
                     <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row1_cell0_high"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row1_cell0_high"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
 
                     </ImageView>
                 </FrameLayout>
 
                 <FrameLayout
-                    android:orientation="vertical"
-                    android:layout_height="fill_parent"
-                    android:layout_width="fill_parent"
-                    android:id="@+id/row1_cell1"
-                    android:layout_weight="0.25">
+                        android:orientation="vertical"
+                        android:layout_height="fill_parent"
+                        android:layout_width="fill_parent"
+                        android:id="@+id/row1_cell1"
+                        android:layout_weight="0.25">
 
                     <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row1_cell1_low"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row1_cell1_low"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
 
                     </ImageView>
 
                     <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row1_cell1_high"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
-
-                    </ImageView>
-                </FrameLayout>
-
-                <FrameLayout
-                    android:orientation="vertical"
-                    android:layout_height="fill_parent"
-                    android:layout_width="fill_parent"
-                    android:id="@+id/row1_cell2"
-                    android:layout_weight="0.25">
-
-                    <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row1_cell2_low"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
-
-                    </ImageView>
-
-                    <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row1_cell2_high"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row1_cell1_high"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
 
                     </ImageView>
                 </FrameLayout>
 
                 <FrameLayout
-                    android:orientation="vertical"
-                    android:layout_height="fill_parent"
-                    android:layout_width="fill_parent"
-                    android:id="@+id/row1_cell3"
-                    android:layout_weight="0.25">
+                        android:orientation="vertical"
+                        android:layout_height="fill_parent"
+                        android:layout_width="fill_parent"
+                        android:id="@+id/row1_cell2"
+                        android:layout_weight="0.25">
 
                     <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row1_cell3_low"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row1_cell2_low"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
 
                     </ImageView>
 
                     <ImageView
-                        android:layout_width="fill_parent"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row1_cell2_high"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
+
+                    </ImageView>
+                </FrameLayout>
+
+                <FrameLayout
+                        android:orientation="vertical"
                         android:layout_height="fill_parent"
-                        android:id="@+id/row1_cell3_high"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
+                        android:layout_width="fill_parent"
+                        android:id="@+id/row1_cell3"
                         android:layout_weight="0.25">
+
+                    <ImageView
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row1_cell3_low"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
+
+                    </ImageView>
+
+                    <ImageView
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row1_cell3_high"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
 
                     </ImageView>
                 </FrameLayout>
@@ -293,121 +273,121 @@
 
             <!-- row2 -->
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/row2"
-                android:layout_weight="0"
-                android:baselineAligned="false">
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/row2"
+                    android:layout_weight="0"
+                    android:baselineAligned="false">
 
                 <FrameLayout
-                    android:orientation="vertical"
-                    android:layout_height="fill_parent"
-                    android:layout_width="fill_parent"
-                    android:id="@+id/row2_cell0"
-                    android:layout_weight="0.25">
+                        android:orientation="vertical"
+                        android:layout_height="fill_parent"
+                        android:layout_width="fill_parent"
+                        android:id="@+id/row2_cell0"
+                        android:layout_weight="0.25">
 
                     <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row2_cell0_low"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row2_cell0_low"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
 
                     </ImageView>
 
                     <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row2_cell0_high"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row2_cell0_high"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
 
                     </ImageView>
                 </FrameLayout>
 
                 <FrameLayout
-                    android:orientation="vertical"
-                    android:layout_height="fill_parent"
-                    android:layout_width="fill_parent"
-                    android:id="@+id/row2_cell1"
-                    android:layout_weight="0.25">
+                        android:orientation="vertical"
+                        android:layout_height="fill_parent"
+                        android:layout_width="fill_parent"
+                        android:id="@+id/row2_cell1"
+                        android:layout_weight="0.25">
 
                     <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row2_cell1_low"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row2_cell1_low"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
 
                     </ImageView>
 
                     <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row2_cell1_high"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
-
-                    </ImageView>
-                </FrameLayout>
-
-                <FrameLayout
-                    android:orientation="vertical"
-                    android:layout_height="fill_parent"
-                    android:layout_width="fill_parent"
-                    android:id="@+id/row2_cell2"
-                    android:layout_weight="0.25">
-
-                    <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row2_cell2_low"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
-
-                    </ImageView>
-
-                    <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row2_cell2_high"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row2_cell1_high"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
 
                     </ImageView>
                 </FrameLayout>
 
                 <FrameLayout
-                    android:orientation="vertical"
-                    android:layout_height="fill_parent"
-                    android:layout_width="fill_parent"
-                    android:id="@+id/row2_cell3"
-                    android:layout_weight="0.25">
+                        android:orientation="vertical"
+                        android:layout_height="fill_parent"
+                        android:layout_width="fill_parent"
+                        android:id="@+id/row2_cell2"
+                        android:layout_weight="0.25">
 
                     <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row2_cell3_low"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row2_cell2_low"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
 
                     </ImageView>
 
                     <ImageView
-                        android:layout_width="fill_parent"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row2_cell2_high"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
+
+                    </ImageView>
+                </FrameLayout>
+
+                <FrameLayout
+                        android:orientation="vertical"
                         android:layout_height="fill_parent"
-                        android:id="@+id/row2_cell3_high"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
+                        android:layout_width="fill_parent"
+                        android:id="@+id/row2_cell3"
                         android:layout_weight="0.25">
+
+                    <ImageView
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row2_cell3_low"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
+
+                    </ImageView>
+
+                    <ImageView
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row2_cell3_high"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
 
                     </ImageView>
                 </FrameLayout>
@@ -415,317 +395,354 @@
 
             <!-- row3 -->
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/row3"
-                android:layout_weight="0"
-                android:baselineAligned="false">
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/row3"
+                    android:layout_weight="0"
+                    android:baselineAligned="false">
 
                 <FrameLayout
-                    android:orientation="vertical"
-                    android:layout_height="fill_parent"
-                    android:layout_width="fill_parent"
-                    android:id="@+id/row3_cell0"
-                    android:layout_weight="0.25">
+                        android:orientation="vertical"
+                        android:layout_height="fill_parent"
+                        android:layout_width="fill_parent"
+                        android:id="@+id/row3_cell0"
+                        android:layout_weight="0.25">
 
                     <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row3_cell0_low"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row3_cell0_low"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
 
                     </ImageView>
 
                     <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row3_cell0_high"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row3_cell0_high"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
 
                     </ImageView>
                 </FrameLayout>
 
                 <FrameLayout
-                    android:orientation="vertical"
-                    android:layout_height="fill_parent"
-                    android:layout_width="fill_parent"
-                    android:id="@+id/row3_cell1"
-                    android:layout_weight="0.25">
+                        android:orientation="vertical"
+                        android:layout_height="fill_parent"
+                        android:layout_width="fill_parent"
+                        android:id="@+id/row3_cell1"
+                        android:layout_weight="0.25">
 
                     <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row3_cell1_low"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row3_cell1_low"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
 
                     </ImageView>
 
                     <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row3_cell1_high"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
-
-                    </ImageView>
-                </FrameLayout>
-
-                <FrameLayout
-                    android:orientation="vertical"
-                    android:layout_height="fill_parent"
-                    android:layout_width="fill_parent"
-                    android:id="@+id/row3_cell2"
-                    android:layout_weight="0.25">
-
-                    <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row3_cell2_low"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
-
-                    </ImageView>
-
-                    <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row3_cell2_high"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row3_cell1_high"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
 
                     </ImageView>
                 </FrameLayout>
 
                 <FrameLayout
-                    android:orientation="vertical"
-                    android:layout_height="fill_parent"
-                    android:layout_width="fill_parent"
-                    android:id="@+id/row3_cell3"
-                    android:layout_weight="0.25">
+                        android:orientation="vertical"
+                        android:layout_height="fill_parent"
+                        android:layout_width="fill_parent"
+                        android:id="@+id/row3_cell2"
+                        android:layout_weight="0.25">
 
                     <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/row3_cell3_low"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
-                        android:layout_weight="0.25">
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row3_cell2_low"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
 
                     </ImageView>
 
                     <ImageView
-                        android:layout_width="fill_parent"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row3_cell2_high"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
+
+                    </ImageView>
+                </FrameLayout>
+
+                <FrameLayout
+                        android:orientation="vertical"
                         android:layout_height="fill_parent"
-                        android:id="@+id/row3_cell3_high"
-                        android:src="@drawable/contour"
-                        android:adjustViewBounds="true"
+                        android:layout_width="fill_parent"
+                        android:id="@+id/row3_cell3"
                         android:layout_weight="0.25">
+
+                    <ImageView
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row3_cell3_low"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
+
+                    </ImageView>
+
+                    <ImageView
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row3_cell3_high"
+                            android:src="@drawable/contour"
+                            android:adjustViewBounds="true"
+                            android:layout_weight="0.25">
 
                     </ImageView>
                 </FrameLayout>
             </LinearLayout>
 
-            <!-- separator-line -->
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="3dp"
-                android:id="@+id/separator"
-                android:background="@android:color/darker_gray"/>
 
-            <!-- row4 -->
-            <LinearLayout
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- separator-line -->
+    <View
+            android:layout_width="fill_parent"
+            android:layout_height="3dp"
+            android:id="@+id/separator"
+            android:background="@android:color/darker_gray"/>
+
+    <!-- row4 -->
+    <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight=".3"
+            android:gravity="bottom">
+
+        <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/row4"
-                >
+                android:layout_above="@+id/row5">
 
-                <ImageView
+            <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:id="@+id/row4_cell0_high"
                     android:adjustViewBounds="true"
                     android:maxWidth="100dp"
                     android:maxHeight="200dp">
-                </ImageView>
+            </ImageView>
 
-                <ImageView
+            <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:id="@+id/row4_cell1_high"
                     android:adjustViewBounds="true"
                     android:maxWidth="100dp"
                     android:maxHeight="200dp">
 
-                </ImageView>
+            </ImageView>
 
-                <ImageView
+            <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:id="@+id/row4_cell2_high"
                     android:adjustViewBounds="true"
                     android:maxWidth="100dp"
                     android:maxHeight="200dp">
 
-                </ImageView>
+            </ImageView>
 
-                <ImageView
+            <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:id="@+id/row4_cell3_high"
                     android:adjustViewBounds="true"
                     android:maxWidth="100dp"
                     android:maxHeight="200dp">
 
-                </ImageView>
+            </ImageView>
 
-                <ImageView
+            <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:id="@+id/row4_cell4_high"
                     android:adjustViewBounds="true"
                     android:maxWidth="100dp"
                     android:maxHeight="200dp">
 
-                </ImageView>
+            </ImageView>
 
-                <ImageView
+            <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:id="@+id/row4_cell5_high"
                     android:adjustViewBounds="true"
                     android:maxWidth="100dp"
                     android:maxHeight="200dp">
 
-                </ImageView>
+            </ImageView>
 
-                <ImageView
+            <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:id="@+id/row4_cell6_high"
                     android:adjustViewBounds="true"
                     android:maxWidth="100dp"
                     android:maxHeight="200dp">
 
-                </ImageView>
+            </ImageView>
 
-                <ImageView
+            <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:id="@+id/row4_cell7_high"
                     android:adjustViewBounds="true"
                     android:maxWidth="100dp"
                     android:maxHeight="200dp">
 
-                </ImageView>
-            </LinearLayout>
+            </ImageView>
+        </LinearLayout>
 
-            <!-- row5 -->
-            <LinearLayout
+        <!-- row5 -->
+        <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/row5"
-                android:layout_weight="0">
+                android:layout_above="@+id/button_row">
 
-                <ImageView
+            <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:id="@+id/row5_cell0_high"
                     android:adjustViewBounds="true"
                     android:maxWidth="100dp"
                     android:maxHeight="200dp">
 
-                </ImageView>
+            </ImageView>
 
-                <ImageView
+            <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:id="@+id/row5_cell1_high"
                     android:adjustViewBounds="true"
                     android:maxWidth="100dp"
                     android:maxHeight="200dp">
 
-                </ImageView>
+            </ImageView>
 
-                <ImageView
+            <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:id="@+id/row5_cell2_high"
                     android:adjustViewBounds="true"
                     android:maxWidth="100dp"
                     android:maxHeight="200dp">
 
-                </ImageView>
+            </ImageView>
 
-                <ImageView
+            <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:id="@+id/row5_cell3_high"
                     android:adjustViewBounds="true"
                     android:maxWidth="100dp"
                     android:maxHeight="200dp">
 
-                </ImageView>
+            </ImageView>
 
-                <ImageView
+            <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:id="@+id/row5_cell4_high"
                     android:adjustViewBounds="true"
                     android:maxWidth="100dp"
                     android:maxHeight="200dp">
 
-                </ImageView>
+            </ImageView>
 
-                <ImageView
+            <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:id="@+id/row5_cell5_high"
                     android:adjustViewBounds="true"
                     android:maxWidth="100dp"
                     android:maxHeight="200dp">
 
-                </ImageView>
+            </ImageView>
 
-                <ImageView
+            <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:id="@+id/row5_cell6_high"
                     android:adjustViewBounds="true"
                     android:maxWidth="100dp"
                     android:maxHeight="200dp">
 
-                </ImageView>
+            </ImageView>
 
-                <ImageView
+            <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:id="@+id/row5_cell7_high"
                     android:adjustViewBounds="true"
                     android:maxWidth="100dp"
                     android:maxHeight="200dp">
 
-                </ImageView>
-            </LinearLayout>
+            </ImageView>
         </LinearLayout>
-    </ScrollView>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/clear"
-        android:id="@+id/clear"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/back"/>
-</RelativeLayout>
+        <!-- button_row -->
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/button_row"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true">
+
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/back"
+                    android:id="@+id/back"
+                    />
+
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/clear"
+                    android:id="@+id/clear"
+                    />
+
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:text="@string/confirm"
+                    android:id="@+id/confirm"
+                    />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!-- row5 -->
+
+
+</LinearLayout>
