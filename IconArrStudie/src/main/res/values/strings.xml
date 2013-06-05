@@ -43,6 +43,9 @@
     <string name="clear">
         Zurücksetzen
     </string>
+    <string name="undo">
+        Rückgängig
+    </string>
     <string name="action_settings" >
         Settings
     </string>

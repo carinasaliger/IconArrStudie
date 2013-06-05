@@ -366,6 +366,7 @@ public class Test1_ddrop extends Activity {
                 // in solution eintragen
                 solution[e.getX()][e.getY()] = "Folder";
 
+                final ClipData.Item[] item = new ClipData.Item[1];
                 // longclicklistener setzen
                 imageArray[x][y][1].setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
@@ -373,12 +374,24 @@ public class Test1_ddrop extends Activity {
                         Log.i(TAG, "Beginning Drag on folder");
                         Integer[] temp = new Integer[]{0, 0};
                         lastaction.add(temp);
-                        ClipData.Item item = new ClipData.Item((String) view.getTag());
-                        ClipData dragData = new ClipData((String) view.getTag(), new String[] {ClipDescription.MIMETYPE_TEXT_PLAIN},item);
+                        item[0] = new ClipData.Item((String) view.getTag());
+                        ClipData dragData = new ClipData((String) view.getTag(), new String[] {ClipDescription.MIMETYPE_TEXT_PLAIN}, item[0]);
                         View.DragShadowBuilder myShadow = new View.DragShadowBuilder(view);
                         view.startDrag(dragData, myShadow, e, 0);
-                        view.setVisibility(View.INVISIBLE);
                         return true;
+                    }
+                });
+                // ondraglistener um festzustellen ob das dragevent erfolgreich war
+                final int finalX = x;
+                final int finalY = y;
+                imageArray[x][y][1].setOnDragListener(new View.OnDragListener() {
+                    @Override
+                    public boolean onDrag(View view, DragEvent dragEvent) {
+                        int action = dragEvent.getAction();
+                        if(action == DragEvent.ACTION_DRAG_ENDED && dragEvent.getResult() == true && dragEvent.getClipData().getItemAt(0).equals(item)){
+                            imageArray[finalX][finalY][1].setVisibility(View.INVISIBLE);
+                        }
+                        return false;
                     }
                 });
                 wrote = true;
