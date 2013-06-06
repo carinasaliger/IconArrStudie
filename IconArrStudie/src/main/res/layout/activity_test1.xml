@@ -766,28 +766,29 @@
                     android:layout_height="wrap_content"
                     android:text="@string/back"
                     android:id="@+id/back"
-                    />
+                    android:textSize="13sp"/>
 
             <Button
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
                     android:text="@string/undo"
-                    android:id="@id/undo"/>
+                    android:id="@id/undo"
+                    android:textSize="13sp"/>
 
             <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/clear"
                     android:id="@+id/clear"
-                    />
+                    android:textSize="13sp"/>
 
             <Button
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
                     android:text="@string/confirm"
                     android:id="@+id/confirm"
-                    />
+                    android:textSize="13sp"/>
 
         </LinearLayout>
 

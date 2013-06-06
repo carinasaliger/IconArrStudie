@@ -6,9 +6,7 @@ import android.content.ClipDescription;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
+import android.graphics.*;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -228,12 +226,12 @@ public class Test1_ddrop extends Activity {
                                 // falls ein Icon
                                 if(last[0] == Entry.ICON || last[0] == 0 || last[0] == Entry.FOLDER){
                                     if (!in_use[finalX][finalY]){
-                                        imageArray[finalX][finalY][0].setColorFilter(Color.BLUE);
+                                        imageArray[finalX][finalY][0].setColorFilter(Color.rgb(51, 181, 229), PorterDuff.Mode.OVERLAY);
                                         imageArray[finalX][finalY][0].invalidate();
                                         return true;
                                     }
                                     else {
-                                        imageArray[finalX][finalY][0].setColorFilter(Color.RED);
+                                        imageArray[finalX][finalY][0].setColorFilter(Color.rgb(255, 68, 68), PorterDuff.Mode.OVERLAY);
                                         imageArray[finalX][finalY][0].invalidate();
                                         return false;
                                     }
@@ -242,7 +240,7 @@ public class Test1_ddrop extends Activity {
                                 if(last[0] == Entry.WIDGET){
                                     // falls es überstehen würde
                                     if(finalX + last[3] > 4 || finalY + last[4] > 4){
-                                        imageArray[finalX][finalY][0].setColorFilter(Color.RED);
+                                        imageArray[finalX][finalY][0].setColorFilter(Color.rgb(255, 68, 68), PorterDuff.Mode.OVERLAY);
                                         imageArray[finalX][finalY][0].invalidate();
                                         return false;
                                     }
@@ -256,12 +254,12 @@ public class Test1_ddrop extends Activity {
                                         }
                                     }
                                     if(space_used){
-                                        imageArray[finalX][finalY][0].setColorFilter(Color.RED);
+                                        imageArray[finalX][finalY][0].setColorFilter(Color.rgb(255, 68, 68), PorterDuff.Mode.OVERLAY);
                                         imageArray[finalX][finalY][0].invalidate();
                                         return false;
                                     }
                                     else{
-                                        imageArray[finalX][finalY][0].setColorFilter(Color.BLUE);
+                                        imageArray[finalX][finalY][0].setColorFilter(Color.rgb(51, 181, 229), PorterDuff.Mode.OVERLAY);
                                         imageArray[finalX][finalY][0].invalidate();
                                         return true;
                                     }
@@ -270,15 +268,18 @@ public class Test1_ddrop extends Activity {
                             // falls Element über einem möglichen Feld liegt dieses grün färben
                             // if unterscheidung nicht nötig da die View schon bei ACTION_DRAG_STARTED false returnt und nicht mehr auf weitere events listent
                             case DragEvent.ACTION_DRAG_ENTERED:
-                                imageArray[finalX][finalY][0].setColorFilter(Color.GREEN);
+                                imageArray[finalX][finalY][0].setColorFilter(Color.rgb(154, 204, 0), PorterDuff.Mode.OVERLAY);
                                 imageArray[finalX][finalY][0].invalidate();
                                 if(finalY < 2){
                                     scrollView.smoothScrollTo(0, 0);
                                 }
+                                else{
+                                    scrollView.smoothScrollTo(0, scrollView.getBottom());
+                                }
                                 return true;
                             // falls Element wieder herausgezogen wird wieder blau färben
                             case DragEvent.ACTION_DRAG_EXITED:
-                                imageArray[finalX][finalY][0].setColorFilter(Color.BLUE);
+                                imageArray[finalX][finalY][0].setColorFilter(Color.rgb(51, 181, 229), PorterDuff.Mode.OVERLAY);
                                 imageArray[finalX][finalY][0].invalidate();
                                 return true;
                             // falls Element in einer View losgelassen wird, das Icon übernehmen und setzen, sowie in in_use eintragen

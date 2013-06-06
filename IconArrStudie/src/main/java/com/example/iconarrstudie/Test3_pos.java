@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.util.LinkedList;
@@ -223,6 +224,7 @@ public class Test3_pos extends Activity {
 
         // prüfen ob genug entries vorhanden sind
         if(entries.size() < 2){
+            Toast.makeText(getApplicationContext(), R.string.not_enough_elements, Toast.LENGTH_LONG).show();
             finish();
             return;
         }
