@@ -3,11 +3,15 @@ package com.example.iconarrstudie;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -87,6 +91,20 @@ public class Test3_pos extends Activity {
         List<Entry> generated = new LinkedList<Entry>();
         List<Entry> correct_answers = new LinkedList<Entry>();
 
+        final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        final List<ResolveInfo> pkgAppsList = this.getPackageManager().queryIntentActivities( mainIntent, 0);
+
+        Drawable[] icon_library = new Drawable[pkgAppsList.size()];
+        String[] string_library = new String[pkgAppsList.size()];
+
+        int library_counter = 0;
+        for(ResolveInfo r :  pkgAppsList){
+            icon_library[library_counter] = r.loadIcon(this.getPackageManager());
+            string_library[library_counter] = (String) r.loadLabel(this.getPackageManager());
+            library_counter++;
+        }
+
         // Arrays zum auswerten der Antworten
         input = new boolean[4][4];
         answer = new boolean[4][4];
@@ -141,55 +159,8 @@ public class Test3_pos extends Activity {
             }
         }
 
-        // generated füllen
-        int[] icon_library = {
-                R.drawable.amazon,
-                R.drawable.barcodescanner,
-                R.drawable.chrome,
-                R.drawable.dropbox,
-                R.drawable.ebay,
-                R.drawable.facebook,
-                R.drawable.firefox,
-                R.drawable.instagram,
-                R.drawable.maps,
-                R.drawable.messenger,
-                R.drawable.oeffi,
-                R.drawable.opera,
-                R.drawable.shazam,
-                R.drawable.skype,
-                R.drawable.spotify,
-                R.drawable.templerun,
-                R.drawable.tuneinpro,
-                R.drawable.twitter,
-                R.drawable.whatsapp,
-                R.drawable.youtube
-        };
-
-        String[] string_library = {
-                "Amazon",
-                "Barcode Scanner",
-                "Chrome",
-                "Dropbox",
-                "eBay",
-                "Facebook",
-                "Firefox",
-                "Instagram",
-                "Maps",
-                "Messenger",
-                "Öffi Verbindungen",
-                "Opera",
-                "Shazam",
-                "Skype",
-                "Spotify",
-                "Temple Run",
-                "TuneIn Radio Pro",
-                "Twitter",
-                "WhatsApp",
-                "YouTube"
-        };
-
         for(int i = 0; i < icon_library.length; i++){
-            Bitmap bitmap = (Bitmap)((BitmapDrawable) getResources().getDrawable(icon_library[i])).getBitmap();
+            Bitmap bitmap = ((BitmapDrawable) icon_library[i]).getBitmap();
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] bitmapdata = stream.toByteArray();
