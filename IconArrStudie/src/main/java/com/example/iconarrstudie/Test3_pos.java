@@ -91,13 +91,16 @@ public class Test3_pos extends Activity {
         List<Entry> generated = new LinkedList<Entry>();
         List<Entry> correct_answers = new LinkedList<Entry>();
 
+        // Installierte Apps abfragen
         final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
         mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         final List<ResolveInfo> pkgAppsList = this.getPackageManager().queryIntentActivities( mainIntent, 0);
 
+        // Arrays zum speichern der Informationen über installierte Apps
         Drawable[] icon_library = new Drawable[pkgAppsList.size()];
         String[] string_library = new String[pkgAppsList.size()];
 
+        // Arrays füllen
         int library_counter = 0;
         for(ResolveInfo r :  pkgAppsList){
             icon_library[library_counter] = r.loadIcon(this.getPackageManager());
