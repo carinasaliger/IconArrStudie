@@ -197,7 +197,7 @@ public class Test3_pos extends Activity {
         }
 
         // prüfen ob genug entries vorhanden sind
-        if(entries.size() < 2){
+        if(entries.size() < 1){
             Toast.makeText(getApplicationContext(), R.string.not_enough_elements, Toast.LENGTH_LONG).show();
             finish();
             return;
@@ -205,8 +205,8 @@ public class Test3_pos extends Activity {
 
         // Zufallszahl zwischen 1 und 4
         int random;
-        if(iterator < 4){
-            random = 1 + (int)(Math.random() * ((iterator - 1) + 1));
+        if(entries.size() < 4){
+            random = 1 + (int)(Math.random() * ((entries.size() - 1) + 1));
         }
         else{
             random = 1 + (int)(Math.random() * ((4 - 1) + 1));

@@ -538,7 +538,9 @@
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_above="@+id/button_row">
+                android:layout_above="@+id/button_row"
+                android:minHeight="200dp"
+                android:measureWithLargestChild="false">
 
             <LinearLayout
                     android:orientation="horizontal"
@@ -546,7 +548,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/row4"
                     android:layout_weight="0.5"
-                    >
+                    android:minHeight="100dp">
 
                 <ImageView
                         android:layout_width="wrap_content"
@@ -651,7 +653,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/row5"
                     android:layout_weight="0.5"
-                    >
+                    android:minHeight="100dp">
                 <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"

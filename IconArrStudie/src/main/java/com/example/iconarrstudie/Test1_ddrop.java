@@ -540,14 +540,23 @@ public class Test1_ddrop extends Activity {
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "undoing latest activity");
-                if(lastaction.size() == 0){
+                if(lastaction.size() <= 0){
                     //TOAST
                     Toast.makeText(getApplicationContext(), R.string.no_more_elements, Toast.LENGTH_LONG).show();
                     return;
                 }
+
                 // letzen Eintrag in lastaction holen
                 Integer[] last = lastaction.get(lastaction.size() - 1);
-                Integer[] modification = modified.get(modified.size() - 1);
+
+                Integer[] modification;
+                if(modified.size() <=0){
+                    modification = new Integer[]{null, null, null, null, null};
+                }
+                else{
+                    modification = modified.get(modified.size() - 1);
+
+                }
 //                int counter = 0;
 //                for(Integer i : last){
 //                    Log.d(TAG, "last: " + i + "  counter:" + counter);
@@ -556,6 +565,14 @@ public class Test1_ddrop extends Activity {
 
 
                 // falls es ein Widget war
+                if(last[0] == Entry.WIDGET && modification[0] == null){
+                    // Sichtbarkeit im Dock wiederherstellen
+                    imageArray[last[5]][last[6]][1].setVisibility(View.VISIBLE);
+
+                    // aus lastaction entfernen
+                    lastaction.remove(last);
+                    return;
+                }
                 if(last[0] == Entry.WIDGET){
                     Log.d(TAG, "found widget to clean");
                     for(int x = 0; x < last[3]; x++){
@@ -727,6 +744,7 @@ public class Test1_ddrop extends Activity {
                     // setze die View (unten) unsichtbar
                     Log.d(TAG, "setting view for x:" + e.getX() + ", y:" + e.getY() + " invisible");
                     view.setVisibility(View.INVISIBLE);
+                    return true;
                 }
                 return true;
             }
