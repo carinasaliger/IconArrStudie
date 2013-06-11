@@ -189,7 +189,8 @@ public class Test3_pos extends Activity {
         };
 
         for(int i = 0; i < icon_library.length; i++){
-            Bitmap bitmap = (Bitmap)((BitmapDrawable) getResources().getDrawable(icon_library[i])).getBitmap();
+            BitmapDrawable temp_bmd = (BitmapDrawable) getResources().getDrawable(icon_library[i]);
+            Bitmap bitmap = (Bitmap) temp_bmd.getBitmap();
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] bitmapdata = stream.toByteArray();
