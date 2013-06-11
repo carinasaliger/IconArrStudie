@@ -3,11 +3,13 @@ package com.example.iconarrstudie;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -189,7 +191,7 @@ public class Test3_pos extends Activity {
         };
 
         for(int i = 0; i < icon_library.length; i++){
-            Bitmap bitmap = (Bitmap)((BitmapDrawable) getResources().getDrawable(icon_library[i])).getBitmap();
+            Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), icon_library[i]);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] bitmapdata = stream.toByteArray();
@@ -231,12 +233,11 @@ public class Test3_pos extends Activity {
 
         // Zufallszahl zwischen 1 und 4
         int random;
-        if(entries.size() < 4){
-            random = 1 + (int)(Math.random() * ((entries.size() - 1) + 1));
-        }
-        else{
-            random = 1 + (int)(Math.random() * ((4 - 1) + 1));
-        }
+        random = 1 + (int)(Math.random() * ((entries.size() - 1) + 1));
+
+//        else{
+//            random = 1 + (int)(Math.random() * ((4 - 1) + 1));
+//        }
         Log.d(TAG, "random = " + random);
 
         // für zufallszahl einträge aus entries auswählen und in correct_answers eintragen
