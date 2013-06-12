@@ -192,6 +192,9 @@ public class Test3_pos extends Activity {
 
         for(int i = 0; i < icon_library.length; i++){
             Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), icon_library[i]);
+            if(bitmap == null){
+                Log.d(TAG, "Bitmap == null!");
+            }
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] bitmapdata = stream.toByteArray();
@@ -224,17 +227,20 @@ public class Test3_pos extends Activity {
             entries.remove(e);
         }
 
-        // prüfen ob genug entries vorhanden sind
+        /*// prüfen ob genug entries vorhanden sind
         if(entries.size() < 1){
             Toast.makeText(getApplicationContext(), R.string.not_enough_elements, Toast.LENGTH_LONG).show();
             finish();
             return;
-        }
-
-        // Zufallszahl zwischen 1 und 4
+        }*/
         int random;
-        random = 1 + (int)(Math.random() * ((entries.size() - 1) + 1));
-
+        if(entries.size() < 1){
+            random = 0;
+        }
+        else{
+            // Zufallszahl zwischen 1 und 4
+            random = 1 + (int)(Math.random() * ((entries.size() - 1) + 1));
+        }
 //        else{
 //            random = 1 + (int)(Math.random() * ((4 - 1) + 1));
 //        }
@@ -354,6 +360,7 @@ public class Test3_pos extends Activity {
 
         Button confirm = (Button) findViewById(R.id.confirm);
         Button back = (Button) findViewById(R.id.back);
+
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

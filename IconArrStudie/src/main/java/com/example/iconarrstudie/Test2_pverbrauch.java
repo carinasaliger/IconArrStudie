@@ -184,6 +184,7 @@ public class Test2_pverbrauch extends Activity {
         // Restliche Buttons, Zurück und Bestätigen
         Button confirm = (Button) findViewById(R.id.confirm);
         Button back = (Button) findViewById(R.id.back);
+
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
