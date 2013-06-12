@@ -164,7 +164,7 @@ public class Test2_pverbrauch extends Activity {
                     @Override
                     public void onClick(View view) {
                         // erster klick
-                        if(imageArray[finalX][finalY].getColorFilter() == null){
+                        if(input[finalX][finalY] == false){
                             Log.d(TAG, "registered FIRST keypress on: x= " + String.valueOf(finalX) + "\t" + "y= " + String.valueOf(finalY));
                             // Farbe auf blau setzen
                             imageArray[finalX][finalY].setColorFilter(Color.rgb(51, 181, 229));

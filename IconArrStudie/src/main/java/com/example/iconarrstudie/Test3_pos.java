@@ -218,7 +218,7 @@ public class Test3_pos extends Activity {
                 }
             }
             // falls entry ein Widget beschreibt
-            if(e.getTag() == Entry.WIDGET){
+            if(e.getTag() == Entry.WIDGET || e.getTag() == 6){
                 // das Widget entfernen
                 toRemove.add(e);
             }
@@ -342,7 +342,7 @@ public class Test3_pos extends Activity {
                 imageArray[x][y][1].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(imageArray[finalX][finalY][0].getColorFilter() == null){
+                        if(input[finalX][finalY] == false){
                             Log.d(TAG, "registered FIRST keypress on: x= " + String.valueOf(finalX) + "\t" + "y= " + String.valueOf(finalY));
                             // Farbe auf blau setzen
                             imageArray[finalX][finalY][0].setColorFilter(Color.rgb(51, 181, 229));
