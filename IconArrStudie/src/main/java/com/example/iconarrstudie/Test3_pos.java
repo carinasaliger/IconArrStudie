@@ -3,11 +3,13 @@ package com.example.iconarrstudie;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -189,8 +191,10 @@ public class Test3_pos extends Activity {
         };
 
         for(int i = 0; i < icon_library.length; i++){
-            BitmapDrawable temp_bmd = (BitmapDrawable) getResources().getDrawable(icon_library[i]);
-            Bitmap bitmap = (Bitmap) temp_bmd.getBitmap();
+            Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), icon_library[i]);
+            if(bitmap == null){
+                Log.d(TAG, "Bitmap == null!");
+            }
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] bitmapdata = stream.toByteArray();
@@ -214,7 +218,7 @@ public class Test3_pos extends Activity {
                 }
             }
             // falls entry ein Widget beschreibt
-            if(e.getTag() == Entry.WIDGET){
+            if(e.getTag() == Entry.WIDGET || e.getTag() == 6){
                 // das Widget entfernen
                 toRemove.add(e);
             }
@@ -223,21 +227,23 @@ public class Test3_pos extends Activity {
             entries.remove(e);
         }
 
-        // prüfen ob genug entries vorhanden sind
-        if(entries.size() < 2){
+        /*// prüfen ob genug entries vorhanden sind
+        if(entries.size() < 1){
             Toast.makeText(getApplicationContext(), R.string.not_enough_elements, Toast.LENGTH_LONG).show();
             finish();
             return;
-        }
-
-        // Zufallszahl zwischen 1 und 4
+        }*/
         int random;
-        if(iterator < 4){
-            random = 1 + (int)(Math.random() * ((iterator - 1) + 1));
+        if(entries.size() < 1){
+            random = 0;
         }
         else{
-            random = 1 + (int)(Math.random() * ((4 - 1) + 1));
+            // Zufallszahl zwischen 1 und 4
+            random = 1 + (int)(Math.random() * ((entries.size() - 1) + 1));
         }
+//        else{
+//            random = 1 + (int)(Math.random() * ((4 - 1) + 1));
+//        }
         Log.d(TAG, "random = " + random);
 
         // für zufallszahl einträge aus entries auswählen und in correct_answers eintragen
@@ -336,7 +342,7 @@ public class Test3_pos extends Activity {
                 imageArray[x][y][1].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(imageArray[finalX][finalY][0].getColorFilter() == null){
+                        if(input[finalX][finalY] == false){
                             Log.d(TAG, "registered FIRST keypress on: x= " + String.valueOf(finalX) + "\t" + "y= " + String.valueOf(finalY));
                             // Farbe auf blau setzen
                             imageArray[finalX][finalY][0].setColorFilter(Color.rgb(51, 181, 229));
@@ -354,6 +360,7 @@ public class Test3_pos extends Activity {
 
         Button confirm = (Button) findViewById(R.id.confirm);
         Button back = (Button) findViewById(R.id.back);
+
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

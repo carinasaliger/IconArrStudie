@@ -58,7 +58,12 @@
         android:name="com.cyanogenmod.trebuchet.permission.READ_SETTINGS" />
     <uses-permission
         android:name="android.permission.READ_LOGS" />
-
+    <!--Go Launcher-->
+    <uses-permission
+        android:name="com.gau.go.launcherex.permission.READ_SETTINGS" />
+    <!--Go Launcher-->
+    <uses-permission
+            android:name="com.go.launcherex.permission.WRITE_SETTINGS"/>
 
     <application
         android:allowBackup="true"

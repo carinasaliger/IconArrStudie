@@ -57,6 +57,6 @@
     </string>
     <string name="hello_world" >
         Hello world!
-    </string>
+    </string><string name="none">Keines der Felder</string>
 
 </resources>

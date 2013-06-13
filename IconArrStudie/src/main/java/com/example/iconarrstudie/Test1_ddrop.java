@@ -27,6 +27,10 @@ public class Test1_ddrop extends Activity {
 //    format für lastaction: {art / tag, x, y, spanx, spany, invoker_x, invoker_y)
 //    invoker ist die view von der die aktion ausging
     private final static String TAG = Test1_ddrop.class.getSimpleName();
+    // TAGS dienen dem schnellen Anpassen auf Launcher die abgeänderte IDs für die verschiedenen Elemente verwenden (z.B. HTC Sense)
+    private final int FOLDER_TAG = 3;
+    private final int WIDGET_TAG = 6;
+    private final int ICON_TAG = 0;
     private int selected_screen;
     private static boolean[][] in_use;
     private static String[][] input;
@@ -121,6 +125,7 @@ public class Test1_ddrop extends Activity {
                 values.put(ICON, c.getBlob(iconIndex));
                 values.put(CONTAINER, c.getInt(containerIndex));
                 row_values[iterator++] = values;
+                //Log.d(TAG, "item_type:" + values.get(ITEM_TYPE) + "title: " + values.get(TITLE) + " x: " + values.get(CELLX) + " y: " + values.get(CELLY));
             }
         }
         c.close();
@@ -216,7 +221,7 @@ public class Test1_ddrop extends Activity {
                         // Drawable der auf die View gezogenen View holen
                         Entry e = (Entry) dragEvent.getLocalState();
                         Bitmap icon = null;
-                        if(e.getTag() == 0 || e.getTag() == 1){
+                        if(e.getTag() == Entry.ICON || e.getTag() == ICON_TAG){
                             icon = BitmapFactory.decodeByteArray(e.getIcon(), 0, e.getIcon().length);
                         }
                         switch(action){
@@ -224,7 +229,7 @@ public class Test1_ddrop extends Activity {
                             case DragEvent.ACTION_DRAG_STARTED:
                                 // Unterscheidung zwischen Icons und Widgets
                                 // falls ein Icon
-                                if(last[0] == Entry.ICON || last[0] == 0 || last[0] == Entry.FOLDER){
+                                if(last[0] == Entry.ICON || last[0] == ICON_TAG || last[0] == Entry.FOLDER || last[0] == FOLDER_TAG){
                                     if (!in_use[finalX][finalY]){
                                         imageArray[finalX][finalY][0].setColorFilter(Color.rgb(51, 181, 229), PorterDuff.Mode.OVERLAY);
                                         imageArray[finalX][finalY][0].invalidate();
@@ -237,7 +242,7 @@ public class Test1_ddrop extends Activity {
                                     }
                                 }
                                 // falls ein widget
-                                if(last[0] == Entry.WIDGET){
+                                if(last[0] == Entry.WIDGET || last[0] == WIDGET_TAG){
                                     // falls es überstehen würde
                                     if(finalX + last[3] > 4 || finalY + last[4] > 4){
                                         imageArray[finalX][finalY][0].setColorFilter(Color.rgb(255, 68, 68), PorterDuff.Mode.OVERLAY);
@@ -285,10 +290,10 @@ public class Test1_ddrop extends Activity {
                             // falls Element in einer View losgelassen wird, das Icon übernehmen und setzen, sowie in in_use eintragen
                             case DragEvent.ACTION_DROP:
                                 // prüfen ob ein icon gedroppt wurde
-                                if(last[0] == Entry.ICON || last[0] == 0 || last[0] == Entry.FOLDER){
+                                if(last[0] == Entry.ICON || last[0] == ICON_TAG || last[0] == Entry.FOLDER || last[0] == FOLDER_TAG){
                                     Log.d(TAG, "icon dropped on x:" + finalX + " y:" + finalY);
                                     if(!in_use[finalX][finalY]){
-                                        if(e.getTag() == Entry.FOLDER){
+                                        if(e.getTag() == Entry.FOLDER || e.getTag() == FOLDER_TAG){
                                             imageArray[finalX][finalY][1].setImageResource(R.drawable.folder);
                                             input[finalX][finalY] = "Folder";
                                             Integer[] modification = {Entry.FOLDER, finalX, finalY, 0, 0};
@@ -350,7 +355,7 @@ public class Test1_ddrop extends Activity {
             // flag zum Anzeigen von Änderungen
             boolean wrote = false;
             // falls e ein Icon ist und direkt auf dem Desktop liegt (nicht im Dock)
-            if((e.getTag() == 0 || e.getTag() == 1) && e.getContainer() == (-100)){
+            if((e.getTag() == Entry.ICON || e.getTag() == ICON_TAG) && e.getContainer() == (-100)){
                 Log.d(TAG, "found Icon " + "x: " + x + " y: " + y);
                 Bitmap bmp = BitmapFactory.decodeByteArray(e.getIcon(), 0, e.getIcon().length);
                 imageArray[x][y][1].setImageBitmap(bmp);
@@ -400,7 +405,7 @@ public class Test1_ddrop extends Activity {
                 wrote = true;
             }
             // falls e ein ORDNER ist und nicht im Dock sitzt
-            if(e.getTag() == Entry.FOLDER && e.getContainer() == (-100)){
+            if((e.getTag() == Entry.FOLDER || e.getTag() == FOLDER_TAG) && e.getContainer() == (-100)){
                 Log.d(TAG, "found folder " + "x: " + x + " y: " + y);
                 imageArray[x][y][1].setImageResource(R.drawable.folder);
 
@@ -450,7 +455,7 @@ public class Test1_ddrop extends Activity {
                 wrote = true;
             }
             // falls e ein widget ist
-            if(e.getTag() == Entry.WIDGET){
+            if(e.getTag() == Entry.WIDGET || e.getTag() == WIDGET_TAG){
                 // in solution eintragen
                 for(int xx = 0; xx < e.getSpan_x(); xx++){
                     for(int yy = 0; yy < e.getSpan_y(); yy++){
@@ -728,19 +733,19 @@ public class Test1_ddrop extends Activity {
             @Override
             public boolean onDrag(View view, DragEvent dragEvent) {
                 int event = dragEvent.getAction();
-                if(event == DragEvent.ACTION_DRAG_STARTED){
+                if (event == DragEvent.ACTION_DRAG_STARTED) {
                     return false;
                 }
                 // falls der drag beendet wurde
-                if(event == DragEvent.ACTION_DRAG_ENDED &&
+                if (event == DragEvent.ACTION_DRAG_ENDED &&
                         // und er erfolgreich war
                         dragEvent.getResult() &&
                         // und das tag 4 (ein widget) war
-                        (lastaction.get(lastaction.size()-1)[0] == Entry.WIDGET) &&
+                        (lastaction.get(lastaction.size() - 1)[0] == Entry.WIDGET) &&
                         // und x der lastaction = diesem x
-                        (lastaction.get(lastaction.size()-1)[1] == e.getX()) &&
+                        (lastaction.get(lastaction.size() - 1)[1] == e.getX()) &&
                         // und y der lastaction = diesem y
-                        (lastaction.get(lastaction.size()-1)[2] == e.getY())){
+                        (lastaction.get(lastaction.size() - 1)[2] == e.getY())) {
                     // setze die View (unten) unsichtbar
                     Log.d(TAG, "setting view for x:" + e.getX() + ", y:" + e.getY() + " invisible");
                     view.setVisibility(View.INVISIBLE);

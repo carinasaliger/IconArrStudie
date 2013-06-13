@@ -60,7 +60,7 @@ public class MainActivity extends Activity {
 
         // neue Datenbank erstellen
         final LauncherDBHandler dbHandler = new LauncherDBHandler(this);
-        SQLiteDatabase database = dbHandler.getWritableDatabase();
+        //SQLiteDatabase database = dbHandler.getWritableDatabase();
 
         // ContentResolver für Debug Anzeige
         ContentResolver cr = this.getContentResolver();
@@ -123,15 +123,16 @@ public class MainActivity extends Activity {
         button_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i(TAG, "calling send ");
-                // neues Intent zum Teilen des Cursordumps
-                Intent i4 = new Intent(android.content.Intent.ACTION_SEND);
-                i4.setType("text/plain");
-                i4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-                i4.putExtra(Intent.EXTRA_SUBJECT, "launcher.db, Authority: " + AUTHORITY);
-                i4.putExtra(Intent.EXTRA_TEXT, DatabaseUtils.dumpCursorToString(c));
-                i4.putExtra(Intent.EXTRA_EMAIL, new String[]{"jlouisgao@gmail.com"});
-                startActivity(Intent.createChooser(i4, getString(R.string.choose_mail)));
+                Log.i(TAG, "calling print / send ");
+                Log.i(TAG, DatabaseUtils.dumpCursorToString(c));
+                //neues Intent zum Teilen des Cursordumps
+//                Intent i4 = new Intent(android.content.Intent.ACTION_SEND);
+//                i4.setType("text/plain");
+//                i4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+//                i4.putExtra(Intent.EXTRA_SUBJECT, "launcher.db, Authority: " + AUTHORITY);
+//                i4.putExtra(Intent.EXTRA_TEXT, DatabaseUtils.dumpCursorToString(c));
+//                i4.putExtra(Intent.EXTRA_EMAIL, new String[]{"jlouisgao@gmail.com"});
+//                startActivity(Intent.createChooser(i4, getString(R.string.choose_mail)));
 
             }
         });
