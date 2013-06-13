@@ -23,11 +23,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Created by john-louis on 17.05.13.
- */
 public class Test3_pos extends Activity {
     private final static String TAG = Test3_pos.class.getSimpleName();
+
+    // TAGS dienen dem schnellen Anpassen auf Launcher die abgeänderte IDs für die verschiedenen Elemente verwenden (z.B. HTC Sense)
+    private final int FOLDER_TAG = 3;
+    private final int WIDGET_TAG = 6;
+    private final int ICON_TAG = 0;
+
     private static int selected_screen;
     static boolean[][] input;
     static boolean[][] answer;
@@ -49,8 +52,6 @@ public class Test3_pos extends Activity {
 
         // Wallpaper
         Log.d(TAG, "setting Wallpaper");
-//        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
-//        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
         getWindow().setBackgroundDrawable(getWallpaper());
 
         // content_uri aus MainActivity holen
@@ -203,22 +204,21 @@ public class Test3_pos extends Activity {
 
         // vergleichen von entries mit bibliothek generated auf duplikate
         List<Entry> toRemove = new LinkedList<Entry>();
-        for(int j = 0; j<entries.size(); j++){
-            Entry e = entries.get(j);
+        for (Entry e : entries) {
             int x = e.getX();
             int y = e.getY();
             // falls entry ein Icon beschreibt
-            if(e.getTag() == 1 || e.getTag() == 0){
+            if (e.getTag() == Entry.ICON || e.getTag() == ICON_TAG) {
                 // falls icon in Bildbibliothek vorhanden
-                for(int i = 0; i < generated.size(); i++){
-                    if(e.getTitle().equals(generated.get(i).getTitle())){
+                for (int i = 0; i < generated.size(); i++) {
+                    if (e.getTitle().equals(generated.get(i).getTitle())) {
                         // aus bibliothek entfernen
                         generated.remove(generated.get(i));
                     }
                 }
             }
             // falls entry ein Widget beschreibt
-            if(e.getTag() == Entry.WIDGET || e.getTag() == 6){
+            if (e.getTag() == Entry.WIDGET || e.getTag() == WIDGET_TAG) {
                 // das Widget entfernen
                 toRemove.add(e);
             }
@@ -227,12 +227,7 @@ public class Test3_pos extends Activity {
             entries.remove(e);
         }
 
-        /*// prüfen ob genug entries vorhanden sind
-        if(entries.size() < 1){
-            Toast.makeText(getApplicationContext(), R.string.not_enough_elements, Toast.LENGTH_LONG).show();
-            finish();
-            return;
-        }*/
+        // Zufallszahl für Anzahl der anzuzeigenden richtigen Lösungen
         int random;
         if(entries.size() < 1){
             random = 0;
@@ -241,9 +236,6 @@ public class Test3_pos extends Activity {
             // Zufallszahl zwischen 1 und 4
             random = 1 + (int)(Math.random() * ((entries.size() - 1) + 1));
         }
-//        else{
-//            random = 1 + (int)(Math.random() * ((4 - 1) + 1));
-//        }
         Log.d(TAG, "random = " + random);
 
         // für zufallszahl einträge aus entries auswählen und in correct_answers eintragen
@@ -298,14 +290,12 @@ public class Test3_pos extends Activity {
             for(int y = 0; y < 4; y++){
                 Entry temp = returnRandomElement(entries);
                 // falls temp ein Ordner ist
-                if (temp.getTag() == Entry.FOLDER){
+                if (temp.getTag() == Entry.FOLDER || temp.getTag() == FOLDER_TAG){
                     Log.d(TAG, "drawing folder, title: " + temp.getTitle() + " to x: " + x + ", y: " + y);
                     imageArray[x][y][1].setImageResource(R.drawable.folder);
-                    imageArray[x][y][1].invalidate();
-                    entries.remove(temp);
                     // falls an x,y in echt auch ein ordner liegt
                     for(Entry e : entries){
-                        if(e.getTag() == Entry.FOLDER && e.getX() == x && e.getY() == y){
+                        if((e.getTag() == Entry.FOLDER || e.getTag() == FOLDER_TAG) && e.getX() == x && e.getY() == y){
                             answer[x][y] = true;
                         }
                     }
@@ -314,20 +304,20 @@ public class Test3_pos extends Activity {
                     Log.d(TAG, "drawing icon with tag " + temp.getTag() + " , title: " + temp.getTitle() + " to x: " + x + ", y: " + y);
                     Bitmap bmp = BitmapFactory.decodeByteArray(temp.getIcon(), 0, temp.getIcon().length);
                     imageArray[x][y][1].setImageBitmap(bmp);
-                    imageArray[x][y][1].invalidate();
-                    entries.remove(temp);
                 }
+                imageArray[x][y][1].invalidate();
+                entries.remove(temp);
             }
         }
         // correct answers zeichnen
         for (Entry e : correct_answers){
             Log.i(TAG, "number of correct answers: " + correct_answers.size());
-            if(e.getTag() == Entry.ICON || e.getTag() == 0){
+            if(e.getTag() == Entry.ICON || e.getTag() == ICON_TAG){
                 Bitmap bmp = BitmapFactory.decodeByteArray(e.getIcon(), 0, e.getIcon().length);
                 imageArray[e.getX()][e.getY()][1].setImageBitmap(bmp);
                 imageArray[e.getX()][e.getY()][1].invalidate();
             }
-            if(e.getTag() == Entry.FOLDER){
+            if(e.getTag() == Entry.FOLDER || e.getTag() == FOLDER_TAG){
                 imageArray[e.getX()][e.getY()][1].setImageResource(R.drawable.folder);
                 imageArray[e.getX()][e.getY()][1].invalidate();
             }
@@ -342,7 +332,7 @@ public class Test3_pos extends Activity {
                 imageArray[x][y][1].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(input[finalX][finalY] == false){
+                        if(!input[finalX][finalY]){
                             Log.d(TAG, "registered FIRST keypress on: x= " + String.valueOf(finalX) + "\t" + "y= " + String.valueOf(finalY));
                             // Farbe auf blau setzen
                             imageArray[finalX][finalY][0].setColorFilter(Color.rgb(51, 181, 229));

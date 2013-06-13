@@ -12,12 +12,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-/**
- * Created by john-louis on 17.05.13.
- */
 public class Test2_pverbrauch extends Activity {
     // Tag für Logs
     private final static String TAG = Test2_pverbrauch.class.getSimpleName();
+    // TAGS dienen dem schnellen Anpassen auf Launcher die abgeänderte IDs für die verschiedenen Elemente verwenden (z.B. HTC Sense)
+    private final int WIDGET_TAG = 6;
 
     private static int selected_screen;
     static final String ITEM_TYPE = "itemType";
@@ -37,8 +36,6 @@ public class Test2_pverbrauch extends Activity {
 
         // Wallpaper
         Log.d(TAG, "setting Wallpaper");
-//        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
-//        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
         getWindow().setBackgroundDrawable(getWallpaper());
 
         // content_uri aus MainActivity holen
@@ -106,7 +103,7 @@ public class Test2_pverbrauch extends Activity {
         for(ContentValues cv : row_values){
             if (cv != null){
                 // Prüfen ob die Zeile ein Widget ist
-                if(cv.getAsInteger(ITEM_TYPE) == 4 && cv.getAsInteger(APPWIDGET_ID) != -1){
+                if((cv.getAsInteger(ITEM_TYPE) == Entry.WIDGET || cv.getAsInteger(ITEM_TYPE) == WIDGET_TAG) && cv.getAsInteger(APPWIDGET_ID) != -1){
 //                    Log.d(TAG, "found fitting content value: \n" +
 //                            "ITEM_TYPE: " + cv.getAsInteger(ITEM_TYPE) + "\n" +
 //                            "APPWIDGET_ID: " + cv.getAsInteger(APPWIDGET_ID) + "\n" +
@@ -164,7 +161,7 @@ public class Test2_pverbrauch extends Activity {
                     @Override
                     public void onClick(View view) {
                         // erster klick
-                        if(input[finalX][finalY] == false){
+                        if(!input[finalX][finalY]){
                             Log.d(TAG, "registered FIRST keypress on: x= " + String.valueOf(finalX) + "\t" + "y= " + String.valueOf(finalY));
                             // Farbe auf blau setzen
                             imageArray[finalX][finalY].setColorFilter(Color.rgb(51, 181, 229));

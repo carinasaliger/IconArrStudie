@@ -70,6 +70,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/row0_cell0_high"
+                    android:layout_margin="5dp"
                     android:src="@drawable/contour"
                     android:adjustViewBounds="true"
                     android:layout_weight="0.25">
@@ -98,6 +99,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/row0_cell1_high"
+                    android:layout_margin="5dp"
                     android:src="@drawable/contour"
                     android:adjustViewBounds="true"
                     android:layout_weight="0.25">
@@ -126,6 +128,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/row0_cell2_high"
+                    android:layout_margin="5dp"
                     android:src="@drawable/contour"
                     android:adjustViewBounds="true"
                     android:layout_weight="0.25">
@@ -154,6 +157,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/row0_cell3_high"
+                    android:layout_margin="5dp"
                     android:src="@drawable/contour"
                     android:adjustViewBounds="true"
                     android:layout_weight="0.25">
@@ -191,6 +195,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/row1_cell0_high"
+                    android:layout_margin="5dp"
                     android:src="@drawable/contour"
                     android:adjustViewBounds="true"
                     android:layout_weight="0.25">
@@ -219,6 +224,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/row1_cell1_high"
+                    android:layout_margin="5dp"
                     android:src="@drawable/contour"
                     android:adjustViewBounds="true"
                     android:layout_weight="0.25">
@@ -247,6 +253,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/row1_cell2_high"
+                    android:layout_margin="5dp"
                     android:src="@drawable/contour"
                     android:adjustViewBounds="true"
                     android:layout_weight="0.25">
@@ -275,6 +282,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/row1_cell3_high"
+                    android:layout_margin="5dp"
                     android:src="@drawable/contour"
                     android:adjustViewBounds="true"
                     android:layout_weight="0.25">
@@ -312,6 +320,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/row2_cell0_high"
+                    android:layout_margin="5dp"
                     android:src="@drawable/contour"
                     android:adjustViewBounds="true"
                     android:layout_weight="0.25">
@@ -340,6 +349,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/row2_cell1_high"
+                    android:layout_margin="5dp"
                     android:src="@drawable/contour"
                     android:adjustViewBounds="true"
                     android:layout_weight="0.25">
@@ -368,6 +378,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/row2_cell2_high"
+                    android:layout_margin="5dp"
                     android:src="@drawable/contour"
                     android:adjustViewBounds="true"
                     android:layout_weight="0.25">
@@ -396,6 +407,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/row2_cell3_high"
+                    android:layout_margin="5dp"
                     android:src="@drawable/contour"
                     android:adjustViewBounds="true"
                     android:layout_weight="0.25">
@@ -433,6 +445,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/row3_cell0_high"
+                    android:layout_margin="5dp"
                     android:src="@drawable/contour"
                     android:adjustViewBounds="true"
                     android:layout_weight="0.25">
@@ -461,6 +474,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/row3_cell1_high"
+                    android:layout_margin="5dp"
                     android:src="@drawable/contour"
                     android:adjustViewBounds="true"
                     android:layout_weight="0.25">
@@ -489,6 +503,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/row3_cell2_high"
+                    android:layout_margin="5dp"
                     android:src="@drawable/contour"
                     android:adjustViewBounds="true"
                     android:layout_weight="0.25">
@@ -517,6 +532,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/row3_cell3_high"
+                    android:layout_margin="5dp"
                     android:src="@drawable/contour"
                     android:adjustViewBounds="true"
                     android:layout_weight="0.25">

@@ -33,6 +33,7 @@ public class Test1_ddrop extends Activity {
     private final int ICON_TAG = 0;
     private int selected_screen;
     private static boolean[][] in_use;
+    private static boolean[][] used;
     private static String[][] input;
     private static List<Integer[]> lastaction;
     private static List<Integer[]> modified;
@@ -100,11 +101,17 @@ public class Test1_ddrop extends Activity {
         in_use = new boolean[4][4];
         solution = new String[4][4];
         input = new String[4][4];
+        used = new boolean[8][2];
         for(int x = 0; x < 4; x++){
             for(int y = 0; y < 4; y++){
                 in_use[x][y] = false;
                 solution[x][y] = "empty";
                 input[x][y] = "empty";
+            }
+        }
+        for(int x = 0; x < 8; x++){
+            for(int y = 0; y < 2; y++){
+                used[x][y] = false;
             }
         }
 
@@ -351,6 +358,7 @@ public class Test1_ddrop extends Activity {
         int x = 0;
         int y = 4;
 
+        // Listener für Elemente im Dock setzen
         for(final Entry e : entries){
             // flag zum Anzeigen von Änderungen
             boolean wrote = false;
@@ -398,6 +406,8 @@ public class Test1_ddrop extends Activity {
                                 (lastaction.get(lastaction.size()-1)[2] == e.getY())){
                             // setze die View (unten) unsichtbar
                             view.setVisibility(View.INVISIBLE);
+                            // setze Wert in used auf true
+                            used[finalX][finalY - 4] = true;
                         }
                         return true;
                     }
@@ -448,6 +458,8 @@ public class Test1_ddrop extends Activity {
                                 (lastaction.get(lastaction.size()-1)[2] == e.getY())){
                             // setze die View (unten) unsichtbar
                             view.setVisibility(View.INVISIBLE);
+                            // setze Wert in used auf true
+                            used[finalX1][finalY1 - 4] = true;
                         }
                         return true;
                     }
@@ -480,6 +492,17 @@ public class Test1_ddrop extends Activity {
             }
         }
 
+        for(int x2 = x; x2 < 8; x2++){
+            if(x2 > x){
+                for(int y2 = 0; y2 < 2; y2++){
+                    used[x2][y2] = true;
+                }
+            }
+            else{
+                used[x2][y - 4] = true;
+            }
+        }
+
         // Buttonfunktionen festlegen
         Button confirm = (Button) findViewById(R.id.confirm);
         Button back = (Button) findViewById(R.id.back);
@@ -488,6 +511,19 @@ public class Test1_ddrop extends Activity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                boolean temp = false;
+                for(int x = 0; x < 8; x++){
+                    for(int y = 0; y < 2; y++){
+                        if(!used[x][y]){
+                            temp = true;
+                        }
+                    }
+                }
+                if(temp){
+                    Log.d(TAG, "invoked finish without distributing all elements");
+                    Toast.makeText(getApplicationContext(), "Es sind noch nicht alle Elemente verteilt. ", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 //TODO: compare & save data
                 Log.i(TAG, "result of test 2 for screen " + selected_screen + " :");
                 Log.i(TAG, "value of input[][] after confirm: \n" +
@@ -562,17 +598,13 @@ public class Test1_ddrop extends Activity {
                     modification = modified.get(modified.size() - 1);
 
                 }
-//                int counter = 0;
-//                for(Integer i : last){
-//                    Log.d(TAG, "last: " + i + "  counter:" + counter);
-//                    counter++;
-//                }
-
 
                 // falls es ein Widget war
                 if(last[0] == Entry.WIDGET && modification[0] == null){
                     // Sichtbarkeit im Dock wiederherstellen
                     imageArray[last[5]][last[6]][1].setVisibility(View.VISIBLE);
+                    // setze Wert in used auf false
+                    used[last[5]][last[6] - 4] = false;
 
                     // aus lastaction entfernen
                     lastaction.remove(last);
@@ -605,6 +637,8 @@ public class Test1_ddrop extends Activity {
 
                 // Sichtbarkeit im Dock wiederherstellen
                 imageArray[last[5]][last[6]][1].setVisibility(View.VISIBLE);
+                // setze Wert in used auf false
+                used[last[5]][last[6] - 4] = false;
 
                 // aus lastaction entfernen
                 lastaction.remove(last);
@@ -612,7 +646,7 @@ public class Test1_ddrop extends Activity {
             }
         });
     }
-    private void setWidgetDrawable(int span_x, int span_y, final ImageView iview, int x, int y,int invoker_x, int invoker_y,  final Entry e){
+    private void setWidgetDrawable(int span_x, int span_y, final ImageView iview, int x, int y, final int invoker_x, final int invoker_y,  final Entry e){
         final Integer[] temp = new Integer[7];
         temp[0] = Entry.WIDGET;
         temp[1] = x;
@@ -749,6 +783,8 @@ public class Test1_ddrop extends Activity {
                     // setze die View (unten) unsichtbar
                     Log.d(TAG, "setting view for x:" + e.getX() + ", y:" + e.getY() + " invisible");
                     view.setVisibility(View.INVISIBLE);
+                    // setze Wert in used auf true
+                    used[invoker_x][invoker_y - 4] = true;
                     return true;
                 }
                 return true;
