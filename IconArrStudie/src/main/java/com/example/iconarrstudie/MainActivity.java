@@ -90,10 +90,10 @@ public class MainActivity extends Activity {
         button_test1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i1 = new Intent(MainActivity.this, Test1_ddrop.class);
+                Intent i1 = new Intent(MainActivity.this, Pre_Test1.class);
                 i1.putExtra("uri", content_uri.toString());
                 i1.putExtra("screen", selected_screen);
-                Log.i(TAG, "starting Test1_ddrop");
+                Log.i(TAG, "starting pre_test1");
                 startActivity(i1);
             }
         });
@@ -101,10 +101,10 @@ public class MainActivity extends Activity {
         button_test2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i2 = new Intent(MainActivity.this, Test2_pverbrauch.class);
+                Intent i2 = new Intent(MainActivity.this, Pre_Test2.class);
                 i2.putExtra("uri", content_uri.toString());
                 i2.putExtra("screen", selected_screen);
-                Log.i(TAG, "starting Test2_pverbrauch");
+                Log.i(TAG, "starting pre_test2");
                 startActivity(i2);
             }
         });
@@ -112,10 +112,10 @@ public class MainActivity extends Activity {
         button_test3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i3 = new Intent(MainActivity.this, Test3_pos.class);
+                Intent i3 = new Intent(MainActivity.this, Pre_Test3.class);
                 i3.putExtra("uri", content_uri.toString());
                 i3.putExtra("screen", selected_screen);
-                Log.i(TAG, "starting Test3_pos");
+                Log.i(TAG, "starting pre_test3");
                 startActivity(i3);
             }
         });

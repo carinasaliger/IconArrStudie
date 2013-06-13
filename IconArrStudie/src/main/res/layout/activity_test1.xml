@@ -6,15 +6,6 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical">
 
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/task1"
-            android:id="@+id/textView"
-            android:textAlignment="center"
-            android:typeface="normal"
-            android:gravity="center"/>
-
     <ScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

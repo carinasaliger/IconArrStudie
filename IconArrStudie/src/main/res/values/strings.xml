@@ -4,6 +4,9 @@
     <string name="app_name" >
         IconArrStudie
     </string>
+    <string name="start">
+        Start
+    </string>
     <string name="test1" >
         Test 1 - Drag &amp; Drop
     </string>

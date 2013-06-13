@@ -83,6 +83,9 @@
         <activity android:name=".Test2_pverbrauch"/>
         <activity android:name=".Test3_pos"/>
         <activity android:name=".SaveFile" />
+        <activity android:name=".Pre_Test1"/>
+        <activity android:name=".Pre_Test2"/>
+        <activity android:name=".Pre_Test3"/>
     </application>
 
 </manifest>
