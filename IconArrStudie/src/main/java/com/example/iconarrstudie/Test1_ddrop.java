@@ -1,12 +1,15 @@
 package com.example.iconarrstudie;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.WallpaperManager;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.graphics.*;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +17,7 @@ import android.view.DragEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 import java.util.LinkedList;
@@ -48,6 +52,7 @@ public class Test1_ddrop extends Activity {
     static final String CONTAINER = "container";
     static final ImageView[][][] imageArray = new ImageView[8][6][2];
 
+    @SuppressLint("NewApi")
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "Test1_ddrop started!");
         super.onCreate(savedInstanceState);
@@ -55,9 +60,17 @@ public class Test1_ddrop extends Activity {
 
         // Wallpaper
         Log.d(TAG, "setting Wallpaper");
-//        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
-//        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-        getWindow().setBackgroundDrawable(getWallpaper());
+        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
+        final Drawable wallpaperDrawable = wallpaperManager.getFastDrawable();
+        LinearLayout ll = (LinearLayout) findViewById(R.id.main_layout);
+
+        int sdk = android.os.Build.VERSION.SDK_INT;
+        if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            ll.setBackgroundDrawable(wallpaperDrawable);
+        } else {
+            ll.setBackground(wallpaperDrawable);
+        }
+
 
         // content_uri aus MainActivity holen
         String newString = null;

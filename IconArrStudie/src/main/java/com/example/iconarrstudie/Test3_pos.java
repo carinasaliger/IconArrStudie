@@ -1,6 +1,8 @@
 package com.example.iconarrstudie;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.WallpaperManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.res.Resources;
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -45,6 +48,7 @@ public class Test3_pos extends Activity {
     static final String ICON = "icon";
     static final String CONTAINER = "container";
 
+    @SuppressLint("NewApi")
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "Test3_pos started");
         setContentView(R.layout.activity_test3);
@@ -52,7 +56,16 @@ public class Test3_pos extends Activity {
 
         // Wallpaper
         Log.d(TAG, "setting Wallpaper");
-        getWindow().setBackgroundDrawable(getWallpaper());
+        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
+        final Drawable wallpaperDrawable = wallpaperManager.getFastDrawable();
+        LinearLayout ll = (LinearLayout) findViewById(R.id.main_layout);
+
+        int sdk = android.os.Build.VERSION.SDK_INT;
+        if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            ll.setBackgroundDrawable(wallpaperDrawable);
+        } else {
+            ll.setBackground(wallpaperDrawable);
+        }
 
 
         // content_uri aus MainActivity holen

@@ -1,10 +1,13 @@
 package com.example.iconarrstudie;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.WallpaperManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,15 +33,23 @@ public class Test2_pverbrauch extends Activity {
     static boolean[][] input;
     static boolean[][] answer;
 
+    @SuppressLint("NewApi")
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "Test2_pverbrauch started");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test2);
 
-        // Wallpaper
         Log.d(TAG, "setting Wallpaper");
-        getWindow().setBackgroundDrawable(getWallpaper());
+        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
+        final Drawable wallpaperDrawable = wallpaperManager.getFastDrawable();
         LinearLayout ll = (LinearLayout) findViewById(R.id.main_layout);
+
+        int sdk = android.os.Build.VERSION.SDK_INT;
+        if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            ll.setBackgroundDrawable(wallpaperDrawable);
+        } else {
+            ll.setBackground(wallpaperDrawable);
+        }
 
         // content_uri aus MainActivity holen
         String newString = null;
