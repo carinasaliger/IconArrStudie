@@ -16,9 +16,11 @@ import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
+import android.widget.RelativeLayout;
+import android.widget.SlidingDrawer;
 import android.widget.Toast;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,7 +34,7 @@ public class Test1_ddrop extends Activity {
     private final int FOLDER_TAG = 3;
     private final int WIDGET_TAG = 6;
     private final int ICON_TAG = 0;
-    
+
     private int selected_screen;
     private static boolean[][] in_use;
     private static boolean[][] used;
@@ -40,6 +42,8 @@ public class Test1_ddrop extends Activity {
     private static List<Integer[]> lastaction;
     private static List<Integer[]> modified;
     private static String[][] solution;
+    private static SlidingDrawer drawer;
+
     static final String TITLE = "title";
     static final String ITEM_TYPE = "itemType";
     static final String SCREEN = "screen";
@@ -62,7 +66,7 @@ public class Test1_ddrop extends Activity {
         Log.d(TAG, "setting Wallpaper");
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
         final Drawable wallpaperDrawable = wallpaperManager.getFastDrawable();
-        LinearLayout ll = (LinearLayout) findViewById(R.id.main_layout);
+        RelativeLayout ll = (RelativeLayout) findViewById(R.id.main_layout);
 
         int sdk = android.os.Build.VERSION.SDK_INT;
         if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
@@ -126,6 +130,10 @@ public class Test1_ddrop extends Activity {
             }
         }
 
+        drawer = (SlidingDrawer) findViewById(R.id.slidingDrawer);
+        RelativeLayout content = (RelativeLayout) findViewById(R.id.content);
+        content.setBackgroundColor(Color.argb(120,0,0,0));
+
         // Auslesen und speichern der relevanten Werte in ContentValues
         ContentValues[] row_values = new ContentValues[c.getCount()];
         int iterator = 0;
@@ -158,14 +166,14 @@ public class Test1_ddrop extends Activity {
                     continue;
                 }
                 Entry temp = new Entry(
-                    cv.getAsInteger(CELLX),
-                    cv.getAsInteger(CELLY),
-                    cv.getAsInteger(SPANX),
-                    cv.getAsInteger(SPANY),
-                    cv.getAsByteArray(ICON),
-                    cv.getAsInteger(ITEM_TYPE),
-                    cv.getAsString(TITLE),
-                    cv.getAsInteger(CONTAINER));
+                        cv.getAsInteger(CELLX),
+                        cv.getAsInteger(CELLY),
+                        cv.getAsInteger(SPANX),
+                        cv.getAsInteger(SPANY),
+                        cv.getAsByteArray(ICON),
+                        cv.getAsInteger(ITEM_TYPE),
+                        cv.getAsString(TITLE),
+                        cv.getAsInteger(CONTAINER));
 //                Log.d(TAG, "adding entry: \n" + temp.toString());
                 entries.add(temp);
             }
@@ -173,7 +181,6 @@ public class Test1_ddrop extends Activity {
 
         // Views aus R holen und in imageArray speichern
 
-        final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
         Log.d(TAG, "creating and filling ImageView-Array");
         imageArray[0][0][0] = (ImageView) findViewById(R.id.row0_cell0_low);
         imageArray[1][0][0] = (ImageView) findViewById(R.id.row0_cell1_low);
@@ -243,7 +250,7 @@ public class Test1_ddrop extends Activity {
                             icon = BitmapFactory.decodeByteArray(e.getIcon(), 0, e.getIcon().length);
                         }
                         switch(action){
-                                // falls Drag gerade beginnt mögliche Felder blau färben
+                            // falls Drag gerade beginnt mögliche Felder blau färben
                             case DragEvent.ACTION_DRAG_STARTED:
                                 // Unterscheidung zwischen Icons und Widgets
                                 // falls ein Icon
@@ -293,12 +300,6 @@ public class Test1_ddrop extends Activity {
                             case DragEvent.ACTION_DRAG_ENTERED:
                                 imageArray[finalX][finalY][0].setColorFilter(Color.rgb(154, 204, 0), PorterDuff.Mode.OVERLAY);
                                 imageArray[finalX][finalY][0].invalidate();
-                                if(finalY < 2){
-                                    scrollView.smoothScrollTo(0, 0);
-                                }
-                                else{
-                                    scrollView.smoothScrollTo(0, scrollView.getBottom());
-                                }
                                 return true;
                             // falls Element wieder herausgezogen wird wieder blau färben
                             case DragEvent.ACTION_DRAG_EXITED:
@@ -353,10 +354,11 @@ public class Test1_ddrop extends Activity {
                                     }
                                     return true;
                                 }
-                            // falls Drag endet und Icon nicht in der View gedroppt wurde wieder zurück in Ausgangszustand
+                                // falls Drag endet und Icon nicht in der View gedroppt wurde wieder zurück in Ausgangszustand
                             case DragEvent.ACTION_DRAG_ENDED:
                                 imageArray[finalX][finalY][0].clearColorFilter();
                                 imageArray[finalX][finalY][0].invalidate();
+                                drawer.animateOpen();
                                 return true;
                         }
                         return false;
@@ -404,13 +406,14 @@ public class Test1_ddrop extends Activity {
                         int event = dragEvent.getAction();
                         // falls der drag beendet wurde
                         if(event == DragEvent.ACTION_DRAG_STARTED){
-                            return false;
+                            drawer.animateClose();
+                            return true;
                         }
                         if(event == DragEvent.ACTION_DRAG_ENDED &&
                                 // und er erfolgreich war
                                 dragEvent.getResult() &&
                                 // und das tag 0 oder 1 war
-                                ((lastaction.get(lastaction.size()-1)[0] == 0) || (lastaction.get(lastaction.size()-1)[0] == 1)) &&
+                                ((lastaction.get(lastaction.size()-1)[0] == Entry.ICON) || (lastaction.get(lastaction.size()-1)[0] == ICON_TAG)) &&
                                 // und x der lastaction = diesem x
                                 (lastaction.get(lastaction.size()-1)[1] == e.getX()) &&
                                 // und y der lastaction = diesem y
@@ -455,14 +458,17 @@ public class Test1_ddrop extends Activity {
                     public boolean onDrag(View view, DragEvent dragEvent) {
                         int event = dragEvent.getAction();
                         if(event == DragEvent.ACTION_DRAG_STARTED){
-                            return false;
+                            Log.d(TAG, "In ondraglistener folder, event = " + event);
+                            drawer.animateClose();
+
+                            return true;
                         }
                         // falls der drag beendet wurde
                         if(event == DragEvent.ACTION_DRAG_ENDED &&
                                 // und er erfolgreich war
                                 dragEvent.getResult() &&
                                 // und das tag 2 (ein ordner) war
-                                (lastaction.get(lastaction.size()-1)[0] == Entry.FOLDER) &&
+                                ((lastaction.get(lastaction.size()-1)[0] == Entry.FOLDER) || (lastaction.get(lastaction.size()-1)[0] == FOLDER_TAG)) &&
                                 // und x der lastaction = diesem x
                                 (lastaction.get(lastaction.size()-1)[1] == e.getX()) &&
                                 // und y der lastaction = diesem y
@@ -519,6 +525,8 @@ public class Test1_ddrop extends Activity {
         Button back = (Button) findViewById(R.id.back);
         Button clear = (Button) findViewById(R.id.clear);
         Button undo = (Button) findViewById(R.id.undo);
+        Button handle = (Button) findViewById(R.id.handle);
+
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -779,14 +787,18 @@ public class Test1_ddrop extends Activity {
             public boolean onDrag(View view, DragEvent dragEvent) {
                 int event = dragEvent.getAction();
                 if (event == DragEvent.ACTION_DRAG_STARTED) {
-                    return false;
+                    drawer.animateClose();
+                    return true;
+                }
+                if (event == DragEvent.ACTION_DRAG_ENDED){
+                    Log.d(TAG, "Drag event on Widget ended, result" + dragEvent.getResult() + " , lastaction:" + lastaction.get(lastaction.size()-1) .toString());
                 }
                 // falls der drag beendet wurde
                 if (event == DragEvent.ACTION_DRAG_ENDED &&
                         // und er erfolgreich war
                         dragEvent.getResult() &&
                         // und das tag 4 (ein widget) war
-                        (lastaction.get(lastaction.size() - 1)[0] == Entry.WIDGET) &&
+                        ((lastaction.get(lastaction.size() - 1)[0] == Entry.WIDGET) || (lastaction.get(lastaction.size() - 1)[0] == WIDGET_TAG))&&
                         // und x der lastaction = diesem x
                         (lastaction.get(lastaction.size() - 1)[1] == e.getX()) &&
                         // und y der lastaction = diesem y

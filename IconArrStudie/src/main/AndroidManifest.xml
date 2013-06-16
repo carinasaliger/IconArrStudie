@@ -79,9 +79,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Test1_ddrop"/>
-        <activity android:name=".Test2_pverbrauch"/>
-        <activity android:name=".Test3_pos"/>
+        <activity android:name=".Test1_ddrop"
+                android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"/>
+        <activity android:name=".Test2_pverbrauch"
+                  android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"/>
+        <activity android:name=".Test3_pos"
+                  android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"/>
         <activity android:name=".SaveFile" />
         <activity android:name=".Pre_Test1"/>
         <activity android:name=".Pre_Test2"/>

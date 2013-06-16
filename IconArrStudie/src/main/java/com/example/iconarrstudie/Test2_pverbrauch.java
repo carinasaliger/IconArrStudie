@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 public class Test2_pverbrauch extends Activity {
     // Tag für Logs
@@ -42,7 +43,7 @@ public class Test2_pverbrauch extends Activity {
         Log.d(TAG, "setting Wallpaper");
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
         final Drawable wallpaperDrawable = wallpaperManager.getFastDrawable();
-        LinearLayout ll = (LinearLayout) findViewById(R.id.main_layout);
+        RelativeLayout ll = (RelativeLayout) findViewById(R.id.main_layout);
 
         int sdk = android.os.Build.VERSION.SDK_INT;
         if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
