@@ -10,10 +10,10 @@
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="542dp"
-            android:id="@id/grid"
-            android:padding="30dp">
+            android:layout_height="450dp"
+            android:layout_alignParentStart="true">
 
+        <!-- row0 -->
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
@@ -135,6 +135,7 @@
             </FrameLayout>
         </LinearLayout>
 
+        <!-- row1 -->
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
@@ -256,6 +257,7 @@
             </FrameLayout>
         </LinearLayout>
 
+        <!-- row2 -->
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
@@ -377,6 +379,7 @@
             </FrameLayout>
         </LinearLayout>
 
+        <!-- row3 -->
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
@@ -498,6 +501,7 @@
             </FrameLayout>
         </LinearLayout>
 
+
     </LinearLayout>
 
     <!-- separator-line -->
@@ -507,11 +511,9 @@
     <SlidingDrawer
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:content="@+id/content"
-            android:handle="@+id/handle"
-            android:id="@+id/slidingDrawer"
-            android:maxHeight="300dp"
-            >
+            android:gravity="bottom"
+            android:id="@id/dock"
+        >
 
         <RelativeLayout
                 android:id="@+id/content"

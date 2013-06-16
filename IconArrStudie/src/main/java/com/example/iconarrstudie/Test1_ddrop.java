@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.DragEvent;
@@ -68,8 +69,8 @@ public class Test1_ddrop extends Activity {
         final Drawable wallpaperDrawable = wallpaperManager.getFastDrawable();
         RelativeLayout ll = (RelativeLayout) findViewById(R.id.main_layout);
 
-        int sdk = android.os.Build.VERSION.SDK_INT;
-        if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+        int sdk = Build.VERSION.SDK_INT;
+        if(sdk < Build.VERSION_CODES.JELLY_BEAN) {
             ll.setBackgroundDrawable(wallpaperDrawable);
         } else {
             ll.setBackground(wallpaperDrawable);
@@ -130,7 +131,7 @@ public class Test1_ddrop extends Activity {
             }
         }
 
-        drawer = (SlidingDrawer) findViewById(R.id.slidingDrawer);
+        drawer = (SlidingDrawer) findViewById(R.id.dock);
         RelativeLayout content = (RelativeLayout) findViewById(R.id.content);
         content.setBackgroundColor(Color.argb(120,0,0,0));
 
@@ -181,6 +182,7 @@ public class Test1_ddrop extends Activity {
 
         // Views aus R holen und in imageArray speichern
 
+//        final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
         Log.d(TAG, "creating and filling ImageView-Array");
         imageArray[0][0][0] = (ImageView) findViewById(R.id.row0_cell0_low);
         imageArray[1][0][0] = (ImageView) findViewById(R.id.row0_cell1_low);
@@ -300,6 +302,12 @@ public class Test1_ddrop extends Activity {
                             case DragEvent.ACTION_DRAG_ENTERED:
                                 imageArray[finalX][finalY][0].setColorFilter(Color.rgb(154, 204, 0), PorterDuff.Mode.OVERLAY);
                                 imageArray[finalX][finalY][0].invalidate();
+                                if(finalY < 2){
+//                                    scrollView.smoothScrollTo(0, 0);
+                                }
+                                else{
+//                                    scrollView.smoothScrollTo(0, scrollView.getBottom());
+                                }
                                 return true;
                             // falls Element wieder herausgezogen wird wieder blau färben
                             case DragEvent.ACTION_DRAG_EXITED:
