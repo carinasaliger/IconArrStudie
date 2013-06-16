@@ -24,8 +24,8 @@ public class Pre_Test3 extends Activity {
         setContentView(R.layout.pre_test3);
 
         // Wallpaper
-        Log.d(TAG, "setting Wallpaper");
-        getWindow().setBackgroundDrawable(getWallpaper());
+        //Log.d(TAG, "setting Wallpaper");
+        //getWindow().setBackgroundDrawable(getWallpaper());
 
         // content_uri aus MainActivity holen
         String newString = null;

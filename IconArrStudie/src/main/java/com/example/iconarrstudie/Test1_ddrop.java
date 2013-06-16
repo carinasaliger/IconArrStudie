@@ -1,12 +1,15 @@
 package com.example.iconarrstudie;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.WallpaperManager;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.graphics.*;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,23 +17,22 @@ import android.view.DragEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
-
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by john-louis on 17.05.13.
- */
 public class Test1_ddrop extends Activity {
-//    format für lastaction: {art / tag, x, y, spanx, spany, invoker_x, invoker_y)
-//    invoker ist die view von der die aktion ausging
+    // format für lastaction: {art / tag, x, y, spanx, spany, invoker_x, invoker_y)
+    // invoker ist die view von der die aktion ausging
     private final static String TAG = Test1_ddrop.class.getSimpleName();
+
     // TAGS dienen dem schnellen Anpassen auf Launcher die abgeänderte IDs für die verschiedenen Elemente verwenden (z.B. HTC Sense)
     private final int FOLDER_TAG = 3;
     private final int WIDGET_TAG = 6;
     private final int ICON_TAG = 0;
+    
     private int selected_screen;
     private static boolean[][] in_use;
     private static boolean[][] used;
@@ -50,6 +52,7 @@ public class Test1_ddrop extends Activity {
     static final String CONTAINER = "container";
     static final ImageView[][][] imageArray = new ImageView[8][6][2];
 
+    @SuppressLint("NewApi")
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "Test1_ddrop started!");
         super.onCreate(savedInstanceState);
@@ -57,9 +60,17 @@ public class Test1_ddrop extends Activity {
 
         // Wallpaper
         Log.d(TAG, "setting Wallpaper");
-//        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
-//        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-        getWindow().setBackgroundDrawable(getWallpaper());
+        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
+        final Drawable wallpaperDrawable = wallpaperManager.getFastDrawable();
+        LinearLayout ll = (LinearLayout) findViewById(R.id.main_layout);
+
+        int sdk = android.os.Build.VERSION.SDK_INT;
+        if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            ll.setBackgroundDrawable(wallpaperDrawable);
+        } else {
+            ll.setBackground(wallpaperDrawable);
+        }
+
 
         // content_uri aus MainActivity holen
         String newString = null;
