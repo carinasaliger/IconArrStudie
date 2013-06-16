@@ -16,21 +16,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Toast;
-
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by john-louis on 17.05.13.
- */
 public class Test1_ddrop extends Activity {
-//    format für lastaction: {art / tag, x, y, spanx, spany, invoker_x, invoker_y)
-//    invoker ist die view von der die aktion ausging
+    // format für lastaction: {art / tag, x, y, spanx, spany, invoker_x, invoker_y)
+    // invoker ist die view von der die aktion ausging
     private final static String TAG = Test1_ddrop.class.getSimpleName();
+
     // TAGS dienen dem schnellen Anpassen auf Launcher die abgeänderte IDs für die verschiedenen Elemente verwenden (z.B. HTC Sense)
     private final int FOLDER_TAG = 3;
     private final int WIDGET_TAG = 6;
     private final int ICON_TAG = 0;
+    
     private int selected_screen;
     private static boolean[][] in_use;
     private static boolean[][] used;

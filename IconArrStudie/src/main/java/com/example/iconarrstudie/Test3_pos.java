@@ -54,6 +54,7 @@ public class Test3_pos extends Activity {
         Log.d(TAG, "setting Wallpaper");
         getWindow().setBackgroundDrawable(getWallpaper());
 
+
         // content_uri aus MainActivity holen
         String newString = null;
         Bundle extras = getIntent().getExtras();

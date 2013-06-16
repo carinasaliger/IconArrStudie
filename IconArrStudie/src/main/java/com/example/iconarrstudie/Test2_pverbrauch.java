@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 public class Test2_pverbrauch extends Activity {
     // Tag für Logs
@@ -37,6 +38,7 @@ public class Test2_pverbrauch extends Activity {
         // Wallpaper
         Log.d(TAG, "setting Wallpaper");
         getWindow().setBackgroundDrawable(getWallpaper());
+        LinearLayout ll = (LinearLayout) findViewById(R.id.main_layout);
 
         // content_uri aus MainActivity holen
         String newString = null;
