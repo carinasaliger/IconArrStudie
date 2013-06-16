@@ -162,7 +162,7 @@ public class Test1_ddrop extends Activity {
 
         // Views aus R holen und in imageArray speichern
 
-        final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
+//        final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
         Log.d(TAG, "creating and filling ImageView-Array");
         imageArray[0][0][0] = (ImageView) findViewById(R.id.row0_cell0_low);
         imageArray[1][0][0] = (ImageView) findViewById(R.id.row0_cell1_low);
@@ -283,10 +283,10 @@ public class Test1_ddrop extends Activity {
                                 imageArray[finalX][finalY][0].setColorFilter(Color.rgb(154, 204, 0), PorterDuff.Mode.OVERLAY);
                                 imageArray[finalX][finalY][0].invalidate();
                                 if(finalY < 2){
-                                    scrollView.smoothScrollTo(0, 0);
+//                                    scrollView.smoothScrollTo(0, 0);
                                 }
                                 else{
-                                    scrollView.smoothScrollTo(0, scrollView.getBottom());
+//                                    scrollView.smoothScrollTo(0, scrollView.getBottom());
                                 }
                                 return true;
                             // falls Element wieder herausgezogen wird wieder blau färben
