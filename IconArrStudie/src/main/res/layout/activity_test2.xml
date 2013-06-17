@@ -29,9 +29,10 @@
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:id="@+id/linearLayout3"
+        android:layout_alignParentTop="true"
         android:layout_above="@+id/back"
-        android:id="@+id/linearLayout"
-        android:layout_alignParentTop="true">
+        android:padding="30dp">
 
         <LinearLayout
             android:orientation="horizontal"
