@@ -10,7 +10,7 @@
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="450dp"
+            android:layout_height="fill_parent"
             android:layout_alignParentStart="true">
 
         <!-- row0 -->
@@ -513,6 +513,8 @@
             android:layout_height="fill_parent"
             android:gravity="bottom"
             android:id="@id/dock"
+            android:handle="@+id/handle"
+            android:content="@+id/content"
         >
 
         <RelativeLayout
