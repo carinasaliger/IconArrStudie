@@ -38,7 +38,6 @@ public class Test1_ddrop extends Activity {
 
     private int selected_screen;
     private static boolean[][] in_use;
-    private static boolean[][] used;
     private static String[][] input;
     private static List<Integer[]> lastaction;
     private static List<Integer[]> modified;
@@ -117,17 +116,11 @@ public class Test1_ddrop extends Activity {
         in_use = new boolean[4][4];
         solution = new String[4][4];
         input = new String[4][4];
-        used = new boolean[8][2];
         for(int x = 0; x < 4; x++){
             for(int y = 0; y < 4; y++){
                 in_use[x][y] = false;
                 solution[x][y] = "empty";
                 input[x][y] = "empty";
-            }
-        }
-        for(int x = 0; x < 8; x++){
-            for(int y = 0; y < 2; y++){
-                used[x][y] = false;
             }
         }
 
@@ -182,7 +175,6 @@ public class Test1_ddrop extends Activity {
 
         // Views aus R holen und in imageArray speichern
 
-//        final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
         Log.d(TAG, "creating and filling ImageView-Array");
         imageArray[0][0][0] = (ImageView) findViewById(R.id.row0_cell0_low);
         imageArray[1][0][0] = (ImageView) findViewById(R.id.row0_cell1_low);
@@ -337,6 +329,8 @@ public class Test1_ddrop extends Activity {
                                         imageArray[finalX][finalY][0].invalidate();
                                         imageArray[finalX][finalY][1].invalidate();
                                         in_use[finalX][finalY] = true;
+                                        imageArray[last[5]][last[6]][1].setVisibility(View.INVISIBLE);
+                                        imageArray[last[5]][last[6]][1].invalidate();
                                         return true;
                                     }
                                     else return false;
@@ -360,6 +354,8 @@ public class Test1_ddrop extends Activity {
 
                                         }
                                     }
+                                    imageArray[last[5]][last[6]][1].setVisibility(View.INVISIBLE);
+                                    imageArray[last[5]][last[6]][1].invalidate();
                                     return true;
                                 }
                                 // falls Drag endet und Icon nicht in der View gedroppt wurde wieder zurück in Ausgangszustand
@@ -404,33 +400,8 @@ public class Test1_ddrop extends Activity {
                         ClipData.Item item = new ClipData.Item((CharSequence) view.getTag());
                         ClipData dragData = new ClipData((String) view.getTag(), new String[] {ClipDescription.MIMETYPE_TEXT_PLAIN}, item);
                         View.DragShadowBuilder myShadow = new View.DragShadowBuilder(view);
+                        drawer.animateClose();
                         view.startDrag(dragData, myShadow, e, 0);
-                        return true;
-                    }
-                });
-                imageArray[x][y][1].setOnDragListener(new View.OnDragListener() {
-                    @Override
-                    public boolean onDrag(View view, DragEvent dragEvent) {
-                        int event = dragEvent.getAction();
-                        // falls der drag beendet wurde
-                        if(event == DragEvent.ACTION_DRAG_STARTED){
-                            drawer.animateClose();
-                            return true;
-                        }
-                        if(event == DragEvent.ACTION_DRAG_ENDED &&
-                                // und er erfolgreich war
-                                dragEvent.getResult() &&
-                                // und das tag 0 oder 1 war
-                                ((lastaction.get(lastaction.size()-1)[0] == Entry.ICON) || (lastaction.get(lastaction.size()-1)[0] == ICON_TAG)) &&
-                                // und x der lastaction = diesem x
-                                (lastaction.get(lastaction.size()-1)[1] == e.getX()) &&
-                                // und y der lastaction = diesem y
-                                (lastaction.get(lastaction.size()-1)[2] == e.getY())){
-                            // setze die View (unten) unsichtbar
-                            view.setVisibility(View.INVISIBLE);
-                            // setze Wert in used auf true
-                            used[finalX][finalY - 4] = true;
-                        }
                         return true;
                     }
                 });
@@ -457,35 +428,8 @@ public class Test1_ddrop extends Activity {
                         item[0] = new ClipData.Item((String) view.getTag());
                         ClipData dragData = new ClipData((String) view.getTag(), new String[] {ClipDescription.MIMETYPE_TEXT_PLAIN}, item[0]);
                         View.DragShadowBuilder myShadow = new View.DragShadowBuilder(view);
+                        drawer.animateClose();
                         view.startDrag(dragData, myShadow, e, 0);
-                        return true;
-                    }
-                });
-                imageArray[x][y][1].setOnDragListener(new View.OnDragListener() {
-                    @Override
-                    public boolean onDrag(View view, DragEvent dragEvent) {
-                        int event = dragEvent.getAction();
-                        if(event == DragEvent.ACTION_DRAG_STARTED){
-                            Log.d(TAG, "In ondraglistener folder, event = " + event);
-                            drawer.animateClose();
-
-                            return true;
-                        }
-                        // falls der drag beendet wurde
-                        if(event == DragEvent.ACTION_DRAG_ENDED &&
-                                // und er erfolgreich war
-                                dragEvent.getResult() &&
-                                // und das tag 2 (ein ordner) war
-                                ((lastaction.get(lastaction.size()-1)[0] == Entry.FOLDER) || (lastaction.get(lastaction.size()-1)[0] == FOLDER_TAG)) &&
-                                // und x der lastaction = diesem x
-                                (lastaction.get(lastaction.size()-1)[1] == e.getX()) &&
-                                // und y der lastaction = diesem y
-                                (lastaction.get(lastaction.size()-1)[2] == e.getY())){
-                            // setze die View (unten) unsichtbar
-                            view.setVisibility(View.INVISIBLE);
-                            // setze Wert in used auf true
-                            used[finalX1][finalY1 - 4] = true;
-                        }
                         return true;
                     }
                 });
@@ -516,15 +460,27 @@ public class Test1_ddrop extends Activity {
                 }
             }
         }
-
-        for(int x2 = x; x2 < 8; x2++){
-            if(x2 > x){
-                for(int y2 = 0; y2 < 2; y2++){
-                    used[x2][y2] = true;
+//        Log.d(TAG, "y==" + y + " x==" + x);
+        if (y == 4){
+            for (int x_cont = x; x_cont < 8; x_cont++){
+                for (int y_cont = y ; y_cont < 6; y_cont++){
+//                    Log.d(TAG, "x_cont1:" + x_cont + " ,y_cont:" + y_cont);
+                    imageArray[x_cont][y_cont][1].setVisibility(View.INVISIBLE);
+                    imageArray[x_cont][y_cont][1].invalidate();
                 }
             }
-            else{
-                used[x2][y - 4] = true;
+        }
+        else{
+            imageArray[x][y][1].setVisibility(View.INVISIBLE);
+            imageArray[x][y][1].invalidate();
+            y = 4;
+            x++;
+            for (int x_cont = x; x_cont < 8; x_cont++){
+                for (int y_cont = y; y_cont < 6; y_cont++){
+//                    Log.d(TAG, "x_cont2:" + x_cont + " ,y_cont:" + y_cont);
+                    imageArray[x_cont][y_cont][1].setVisibility(View.INVISIBLE);
+                    imageArray[x_cont][y_cont][1].invalidate();
+                }
             }
         }
 
@@ -533,7 +489,6 @@ public class Test1_ddrop extends Activity {
         Button back = (Button) findViewById(R.id.back);
         Button clear = (Button) findViewById(R.id.clear);
         Button undo = (Button) findViewById(R.id.undo);
-        Button handle = (Button) findViewById(R.id.handle);
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -541,7 +496,8 @@ public class Test1_ddrop extends Activity {
                 boolean temp = false;
                 for(int x = 0; x < 8; x++){
                     for(int y = 0; y < 2; y++){
-                        if(!used[x][y]){
+//                        Log.d(TAG, "visibility x:" + x + " , y:" + y + " vis:" + imageArray[x][4 + y][1].getVisibility());
+                        if(imageArray[x][4 + y][1].getVisibility() != View.INVISIBLE){
                             temp = true;
                         }
                     }
@@ -630,8 +586,6 @@ public class Test1_ddrop extends Activity {
                 if(last[0] == Entry.WIDGET && modification[0] == null){
                     // Sichtbarkeit im Dock wiederherstellen
                     imageArray[last[5]][last[6]][1].setVisibility(View.VISIBLE);
-                    // setze Wert in used auf false
-                    used[last[5]][last[6] - 4] = false;
 
                     // aus lastaction entfernen
                     lastaction.remove(last);
@@ -664,8 +618,6 @@ public class Test1_ddrop extends Activity {
 
                 // Sichtbarkeit im Dock wiederherstellen
                 imageArray[last[5]][last[6]][1].setVisibility(View.VISIBLE);
-                // setze Wert in used auf false
-                used[last[5]][last[6] - 4] = false;
 
                 // aus lastaction entfernen
                 lastaction.remove(last);
@@ -786,38 +738,8 @@ public class Test1_ddrop extends Activity {
                 ClipData.Item item = new ClipData.Item((CharSequence) view.getTag());
                 ClipData dragData = new ClipData((String) view.getTag(), new String[] {ClipDescription.MIMETYPE_TEXT_PLAIN}, item);
                 View.DragShadowBuilder myShadow = new View.DragShadowBuilder(view);
+                drawer.animateClose();
                 view.startDrag(dragData, myShadow, e, 0);
-                return true;
-            }
-        });
-        iview.setOnDragListener(new View.OnDragListener() {
-            @Override
-            public boolean onDrag(View view, DragEvent dragEvent) {
-                int event = dragEvent.getAction();
-                if (event == DragEvent.ACTION_DRAG_STARTED) {
-                    drawer.animateClose();
-                    return true;
-                }
-                if (event == DragEvent.ACTION_DRAG_ENDED){
-                    Log.d(TAG, "Drag event on Widget ended, result" + dragEvent.getResult() + " , lastaction:" + lastaction.get(lastaction.size()-1) .toString());
-                }
-                // falls der drag beendet wurde
-                if (event == DragEvent.ACTION_DRAG_ENDED &&
-                        // und er erfolgreich war
-                        dragEvent.getResult() &&
-                        // und das tag 4 (ein widget) war
-                        ((lastaction.get(lastaction.size() - 1)[0] == Entry.WIDGET) || (lastaction.get(lastaction.size() - 1)[0] == WIDGET_TAG))&&
-                        // und x der lastaction = diesem x
-                        (lastaction.get(lastaction.size() - 1)[1] == e.getX()) &&
-                        // und y der lastaction = diesem y
-                        (lastaction.get(lastaction.size() - 1)[2] == e.getY())) {
-                    // setze die View (unten) unsichtbar
-                    Log.d(TAG, "setting view for x:" + e.getX() + ", y:" + e.getY() + " invisible");
-                    view.setVisibility(View.INVISIBLE);
-                    // setze Wert in used auf true
-                    used[invoker_x][invoker_y - 4] = true;
-                    return true;
-                }
                 return true;
             }
         });
