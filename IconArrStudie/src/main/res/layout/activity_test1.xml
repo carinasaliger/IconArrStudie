@@ -14,7 +14,6 @@
             android:layout_alignParentStart="true"
             android:paddingLeft="35dp"
             android:paddingRight="35dp"
-            android:paddingTop="90dp"
             android:paddingBottom="110dp">
 
         <!-- row0 -->
@@ -526,246 +525,259 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
 
-            <HorizontalScrollView
-                    android:layout_width="fill_parent"
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
-                    android:id="@+id/horizontalScrollView"
-                    android:layout_centerHorizontal="true">
+                    android:minHeight="200dp"
+                    android:measureWithLargestChild="false">
 
                 <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
-                        android:layout_above="@+id/button_row"
-                        android:minHeight="200dp"
-                        android:measureWithLargestChild="false">
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/row4"
+                        android:layout_weight="0.25"
+                        android:minHeight="100dp">
 
-                    <LinearLayout
-                            android:orientation="horizontal"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/row4"
-                            android:layout_weight="0.5"
-                            android:minHeight="100dp">
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row4_cell0_high"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitCenter"
+                            android:layout_margin="5dp"
+                            android:maxWidth="100dp"
+                            android:maxHeight="100dp"
+                            >
+                    </ImageView>
 
-                        <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="fill_parent"
-                                android:id="@+id/row4_cell0_high"
-                                android:adjustViewBounds="true"
-                                android:scaleType="fitCenter"
-                                android:layout_margin="5dp"
-                                android:maxWidth="100dp"
-                                android:maxHeight="100dp"
-                                >
-                        </ImageView>
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row5_cell0_high"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitCenter"
+                            android:layout_margin="5dp"
+                            android:maxWidth="100dp"
+                            android:maxHeight="100dp"
+                            >
 
-                        <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="fill_parent"
-                                android:id="@+id/row4_cell1_high"
-                                android:adjustViewBounds="true"
-                                android:scaleType="fitCenter"
-                                android:layout_margin="5dp"
-                                android:maxWidth="100dp"
-                                android:maxHeight="100dp"
-                                >
+                    </ImageView>
 
-                        </ImageView>
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row4_cell1_high"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitCenter"
+                            android:layout_margin="5dp"
+                            android:maxWidth="100dp"
+                            android:maxHeight="100dp"
+                            >
 
-                        <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="fill_parent"
-                                android:id="@+id/row4_cell2_high"
-                                android:adjustViewBounds="true"
-                                android:scaleType="fitCenter"
-                                android:layout_margin="5dp"
-                                android:maxWidth="100dp"
-                                android:maxHeight="100dp"
-                                >
+                    </ImageView>
 
-                        </ImageView>
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row5_cell1_high"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitCenter"
+                            android:layout_margin="5dp"
+                            android:maxWidth="100dp"
+                            android:maxHeight="100dp"
+                            >
 
-                        <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="fill_parent"
-                                android:id="@+id/row4_cell3_high"
-                                android:adjustViewBounds="true"
-                                android:scaleType="fitCenter"
-                                android:layout_margin="5dp"
-                                android:maxWidth="100dp"
-                                android:maxHeight="100dp"
-                                >
+                    </ImageView>
 
-                        </ImageView>
-
-                        <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="fill_parent"
-                                android:id="@+id/row4_cell4_high"
-                                android:adjustViewBounds="true"
-                                android:scaleType="fitCenter"
-                                android:layout_margin="5dp"
-                                android:maxWidth="100dp"
-                                android:maxHeight="100dp"
-                                >
-
-                        </ImageView>
-
-                        <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="fill_parent"
-                                android:id="@+id/row4_cell5_high"
-                                android:adjustViewBounds="true"
-                                android:scaleType="fitCenter"
-                                android:layout_margin="5dp"
-                                android:maxWidth="100dp"
-                                android:maxHeight="100dp"
-                                >
-
-                        </ImageView>
-
-                        <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="fill_parent"
-                                android:id="@+id/row4_cell6_high"
-                                android:adjustViewBounds="true"
-                                android:scaleType="fitCenter"
-                                android:layout_margin="5dp"
-                                android:maxWidth="100dp"
-                                android:maxHeight="100dp"
-                                >
-
-                        </ImageView>
-
-                        <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="fill_parent"
-                                android:id="@+id/row4_cell7_high"
-                                android:adjustViewBounds="true"
-                                android:scaleType="fitCenter"
-                                android:layout_margin="5dp"
-                                android:maxWidth="100dp"
-                                android:maxHeight="100dp"
-                                >
-
-                        </ImageView>
-                    </LinearLayout>
-
-                    <!-- row5 -->
-                    <LinearLayout
-                            android:orientation="horizontal"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/row5"
-                            android:layout_weight="0.5"
-                            android:minHeight="100dp">
-                        <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="fill_parent"
-                                android:id="@+id/row5_cell0_high"
-                                android:adjustViewBounds="true"
-                                android:scaleType="fitCenter"
-                                android:layout_margin="5dp"
-                                android:maxWidth="100dp"
-                                android:maxHeight="100dp"
-                                >
-
-                        </ImageView>
-
-                        <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="fill_parent"
-                                android:id="@+id/row5_cell1_high"
-                                android:adjustViewBounds="true"
-                                android:scaleType="fitCenter"
-                                android:layout_margin="5dp"
-                                android:maxWidth="100dp"
-                                android:maxHeight="100dp"
-                                >
-
-                        </ImageView>
-
-                        <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="fill_parent"
-                                android:id="@+id/row5_cell2_high"
-                                android:adjustViewBounds="true"
-                                android:scaleType="fitCenter"
-                                android:layout_margin="5dp"
-                                android:maxWidth="100dp"
-                                android:maxHeight="100dp"
-                                >
-
-                        </ImageView>
-
-                        <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="fill_parent"
-                                android:id="@+id/row5_cell3_high"
-                                android:adjustViewBounds="true"
-                                android:scaleType="fitCenter"
-                                android:layout_margin="5dp"
-                                android:maxWidth="100dp"
-                                android:maxHeight="100dp"
-                                >
-
-                        </ImageView>
-
-                        <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="fill_parent"
-                                android:id="@+id/row5_cell4_high"
-                                android:adjustViewBounds="true"
-                                android:scaleType="fitCenter"
-                                android:layout_margin="5dp"
-                                android:maxWidth="100dp"
-                                android:maxHeight="100dp"
-                                >
-
-                        </ImageView>
-
-                        <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="fill_parent"
-                                android:id="@+id/row5_cell5_high"
-                                android:adjustViewBounds="true"
-                                android:scaleType="fitCenter"
-                                android:layout_margin="5dp"
-                                android:maxWidth="100dp"
-                                android:maxHeight="100dp"
-                                >
-
-                        </ImageView>
-
-                        <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="fill_parent"
-                                android:id="@+id/row5_cell6_high"
-                                android:adjustViewBounds="true"
-                                android:scaleType="fitCenter"
-                                android:layout_margin="5dp"
-                                android:maxWidth="100dp"
-                                android:maxHeight="100dp"
-                                >
-
-                        </ImageView>
-
-                        <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="fill_parent"
-                                android:id="@+id/row5_cell7_high"
-                                android:adjustViewBounds="true"
-                                android:scaleType="fitCenter"
-                                android:layout_margin="5dp"
-                                android:maxWidth="100dp"
-                                android:maxHeight="100dp"
-                                >
-
-                        </ImageView>
-                    </LinearLayout>
                 </LinearLayout>
-            </HorizontalScrollView>
+
+                <!-- row5 -->
+                <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/row5"
+                        android:layout_weight="0.25"
+                        android:minHeight="100dp">
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row4_cell2_high"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitCenter"
+                            android:layout_margin="5dp"
+                            android:maxWidth="100dp"
+                            android:maxHeight="100dp"
+                            >
+
+                    </ImageView>
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row5_cell2_high"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitCenter"
+                            android:layout_margin="5dp"
+                            android:maxWidth="100dp"
+                            android:maxHeight="100dp"
+                            >
+
+                    </ImageView>
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row4_cell3_high"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitCenter"
+                            android:layout_margin="5dp"
+                            android:maxWidth="100dp"
+                            android:maxHeight="100dp"
+                            >
+
+                    </ImageView>
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row5_cell3_high"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitCenter"
+                            android:layout_margin="5dp"
+                            android:maxWidth="100dp"
+                            android:maxHeight="100dp"
+                            >
+
+                    </ImageView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/row6"
+                        android:layout_weight="0.25"
+                        android:minHeight="100dp">
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row4_cell4_high"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitCenter"
+                            android:layout_margin="5dp"
+                            android:maxWidth="100dp"
+                            android:maxHeight="100dp"
+                            >
+
+                    </ImageView>
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row5_cell4_high"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitCenter"
+                            android:layout_margin="5dp"
+                            android:maxWidth="100dp"
+                            android:maxHeight="100dp"
+                            >
+
+                    </ImageView>
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row4_cell5_high"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitCenter"
+                            android:layout_margin="5dp"
+                            android:maxWidth="100dp"
+                            android:maxHeight="100dp"
+                            >
+
+                    </ImageView>
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row5_cell5_high"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitCenter"
+                            android:layout_margin="5dp"
+                            android:maxWidth="100dp"
+                            android:maxHeight="100dp"
+                            >
+
+                    </ImageView>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/row7"
+                        android:layout_weight="0.25"
+                        android:minHeight="100dp">
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row4_cell6_high"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitCenter"
+                            android:layout_margin="5dp"
+                            android:maxWidth="100dp"
+                            android:maxHeight="100dp"
+                            >
+
+                    </ImageView>
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row5_cell6_high"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitCenter"
+                            android:layout_margin="5dp"
+                            android:maxWidth="100dp"
+                            android:maxHeight="100dp"
+                            >
+
+                    </ImageView>
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row4_cell7_high"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitCenter"
+                            android:layout_margin="5dp"
+                            android:maxWidth="100dp"
+                            android:maxHeight="100dp"
+                            >
+
+                    </ImageView>
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/row5_cell7_high"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitCenter"
+                            android:layout_margin="5dp"
+                            android:maxWidth="100dp"
+                            android:maxHeight="100dp"
+                            >
+
+                    </ImageView>
+                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
                     android:layout_width="wrap_content"

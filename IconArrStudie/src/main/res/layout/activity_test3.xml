@@ -23,17 +23,17 @@
             android:layout_alignParentRight="true"/>
 
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/back"
-        android:layout_alignParentTop="true"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-        android:paddingTop="70dp"
-        android:paddingBottom="50dp">
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_above="@+id/back"
+            android:layout_alignParentTop="true"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:paddingTop="70dp"
+            android:paddingBottom="50dp">
 
         <!-- row0 -->
         <LinearLayout
@@ -43,7 +43,7 @@
                 android:id="@+id/row0"
                 android:layout_weight="0.25"
                 android:baselineAligned="false"
-                android:paddingTop="30dp">
+                >
 
             <FrameLayout
                     android:orientation="vertical"
@@ -65,7 +65,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:id="@+id/row0_cell0_high"
-                        android:layout_margin="10dp"
+                        android:layout_margin="15dp"
                         android:adjustViewBounds="true">
 
                 </ImageView>
@@ -91,7 +91,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:id="@+id/row0_cell1_high"
-                        android:layout_margin="10dp"
+                        android:layout_margin="15dp"
                         android:adjustViewBounds="true">
 
                 </ImageView>
@@ -118,7 +118,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:id="@+id/row0_cell2_high"
-                        android:layout_margin="10dp"
+                        android:layout_margin="15dp"
                         android:adjustViewBounds="true"
                         >
 
@@ -146,7 +146,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:id="@+id/row0_cell3_high"
-                        android:layout_margin="10dp"
+                        android:layout_margin="15dp"
                         android:adjustViewBounds="true"
                         >
 
@@ -161,7 +161,7 @@
                 android:layout_height="fill_parent"
                 android:id="@+id/row1"
                 android:layout_weight="0.25"
-                android:paddingTop="15dp">
+                android:baselineAligned="false">
 
             <FrameLayout
                     android:orientation="vertical"
@@ -184,7 +184,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:id="@+id/row1_cell0_high"
-                        android:layout_margin="10dp"
+                        android:layout_margin="15dp"
                         android:adjustViewBounds="true"
                         >
 
@@ -212,7 +212,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:id="@+id/row1_cell1_high"
-                        android:layout_margin="10dp"
+                        android:layout_margin="15dp"
                         android:adjustViewBounds="true"
                         >
 
@@ -240,7 +240,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:id="@+id/row1_cell2_high"
-                        android:layout_margin="10dp"
+                        android:layout_margin="15dp"
                         android:adjustViewBounds="true"
                         >
 
@@ -268,7 +268,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:id="@+id/row1_cell3_high"
-                        android:layout_margin="10dp"
+                        android:layout_margin="15dp"
                         android:adjustViewBounds="true"
                         >
 
@@ -283,7 +283,7 @@
                 android:layout_height="fill_parent"
                 android:id="@+id/row2"
                 android:layout_weight="0.25"
-                android:paddingBottom="15dp">
+                android:baselineAligned="false">
 
             <FrameLayout
                     android:orientation="vertical"
@@ -306,7 +306,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:id="@+id/row2_cell0_high"
-                        android:layout_margin="10dp"
+                        android:layout_margin="15dp"
                         android:adjustViewBounds="true"
                         >
 
@@ -334,7 +334,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:id="@+id/row2_cell1_high"
-                        android:layout_margin="10dp"
+                        android:layout_margin="15dp"
                         android:adjustViewBounds="true"
                         >
 
@@ -362,7 +362,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:id="@+id/row2_cell2_high"
-                        android:layout_margin="10dp"
+                        android:layout_margin="15dp"
                         android:adjustViewBounds="true"
                         >
 
@@ -389,7 +389,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:id="@+id/row2_cell3_high"
-                        android:layout_margin="10dp"
+                        android:layout_margin="15dp"
                         android:adjustViewBounds="true"
                         >
                 </ImageView>
@@ -403,7 +403,7 @@
                 android:layout_height="fill_parent"
                 android:id="@+id/row3"
                 android:layout_weight="0.25"
-                android:paddingBottom="30dp">
+                android:baselineAligned="false">
 
             <FrameLayout
                     android:orientation="vertical"
@@ -425,7 +425,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:id="@+id/row3_cell0_high"
-                        android:layout_margin="10dp"
+                        android:layout_margin="15dp"
                         android:adjustViewBounds="true"
                         >
                 </ImageView>
@@ -451,7 +451,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:id="@+id/row3_cell1_high"
-                        android:layout_margin="10dp"
+                        android:layout_margin="15dp"
                         android:adjustViewBounds="true"
                         >
                 </ImageView>
@@ -477,7 +477,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:id="@+id/row3_cell2_high"
-                        android:layout_margin="10dp"
+                        android:layout_margin="15dp"
                         android:adjustViewBounds="true"
                         >
                 </ImageView>
@@ -503,7 +503,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:id="@+id/row3_cell3_high"
-                        android:layout_margin="10dp"
+                        android:layout_margin="15dp"
                         android:adjustViewBounds="true"
                         >
                 </ImageView>
