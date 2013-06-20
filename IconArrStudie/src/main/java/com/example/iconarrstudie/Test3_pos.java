@@ -28,12 +28,21 @@ import java.util.List;
 import java.util.Random;
 
 public class Test3_pos extends Activity {
+    // TAG für Logs
     private final static String TAG = Test3_pos.class.getSimpleName();
+    // density zum umrechnen von dp auf px
+    float SCALE;
 
     // TAGS dienen dem schnellen Anpassen auf Launcher die abgeänderte IDs für die verschiedenen Elemente verwenden (z.B. HTC Sense)
     private final int FOLDER_TAG = 3;
     private final int WIDGET_TAG = 6;
     private final int ICON_TAG = 0;
+
+    // Padding-TAGS
+    private final int PADDING_LEFT = 40;
+    private final int PADDING_RIGHT = 40;
+    private final int PADDING_TOP = 70;
+    private final int PADDING_BOTTOM = 50 ;
 
     private static int selected_screen;
     static boolean[][] input;
@@ -54,6 +63,7 @@ public class Test3_pos extends Activity {
         Log.i(TAG, "Test3_pos started");
         setContentView(R.layout.activity_test3);
         super.onCreate(savedInstanceState);
+        SCALE = getResources().getDisplayMetrics().density;
 
         // Wallpaper
         Log.d(TAG, "setting Wallpaper");
@@ -87,6 +97,15 @@ public class Test3_pos extends Activity {
         // Cursor aus content_uri erstellen
         ContentResolver cr = this.getContentResolver();
         Cursor c = cr.query(content_uri, null, null, null, null);
+
+        // Paddings setzen
+        LinearLayout padding_victim = (LinearLayout) findViewById(R.id.padding_layout);
+        padding_victim.setPadding(
+                ((int) (PADDING_LEFT * SCALE + 0.5F)),
+                ((int) (PADDING_TOP * SCALE + 0.5F)),
+                ((int) (PADDING_RIGHT * SCALE + 0.5F)),
+                ((int) (PADDING_BOTTOM * SCALE + 0.5F))
+        );
 
         // Indizes
         final int titleIndex = c.getColumnIndex(TITLE);

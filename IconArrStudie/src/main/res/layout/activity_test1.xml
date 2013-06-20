@@ -3,8 +3,8 @@
 <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/main_layout"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical">
 
     <LinearLayout
@@ -12,9 +12,8 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_alignParentStart="true"
-            android:paddingLeft="35dp"
-            android:paddingRight="35dp"
-            android:paddingBottom="110dp">
+            android:id="@+id/padding_layout"
+        >
 
         <!-- row0 -->
         <LinearLayout
@@ -824,7 +823,10 @@
                 android:id="@+id/handle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Handle"/>
+                android:text="@string/handle"
+                android:singleLine="false"
+                android:background="@android:color/holo_blue_dark"
+                android:focusable="true"/>
     </SlidingDrawer>
 
 

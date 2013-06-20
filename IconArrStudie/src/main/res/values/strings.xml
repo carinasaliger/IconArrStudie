@@ -60,6 +60,12 @@
     </string>
     <string name="hello_world" >
         Hello world!
-    </string><string name="none">Keines der Felder</string>
+    </string>
+    <string name="none">
+        Keines der Felder
+    </string>
+    <string name="handle">
+        …
+    </string>
 
 </resources>
