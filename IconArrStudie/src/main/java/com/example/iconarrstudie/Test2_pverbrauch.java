@@ -20,8 +20,18 @@ import android.widget.RelativeLayout;
 public class Test2_pverbrauch extends Activity {
     // Tag für Logs
     private final static String TAG = Test2_pverbrauch.class.getSimpleName();
+
+    // density zum umrechnen von dp auf px
+    float SCALE;
+
     // TAGS dienen dem schnellen Anpassen auf Launcher die abgeänderte IDs für die verschiedenen Elemente verwenden (z.B. HTC Sense)
     private final int WIDGET_TAG = 6;
+
+    // Padding-TAGS
+    private final int PADDING_LEFT = 40;
+    private final int PADDING_RIGHT = 40;
+    private final int PADDING_TOP = 70;
+    private final int PADDING_BOTTOM = 50 ;
 
     private static int selected_screen;
     static final String ITEM_TYPE = "itemType";
@@ -39,6 +49,8 @@ public class Test2_pverbrauch extends Activity {
         Log.i(TAG, "Test2_pverbrauch started");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test2);
+        SCALE = getResources().getDisplayMetrics().density;
+
 
         Log.d(TAG, "setting Wallpaper");
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
@@ -71,6 +83,14 @@ public class Test2_pverbrauch extends Activity {
         ContentResolver cr = this.getContentResolver();
         Cursor c = cr.query(content_uri, null, null, null, null);
 
+        // Paddings setzen
+        LinearLayout padding_victim = (LinearLayout) findViewById(R.id.padding_layout);
+        padding_victim.setPadding(
+                ((int) (PADDING_LEFT * SCALE + 0.5f)),
+                ((int) (PADDING_TOP * SCALE + 0.5f)),
+                ((int) (PADDING_RIGHT * SCALE + 0.5f)),
+                ((int) (PADDING_BOTTOM * SCALE + 0.5f))
+        );
         // Indizes
         final int itemTypeIndex = c.getColumnIndex(ITEM_TYPE);
         final int screenIndex = c.getColumnIndex(SCREEN);

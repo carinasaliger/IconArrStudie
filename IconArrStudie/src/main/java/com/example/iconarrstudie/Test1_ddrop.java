@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -31,10 +30,19 @@ public class Test1_ddrop extends Activity {
     // invoker ist die view von der die aktion ausging
     private final static String TAG = Test1_ddrop.class.getSimpleName();
 
+    // density zum umrechnen von dp auf px
+    float SCALE;
+
     // TAGS dienen dem schnellen Anpassen auf Launcher die abgeänderte IDs für die verschiedenen Elemente verwenden (z.B. HTC Sense)
     private final int FOLDER_TAG = 3;
     private final int WIDGET_TAG = 6;
     private final int ICON_TAG = 0;
+
+    // Padding-TAGS
+    private final int PADDING_LEFT = 35;
+    private final int PADDING_RIGHT = 35;
+    private final int PADDING_TOP = 50;
+    private final int PADDING_BOTTOM = 100 ;
 
     private int selected_screen;
     private static boolean[][] in_use;
@@ -61,6 +69,7 @@ public class Test1_ddrop extends Activity {
         Log.i(TAG, "Test1_ddrop started!");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test1);
+        SCALE = getResources().getDisplayMetrics().density;
 
         // Wallpaper
         Log.d(TAG, "setting Wallpaper");
@@ -74,7 +83,6 @@ public class Test1_ddrop extends Activity {
         } else {
             ll.setBackground(wallpaperDrawable);
         }
-
 
         // content_uri aus MainActivity holen
         String newString = null;
@@ -94,6 +102,15 @@ public class Test1_ddrop extends Activity {
         // Cursor aus content_uri erstellen
         ContentResolver cr = this.getContentResolver();
         Cursor c = cr.query(content_uri, null, null, null, null);
+
+        // Padding setzen
+        LinearLayout padding_victim = (LinearLayout) findViewById(R.id.padding_layout);
+        padding_victim.setPadding(
+                ((int) (PADDING_LEFT * SCALE + 0.5f)),
+                ((int) (PADDING_TOP * SCALE + 0.5f)),
+                ((int) (PADDING_RIGHT * SCALE + 0.5f)),
+                ((int) (PADDING_BOTTOM * SCALE + 0.5f))
+        );
 
         // Indizes
         final int titleIndex = c.getColumnIndex(TITLE);
