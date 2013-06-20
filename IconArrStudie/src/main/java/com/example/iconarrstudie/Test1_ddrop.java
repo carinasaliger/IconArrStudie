@@ -38,12 +38,6 @@ public class Test1_ddrop extends Activity {
     private final int WIDGET_TAG = 6;
     private final int ICON_TAG = 0;
 
-    // Padding-TAGS
-    private final int PADDING_LEFT = 35;
-    private final int PADDING_RIGHT = 35;
-    private final int PADDING_TOP = 50;
-    private final int PADDING_BOTTOM = 100 ;
-
     private int selected_screen;
     private static boolean[][] in_use;
     private static String[][] input;
@@ -102,15 +96,6 @@ public class Test1_ddrop extends Activity {
         // Cursor aus content_uri erstellen
         ContentResolver cr = this.getContentResolver();
         Cursor c = cr.query(content_uri, null, null, null, null);
-
-        // Padding setzen
-        LinearLayout padding_victim = (LinearLayout) findViewById(R.id.padding_layout);
-        padding_victim.setPadding(
-                ((int) (PADDING_LEFT * SCALE + 0.5f)),
-                ((int) (PADDING_TOP * SCALE + 0.5f)),
-                ((int) (PADDING_RIGHT * SCALE + 0.5f)),
-                ((int) (PADDING_BOTTOM * SCALE + 0.5f))
-        );
 
         // Indizes
         final int titleIndex = c.getColumnIndex(TITLE);
