@@ -5,12 +5,10 @@ import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,9 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.util.LinkedList;
@@ -32,11 +28,6 @@ public class Test3_pos extends Activity {
     private final static String TAG = Test3_pos.class.getSimpleName();
     // density zum umrechnen von dp auf px
     float SCALE;
-
-    // TAGS dienen dem schnellen Anpassen auf Launcher die abgeänderte IDs für die verschiedenen Elemente verwenden (z.B. HTC Sense)
-    private final int FOLDER_TAG = 3;
-    private final int WIDGET_TAG = 6;
-    private final int ICON_TAG = 0;
 
     private static int selected_screen;
     static boolean[][] input;
@@ -224,10 +215,8 @@ public class Test3_pos extends Activity {
         // vergleichen von entries mit bibliothek generated auf duplikate
         List<Entry> toRemove = new LinkedList<Entry>();
         for (Entry e : entries) {
-            int x = e.getX();
-            int y = e.getY();
             // falls entry ein Icon beschreibt
-            if (e.getTag() == Entry.ICON || e.getTag() == ICON_TAG) {
+            if (e.getTag() == Entry.ICON || e.getTag() == R.integer.ICON_TAG) {
                 // falls icon in Bildbibliothek vorhanden
                 for (int i = 0; i < generated.size(); i++) {
                     if (e.getTitle().equals(generated.get(i).getTitle())) {
@@ -237,7 +226,7 @@ public class Test3_pos extends Activity {
                 }
             }
             // falls entry ein Widget beschreibt
-            if (e.getTag() == Entry.WIDGET || e.getTag() == WIDGET_TAG) {
+            if (e.getTag() == Entry.WIDGET || e.getTag() == R.integer.WIDGET_TAG) {
                 // das Widget entfernen
                 toRemove.add(e);
             }
@@ -309,12 +298,12 @@ public class Test3_pos extends Activity {
             for(int y = 0; y < 4; y++){
                 Entry temp = returnRandomElement(entries);
                 // falls temp ein Ordner ist
-                if (temp.getTag() == Entry.FOLDER || temp.getTag() == FOLDER_TAG){
+                if (temp.getTag() == Entry.FOLDER || temp.getTag() == R.integer.FOLDER_TAG){
                     Log.d(TAG, "drawing folder, title: " + temp.getTitle() + " to x: " + x + ", y: " + y);
                     imageArray[x][y][1].setImageResource(R.drawable.folder);
                     // falls an x,y in echt auch ein ordner liegt
                     for(Entry e : entries){
-                        if((e.getTag() == Entry.FOLDER || e.getTag() == FOLDER_TAG) && e.getX() == x && e.getY() == y){
+                        if((e.getTag() == Entry.FOLDER || e.getTag() == R.integer.FOLDER_TAG) && e.getX() == x && e.getY() == y){
                             answer[x][y] = true;
                         }
                     }
@@ -331,12 +320,12 @@ public class Test3_pos extends Activity {
         // correct answers zeichnen
         for (Entry e : correct_answers){
             Log.i(TAG, "number of correct answers: " + correct_answers.size());
-            if(e.getTag() == Entry.ICON || e.getTag() == ICON_TAG){
+            if(e.getTag() == Entry.ICON || e.getTag() == R.integer.ICON_TAG){
                 Bitmap bmp = BitmapFactory.decodeByteArray(e.getIcon(), 0, e.getIcon().length);
                 imageArray[e.getX()][e.getY()][1].setImageBitmap(bmp);
                 imageArray[e.getX()][e.getY()][1].invalidate();
             }
-            if(e.getTag() == Entry.FOLDER || e.getTag() == FOLDER_TAG){
+            if(e.getTag() == Entry.FOLDER || e.getTag() == R.integer.FOLDER_TAG){
                 imageArray[e.getX()][e.getY()][1].setImageResource(R.drawable.folder);
                 imageArray[e.getX()][e.getY()][1].invalidate();
             }

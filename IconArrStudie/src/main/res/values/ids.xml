@@ -1,3 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<item name="dock" type="id">dock</item><item name="undo" type="id">undo</item><item name="grid" type="id">grid</item></resources>
+    <item name="dock" type="id">
+        dock
+    </item>
+    <item name="undo" type="id">
+        undo
+    </item>
+    <item name="grid" type="id">
+        grid
+    </item>
+    <item name="ICON_TAG" type="integer">
+        0
+    </item>
+    <item name="FOLDER_TAG" type="integer">
+        3
+    </item>
+    <item name="WIDGET_TAG" type="integer">
+        6
+    </item>
+</resources>

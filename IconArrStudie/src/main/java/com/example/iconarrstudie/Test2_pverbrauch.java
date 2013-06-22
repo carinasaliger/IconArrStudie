@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 public class Test2_pverbrauch extends Activity {
@@ -23,9 +22,6 @@ public class Test2_pverbrauch extends Activity {
 
     // density zum umrechnen von dp auf px
     float SCALE;
-
-    // TAGS dienen dem schnellen Anpassen auf Launcher die abgeänderte IDs für die verschiedenen Elemente verwenden (z.B. HTC Sense)
-    private final int WIDGET_TAG = 6;
 
     private static int selected_screen;
     static final String ITEM_TYPE = "itemType";
@@ -44,7 +40,6 @@ public class Test2_pverbrauch extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test2);
         SCALE = getResources().getDisplayMetrics().density;
-
 
         Log.d(TAG, "setting Wallpaper");
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
@@ -123,7 +118,7 @@ public class Test2_pverbrauch extends Activity {
         for(ContentValues cv : row_values){
             if (cv != null){
                 // Prüfen ob die Zeile ein Widget ist
-                if((cv.getAsInteger(ITEM_TYPE) == Entry.WIDGET || cv.getAsInteger(ITEM_TYPE) == WIDGET_TAG) && cv.getAsInteger(APPWIDGET_ID) != -1){
+                if((cv.getAsInteger(ITEM_TYPE) == Entry.WIDGET || cv.getAsInteger(ITEM_TYPE) == R.integer.WIDGET_TAG) && cv.getAsInteger(APPWIDGET_ID) != -1){
 //                    Log.d(TAG, "found fitting content value: \n" +
 //                            "ITEM_TYPE: " + cv.getAsInteger(ITEM_TYPE) + "\n" +
 //                            "APPWIDGET_ID: " + cv.getAsInteger(APPWIDGET_ID) + "\n" +
