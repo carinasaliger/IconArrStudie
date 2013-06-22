@@ -40,7 +40,7 @@
                     android:id="@+id/row0_cell0_low"
                     android:src="@drawable/contour"
                     android:adjustViewBounds="true"
-                    >
+                    android:layout_weight="0.25">
 
                 </ImageView>
 
@@ -50,7 +50,7 @@
                     android:id="@+id/row0_cell0_high"
                     android:layout_margin="15dp"
                     android:adjustViewBounds="true"
-                    >
+                    android:layout_weight="0.25">
 
                 </ImageView>
             </FrameLayout>
@@ -67,7 +67,8 @@
                     android:layout_height="fill_parent"
                     android:id="@+id/row0_cell1_low"
                     android:src="@drawable/contour"
-                    android:adjustViewBounds="true">
+                    android:adjustViewBounds="true"
+                    android:layout_weight="0.25">
 
                 </ImageView>
 
@@ -95,7 +96,8 @@
                     android:id="@+id/row0_cell2_low"
                     android:src="@drawable/contour"
                     android:adjustViewBounds="true"
-                    >
+                    android:layout_weight="0.25">
+
                 </ImageView>
 
                 <ImageView
@@ -104,7 +106,8 @@
                     android:id="@+id/row0_cell2_high"
                     android:layout_margin="15dp"
                     android:adjustViewBounds="true"
-                    >
+                    android:layout_weight="0.25">
+
                 </ImageView>
             </FrameLayout>
 
@@ -121,7 +124,8 @@
                     android:id="@+id/row0_cell3_low"
                     android:src="@drawable/contour"
                     android:adjustViewBounds="true"
-                    >
+                    android:layout_weight="0.25">
+
                 </ImageView>
 
                 <ImageView
@@ -130,7 +134,8 @@
                     android:id="@+id/row0_cell3_high"
                     android:layout_margin="15dp"
                     android:adjustViewBounds="true"
-                    >
+                    android:layout_weight="0.25">
+
                 </ImageView>
             </FrameLayout>
         </LinearLayout>
@@ -157,7 +162,8 @@
                     android:id="@+id/row1_cell0_low"
                     android:src="@drawable/contour"
                     android:adjustViewBounds="true"
-                    >
+                    android:layout_weight="0.25">
+
                 </ImageView>
 
                 <ImageView
@@ -166,7 +172,8 @@
                     android:id="@+id/row1_cell0_high"
                     android:layout_margin="15dp"
                     android:adjustViewBounds="true"
-                    >
+                    android:layout_weight="0.25">
+
                 </ImageView>
             </FrameLayout>
 
@@ -183,7 +190,8 @@
                     android:id="@+id/row1_cell1_low"
                     android:src="@drawable/contour"
                     android:adjustViewBounds="true"
-                    >
+                    android:layout_weight="0.25">
+
                 </ImageView>
 
                 <ImageView
@@ -191,7 +199,9 @@
                     android:layout_height="fill_parent"
                     android:id="@+id/row1_cell1_high"
                     android:layout_margin="15dp"
-                    android:adjustViewBounds="true">
+                    android:adjustViewBounds="true"
+                    android:layout_weight="0.25">
+
                 </ImageView>
             </FrameLayout>
 
@@ -208,7 +218,8 @@
                     android:id="@+id/row1_cell2_low"
                     android:src="@drawable/contour"
                     android:adjustViewBounds="true"
-                    >
+                    android:layout_weight="0.25">
+
                 </ImageView>
 
                 <ImageView
@@ -217,7 +228,8 @@
                     android:id="@+id/row1_cell2_high"
                     android:layout_margin="15dp"
                     android:adjustViewBounds="true"
-                    >
+                    android:layout_weight="0.25">
+
                 </ImageView>
             </FrameLayout>
 
@@ -234,7 +246,8 @@
                     android:id="@+id/row1_cell3_low"
                     android:src="@drawable/contour"
                     android:adjustViewBounds="true"
-                    >
+                    android:layout_weight="0.25">
+
                 </ImageView>
 
                 <ImageView
@@ -243,7 +256,8 @@
                     android:id="@+id/row1_cell3_high"
                     android:layout_margin="15dp"
                     android:adjustViewBounds="true"
-                    >
+                    android:layout_weight="0.25">
+
                 </ImageView>
             </FrameLayout>
         </LinearLayout>
