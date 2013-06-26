@@ -18,7 +18,6 @@ public class PInfo {
 
     // Konstruktor
     public PInfo(String appname, String pname, String versionName, int versionCode, Drawable icon) {
-
         this.appname = appname;
         this.pname = pname;
         this.versionName = versionName;

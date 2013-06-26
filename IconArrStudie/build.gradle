@@ -11,6 +11,7 @@ apply plugin: 'android'
 dependencies {
     compile files('libs/android-support-v4.jar')
     compile files('libs/bugsense3.2.3.jar')
+    compile files('libs/acra-4.5.0.jar')
 }
 
 android {

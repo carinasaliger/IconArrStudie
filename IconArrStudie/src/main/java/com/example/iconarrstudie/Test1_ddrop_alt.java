@@ -3,11 +3,9 @@ package com.example.iconarrstudie;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.WallpaperManager;
-import android.content.ClipData;
-import android.content.ClipDescription;
-import android.content.ContentResolver;
-import android.content.ContentValues;
+import android.content.*;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,10 +15,12 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.*;
+import com.bugsense.trace.BugSenseHandler;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -29,7 +29,7 @@ import java.util.List;
 public class Test1_ddrop_alt extends Activity {
     // format für lastaction: {art / tag, x, y, spanx, spany, invoker_x, invoker_y)
     // invoker ist die view von der die aktion ausging
-    private final static String TAG = Test1_ddrop.class.getSimpleName();
+    private final static String TAG = Test1_ddrop_alt.class.getSimpleName();
 
     // density zum umrechnen von dp auf px
     float SCALE;
@@ -41,6 +41,8 @@ public class Test1_ddrop_alt extends Activity {
     private static List<Integer[]> modified;
     private static String[][] solution;
     private static SlidingDrawer drawer;
+
+    private PackageManager pm;
 
     static final String TITLE = "title";
     static final String ITEM_TYPE = "itemType";
@@ -127,7 +129,16 @@ public class Test1_ddrop_alt extends Activity {
         content.setBackgroundColor(Color.argb(120,0,0,0));
 
         // PackageInfos holen
-        ArrayList<PInfo> packages = getPackages();
+        pm = this.getPackageManager();
+        List<PackageInfo> apps = pm.getInstalledPackages(0);
+        ArrayList<PInfo> packages = new ArrayList<PInfo>();
+        for (PackageInfo p : apps) {
+            PInfo newInfo = new PInfo(p.applicationInfo.loadLabel(pm).toString(), p.packageName, p.versionName, p.versionCode, p.applicationInfo.loadIcon(pm));
+            newInfo.prettyPrint();
+            packages.add(newInfo);
+
+        }
+
         // Auslesen und speichern der relevanten Werte in ContentValues
         ContentValues[] row_values = new ContentValues[c.getCount()];
         int iterator = 0;
@@ -240,7 +251,7 @@ public class Test1_ddrop_alt extends Activity {
                         // Drawable der auf die View gezogenen View holen
                         Entry e = (Entry) dragEvent.getLocalState();
                         Bitmap icon = null;
-                        if(e.getTag() == Entry.ICON || e.getTag() == R.integer.ICON_TAG){
+                        if(e.getTag() == Entry.ICON || e.getTag() == getResources().getInteger(R.integer.ICON_TAG)){
                             icon = BitmapFactory.decodeByteArray(e.getIcon(), 0, e.getIcon().length);
                         }
                         switch(action){
@@ -248,7 +259,7 @@ public class Test1_ddrop_alt extends Activity {
                             case DragEvent.ACTION_DRAG_STARTED:
                                 // Unterscheidung zwischen Icons und Widgets
                                 // falls ein Icon
-                                if(last[0] == Entry.ICON || last[0] == R.integer.ICON_TAG || last[0] == Entry.FOLDER || last[0] == R.integer.FOLDER_TAG){
+                                if(last[0] == Entry.ICON || last[0] == getResources().getInteger(R.integer.ICON_TAG) || last[0] == Entry.FOLDER || last[0] == getResources().getInteger(R.integer.FOLDER_TAG)){
                                     if (!in_use[finalX][finalY]){
                                         imageArray[finalX][finalY][0].setColorFilter(Color.rgb(51, 181, 229), PorterDuff.Mode.OVERLAY);
                                         imageArray[finalX][finalY][0].invalidate();
@@ -261,7 +272,7 @@ public class Test1_ddrop_alt extends Activity {
                                     }
                                 }
                                 // falls ein widget
-                                if(last[0] == Entry.WIDGET || last[0] == R.integer.WIDGET_TAG){
+                                if(last[0] == Entry.WIDGET || last[0] == getResources().getInteger(R.integer.WIDGET_TAG)){
                                     // falls es überstehen würde
                                     if(finalX + last[3] > 4 || finalY + last[4] > 4){
                                         imageArray[finalX][finalY][0].setColorFilter(Color.rgb(255, 68, 68), PorterDuff.Mode.OVERLAY);
@@ -309,10 +320,10 @@ public class Test1_ddrop_alt extends Activity {
                             // falls Element in einer View losgelassen wird, das Icon übernehmen und setzen, sowie in in_use eintragen
                             case DragEvent.ACTION_DROP:
                                 // prüfen ob ein icon gedroppt wurde
-                                if(last[0] == Entry.ICON || last[0] == R.integer.ICON_TAG || last[0] == Entry.FOLDER || last[0] == R.integer.FOLDER_TAG){
+                                if(last[0] == Entry.ICON || last[0] == getResources().getInteger(R.integer.ICON_TAG) || last[0] == Entry.FOLDER || last[0] == getResources().getInteger(R.integer.FOLDER_TAG)){
                                     Log.d(TAG, "icon dropped on x:" + finalX + " y:" + finalY);
                                     if(!in_use[finalX][finalY]){
-                                        if(e.getTag() == Entry.FOLDER || e.getTag() == R.integer.FOLDER_TAG){
+                                        if(e.getTag() == Entry.FOLDER || e.getTag() == getResources().getInteger(R.integer.FOLDER_TAG)){
                                             imageArray[finalX][finalY][1].setImageResource(R.drawable.folder);
                                             input[finalX][finalY] = "Folder";
                                             Integer[] modification = {Entry.FOLDER, finalX, finalY, 0, 0};
@@ -380,17 +391,58 @@ public class Test1_ddrop_alt extends Activity {
             // flag zum Anzeigen von Änderungen
             boolean wrote = false;
             // falls e ein Icon ist und direkt auf dem Desktop liegt (nicht im Dock)
-            if((e.getTag() == Entry.ICON || e.getTag() == R.integer.ICON_TAG) && e.getContainer() == (-100)){
+            if((e.getTag() == Entry.ICON || e.getTag() == getResources().getInteger(R.integer.ICON_TAG)) && e.getContainer() == (-100)){
                 Log.d(TAG, "found Icon " + "x: " + x + " y: " + y);
+                // Falls das Icon in der launcher.db gespeichert ist
                 if(e.getIcon() != null){
                     Bitmap bmp = BitmapFactory.decodeByteArray(e.getIcon(), 0, e.getIcon().length);
                     imageArray[x][y][1].setImageBitmap(bmp);
                 }
+                // Falls dies nicht der Fall ist
                 else{
                     for(PInfo p : packages){
+                        // Unterscheidung nach Titel des launcher.db-Eintrags
+                        // Falls der Titel dem Namen einer installierten App enspricht
                         if(p.getAppname().contains(e.getTitle())){
                             Drawable icon = p.getIcon();
                             imageArray[x][y][1].setImageDrawable(icon);
+                            break;
+                        }
+                        // Falls der Titel Camera oder Kamera ist
+                        if(e.getTitle().contains("Camera") || e.getTitle().contains("Kamera")){
+                            // Intent für Aufnahme eines Bildes
+                            Intent camera_intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                            try {
+                                // Setzen des Icons auf das der für Bildeaufnahmen registrierten Activity (Im Normalfall die Kamera)
+                                Log.d(TAG, "trying to set camera");
+                                imageArray[x][y][1].setImageDrawable(pm.getActivityIcon(camera_intent));
+                            } catch (PackageManager.NameNotFoundException e1) {
+                                e1.printStackTrace();
+                                BugSenseHandler.sendException(e1);
+                            }
+                            break;
+                        }
+                        // Falls der Titel Phone oder Telefon ist
+                        if(e.getTitle().contains("Phone") || e.getTitle().contains("Telefon")){
+                            Intent dial_intent = new Intent(Intent.ACTION_DIAL);
+                            try {
+                                Log.d(TAG, "trying to set phone");
+                                imageArray[x][y][1].setImageDrawable(pm.getActivityIcon(dial_intent));
+                            } catch (PackageManager.NameNotFoundException e1) {
+                                e1.printStackTrace();
+                                BugSenseHandler.sendException(e1);
+                            }
+                            break;
+                        }
+                        if(e.getTitle().contains("Contacts") || e.getTitle().contains("Kontakte") || e.getTitle().contains("People")){
+                            Intent contacts_intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                            try {
+                                Log.d(TAG, "trying to set contacts");
+                                imageArray[x][y][1].setImageDrawable(pm.getActivityIcon(contacts_intent));
+                            } catch (PackageManager.NameNotFoundException e1) {
+                                e1.printStackTrace();
+                                BugSenseHandler.sendException(e1);
+                            }
                             break;
                         }
                     }
@@ -419,7 +471,7 @@ public class Test1_ddrop_alt extends Activity {
                 wrote = true;
             }
             // falls e ein ORDNER ist und nicht im Dock sitzt
-            if((e.getTag() == Entry.FOLDER || e.getTag() == R.integer.FOLDER_TAG) && e.getContainer() == (-100)){
+            if((e.getTag() == Entry.FOLDER || e.getTag() == getResources().getInteger(R.integer.FOLDER_TAG)) && e.getContainer() == (-100)){
                 Log.d(TAG, "found folder " + "x: " + x + " y: " + y);
                 imageArray[x][y][1].setImageResource(R.drawable.folder);
 
@@ -447,7 +499,7 @@ public class Test1_ddrop_alt extends Activity {
                 wrote = true;
             }
             // falls e ein widget ist
-            if(e.getTag() == Entry.WIDGET || e.getTag() == R.integer.WIDGET_TAG){
+            if(e.getTag() == Entry.WIDGET || e.getTag() == getResources().getInteger(R.integer.WIDGET_TAG)){
                 // in solution eintragen
                 for(int xx = 0; xx < e.getSpan_x(); xx++){
                     for(int yy = 0; yy < e.getSpan_y(); yy++){
@@ -757,13 +809,15 @@ public class Test1_ddrop_alt extends Activity {
     }
 
     private ArrayList<PInfo> getPackages(){
-        List<PackageInfo> apps = getPackageManager().getInstalledPackages(0);
+        List<PackageInfo> apps = pm.getInstalledPackages(0);
         ArrayList<PInfo> toreturn = null;
-        for(int i = 0; i < apps.size(); i++){
-            PackageInfo p = apps.get(i);
-            PInfo newInfo = new PInfo(p.applicationInfo.loadLabel(getPackageManager()).toString(), p.packageName, p.versionName, p.versionCode, p.applicationInfo.loadIcon(getPackageManager()));
+        for (PackageInfo p : apps) {
+            PInfo newInfo = new PInfo(p.applicationInfo.loadLabel(pm).toString(), p.packageName, p.versionName, p.versionCode, p.applicationInfo.loadIcon(pm));
+
             toreturn.add(newInfo);
-            newInfo.prettyPrint();
+            if (newInfo != null) {
+                newInfo.prettyPrint();
+            }
         }
         return toreturn;
     }

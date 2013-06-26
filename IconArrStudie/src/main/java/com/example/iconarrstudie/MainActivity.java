@@ -1,6 +1,7 @@
 package com.example.iconarrstudie;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +19,8 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.*;
 import com.bugsense.trace.BugSenseHandler;
+import org.acra.ACRA;
+import org.acra.annotation.ReportsCrashes;
 
 import java.util.List;
 
