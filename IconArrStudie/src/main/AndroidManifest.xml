@@ -22,6 +22,8 @@
         android:name="com.htc.launcher.permission.READ_SETTINGS"/>
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.INTERNET" />
     <!--Motorola Launcher-->
     <uses-permission
         android:name="com.motorola.launcher.permission.READ_SETTINGS"/>
@@ -81,6 +83,8 @@
         </activity>
         <activity android:name=".Test1_ddrop"
                 android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"/>
+        <activity android:name=".Test1_ddrop_alt"
+                  android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"/>
         <activity android:name=".Test2_pverbrauch"
                   android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"/>
         <activity android:name=".Test3_pos"

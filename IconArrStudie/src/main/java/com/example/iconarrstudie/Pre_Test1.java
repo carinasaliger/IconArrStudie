@@ -51,7 +51,7 @@ public class Pre_Test1 extends Activity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i1 = new Intent(Pre_Test1.this, Test1_ddrop.class);
+                Intent i1 = new Intent(Pre_Test1.this, Test1_ddrop_alt.class);
                 i1.putExtra("uri", content_uri.toString());
                 i1.putExtra("screen", selected_screen);
                 Log.i(TAG, "starting Test1_ddrop");

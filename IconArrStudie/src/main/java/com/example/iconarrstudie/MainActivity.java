@@ -10,7 +10,6 @@ import android.content.pm.ProviderInfo;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -18,6 +17,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.*;
+import com.bugsense.trace.BugSenseHandler;
+
 import java.util.List;
 
 public class MainActivity extends Activity {
@@ -30,6 +31,7 @@ public class MainActivity extends Activity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BugSenseHandler.initAndStartSession(MainActivity.this, "adeb8e35");
         setContentView(R.layout.activity_main);
         Log.i(TAG, "onCreate()");
 
