@@ -1,7 +1,6 @@
 package com.example.iconarrstudie;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,9 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.*;
-import com.bugsense.trace.BugSenseHandler;
 import org.acra.ACRA;
-import org.acra.annotation.ReportsCrashes;
 
 import java.util.List;
 
@@ -44,6 +41,7 @@ public class MainActivity extends Activity {
         Button button_test2 = (Button) findViewById(R.id.button_pverbrauch);
         Button button_test3 = (Button) findViewById(R.id.button_pos);
         Button button_save = (Button) findViewById(R.id.button_save);
+        Button send_logcat = (Button) findViewById(R.id.sendReport);
 
         // Spinner für Screenauswahl anpassen
         Spinner screen_auswahl = (Spinner) findViewById(R.id.spinner_screen);
@@ -63,9 +61,6 @@ public class MainActivity extends Activity {
             }
         });
 
-        // neue Datenbank erstellen
-        final LauncherDBHandler dbHandler = new LauncherDBHandler(this);
-        //SQLiteDatabase database = dbHandler.getWritableDatabase();
 
         // ContentResolver für Debug Anzeige
         ContentResolver cr = this.getContentResolver();
@@ -139,6 +134,14 @@ public class MainActivity extends Activity {
                 i4.putExtra(Intent.EXTRA_EMAIL, new String[]{"jlouisgao@gmail.com"});
                 startActivity(Intent.createChooser(i4, getString(R.string.choose_mail)));
 
+            }
+        });
+
+        send_logcat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(TAG, "sending logcat");
+                ACRA.getErrorReporter().handleException(null);
             }
         });
     }

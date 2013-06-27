@@ -67,6 +67,6 @@
     <string name="handle">
         …
     </string>
-    <string name="crash_toast_text">Bereite Crashlog als Email vor</string>
+    <string name="crash_toast_text">Bereite Crashlog als Email vor</string><string name="send_logcat">Logcat senden</string>
 
 </resources>

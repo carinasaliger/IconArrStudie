@@ -4,7 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.*;
-import android.content.pm.*;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,16 +16,13 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.*;
 import com.bugsense.trace.BugSenseHandler;
-
 import java.io.ByteArrayOutputStream;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -180,7 +178,10 @@ public class Test1_ddrop_alt extends Activity {
                             cv.getAsInteger(CONTAINER));
                     entries.add(temp);
                 }
-                else{
+                else if(cv.getAsInteger(ITEM_TYPE) == Entry.ICON ||
+                        cv.getAsInteger(ITEM_TYPE) == Entry.FOLDER ||
+                        cv.getAsInteger(ITEM_TYPE) == getResources().getInteger(R.integer.ICON_TAG) ||
+                        cv.getAsInteger(ITEM_TYPE) == getResources().getInteger(R.integer.FOLDER_TAG)){
                     Intent temp_intent = null;
                     Log.d(TAG, "title is null, Intent: " + cv.getAsString(INTENT));
                     try {
@@ -209,6 +210,20 @@ public class Test1_ddrop_alt extends Activity {
                                 cv.getAsInteger(CONTAINER));
                         entries.add(temp);
                     }
+                }
+                else{
+                    // hier dürften nur noch Widgets sein
+                    Entry temp = new Entry(
+                            cv.getAsInteger(CELLX),
+                            cv.getAsInteger(CELLY),
+                            cv.getAsInteger(SPANX),
+                            cv.getAsInteger(SPANY),
+                            cv.getAsByteArray(ICON),
+                            cv.getAsInteger(ITEM_TYPE),
+                            cv.getAsString(TITLE),
+                            cv.getAsString(INTENT),
+                            cv.getAsInteger(CONTAINER));
+                    entries.add(temp);
                 }
             }
         }
@@ -336,12 +351,6 @@ public class Test1_ddrop_alt extends Activity {
                             case DragEvent.ACTION_DRAG_ENTERED:
                                 imageArray[finalX][finalY][0].setColorFilter(Color.rgb(154, 204, 0), PorterDuff.Mode.OVERLAY);
                                 imageArray[finalX][finalY][0].invalidate();
-                                if(finalY < 2){
-//                                    scrollView.smoothScrollTo(0, 0);
-                                }
-                                else{
-//                                    scrollView.smoothScrollTo(0, scrollView.getBottom());
-                                }
                                 return true;
                             // falls Element wieder herausgezogen wird wieder blau färben
                             case DragEvent.ACTION_DRAG_EXITED:
