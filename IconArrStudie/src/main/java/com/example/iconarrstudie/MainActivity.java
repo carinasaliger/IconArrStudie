@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BugSenseHandler.initAndStartSession(MainActivity.this, "adeb8e35");
+        // BugSenseHandler.initAndStartSession(MainActivity.this, "adeb8e35");
         setContentView(R.layout.activity_main);
         Log.i(TAG, "onCreate()");
 
