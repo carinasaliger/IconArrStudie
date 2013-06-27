@@ -41,6 +41,7 @@ public class Test1_ddrop extends Activity {
     private static SlidingDrawer drawer;
 
     static final String TITLE = "title";
+    static final String INTENT = "intent";
     static final String ITEM_TYPE = "itemType";
     static final String SCREEN = "screen";
     static final String APPWIDGET_ID = "appWidgetId";
@@ -93,6 +94,7 @@ public class Test1_ddrop extends Activity {
 
         // Indizes
         final int titleIndex = c.getColumnIndex(TITLE);
+        final int intentIndex = c.getColumnIndex(INTENT);
         final int itemTypeIndex = c.getColumnIndex(ITEM_TYPE);
         final int screenIndex = c.getColumnIndex(SCREEN);
         final int appWidgetIdIndex = c.getColumnIndex(APPWIDGET_ID);
@@ -130,8 +132,9 @@ public class Test1_ddrop extends Activity {
         c.moveToFirst();
         while(c.moveToNext()){
             if(c.getInt(screenIndex) == selected_screen){
-                ContentValues values = new ContentValues(9);
+                ContentValues values = new ContentValues(10);
                 values.put(TITLE, c.getString(titleIndex));
+                values.put(INTENT, c.getString(intentIndex));
                 values.put(ITEM_TYPE, c.getInt(itemTypeIndex));
                 values.put(APPWIDGET_ID, c.getInt(appWidgetIdIndex));
                 values.put(CELLX, c.getInt(cellXIndex));
@@ -163,6 +166,7 @@ public class Test1_ddrop extends Activity {
                         cv.getAsByteArray(ICON),
                         cv.getAsInteger(ITEM_TYPE),
                         cv.getAsString(TITLE),
+                        cv.getAsString(INTENT),
                         cv.getAsInteger(CONTAINER));
 //                Log.d(TAG, "adding entry: \n" + temp.toString());
                 entries.add(temp);

@@ -13,13 +13,25 @@ public class Entry {
     private byte[] icon;
     private int tag;
     private String title;
+
+
+
+    public String getIntent() {
+        return intent;
+    }
+
+    public void setIntent(String intent) {
+        this.intent = intent;
+    }
+
+    private String intent;
     private int container;
     public static final int FOLDER = 2;
     public static final int ICON = 1;
     public static final int WIDGET = 4;
     public static final int GENERATED = 5;
 
-    public Entry(int x, int y, int span_x, int span_y, byte[] icon, int tag, String title, int container) {
+    public Entry(int x, int y, int span_x, int span_y, byte[] icon, int tag, String title, String intent, int container) {
         this.x = x;
         this.y = y;
         this.span_x = span_x;
@@ -27,6 +39,7 @@ public class Entry {
         this.icon = icon;
         this.tag = tag;
         this.title = title;
+        this.intent = intent;
         this.container = container;
     }
 

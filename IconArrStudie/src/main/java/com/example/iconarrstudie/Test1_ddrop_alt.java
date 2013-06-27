@@ -4,13 +4,13 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.*;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
+import android.content.pm.*;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -22,6 +22,8 @@ import android.view.View;
 import android.widget.*;
 import com.bugsense.trace.BugSenseHandler;
 
+import java.io.ByteArrayOutputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,6 +47,7 @@ public class Test1_ddrop_alt extends Activity {
     private PackageManager pm;
 
     static final String TITLE = "title";
+    static final String INTENT = "intent";
     static final String ITEM_TYPE = "itemType";
     static final String SCREEN = "screen";
     static final String APPWIDGET_ID = "appWidgetId";
@@ -97,6 +100,7 @@ public class Test1_ddrop_alt extends Activity {
 
         // Indizes
         final int titleIndex = c.getColumnIndex(TITLE);
+        final int intentIndex = c.getColumnIndex(INTENT);
         final int itemTypeIndex = c.getColumnIndex(ITEM_TYPE);
         final int screenIndex = c.getColumnIndex(SCREEN);
         final int appWidgetIdIndex = c.getColumnIndex(APPWIDGET_ID);
@@ -130,14 +134,14 @@ public class Test1_ddrop_alt extends Activity {
 
         // PackageInfos holen
         pm = this.getPackageManager();
-        List<PackageInfo> apps = pm.getInstalledPackages(0);
-        ArrayList<PInfo> packages = new ArrayList<PInfo>();
-        for (PackageInfo p : apps) {
-            PInfo newInfo = new PInfo(p.applicationInfo.loadLabel(pm).toString(), p.packageName, p.versionName, p.versionCode, p.applicationInfo.loadIcon(pm));
-            newInfo.prettyPrint();
-            packages.add(newInfo);
-
-        }
+//        List<PackageInfo> apps = pm.getInstalledPackages(0);
+//        ArrayList<PInfo> packages = new ArrayList<PInfo>();
+//        List<PackageInfo> activities = pm.getInstalledPackages(PackageManager.GET_ACTIVITIES);
+//        for (PackageInfo p : apps) {
+//            PInfo newInfo = new PInfo(p.applicationInfo.loadLabel(pm).toString(), p.packageName, p.versionName, p.versionCode, p.applicationInfo.loadIcon(pm));
+//            newInfo.prettyPrint();
+//            packages.add(newInfo);
+//        }
 
         // Auslesen und speichern der relevanten Werte in ContentValues
         ContentValues[] row_values = new ContentValues[c.getCount()];
@@ -145,8 +149,9 @@ public class Test1_ddrop_alt extends Activity {
         c.moveToFirst();
         while(c.moveToNext()){
             if(c.getInt(screenIndex) == selected_screen){
-                ContentValues values = new ContentValues(9);
+                ContentValues values = new ContentValues(10);
                 values.put(TITLE, c.getString(titleIndex));
+                values.put(INTENT, c.getString(intentIndex));
                 values.put(ITEM_TYPE, c.getInt(itemTypeIndex));
                 values.put(APPWIDGET_ID, c.getInt(appWidgetIdIndex));
                 values.put(CELLX, c.getInt(cellXIndex));
@@ -178,6 +183,7 @@ public class Test1_ddrop_alt extends Activity {
                         cv.getAsByteArray(ICON),
                         cv.getAsInteger(ITEM_TYPE),
                         cv.getAsString(TITLE),
+                        cv.getAsString(INTENT),
                         cv.getAsInteger(CONTAINER));
 //                Log.d(TAG, "adding entry: \n" + temp.toString());
                 entries.add(temp);
@@ -252,7 +258,9 @@ public class Test1_ddrop_alt extends Activity {
                         Entry e = (Entry) dragEvent.getLocalState();
                         Bitmap icon = null;
                         if(e.getTag() == Entry.ICON || e.getTag() == getResources().getInteger(R.integer.ICON_TAG)){
-                            icon = BitmapFactory.decodeByteArray(e.getIcon(), 0, e.getIcon().length);
+                            if(e.getIcon() != null){
+                                icon = BitmapFactory.decodeByteArray(e.getIcon(), 0, e.getIcon().length);
+                            }
                         }
                         switch(action){
                             // falls Drag gerade beginnt mögliche Felder blau färben
@@ -400,52 +408,105 @@ public class Test1_ddrop_alt extends Activity {
                 }
                 // Falls dies nicht der Fall ist
                 else{
-                    for(PInfo p : packages){
-                        // Unterscheidung nach Titel des launcher.db-Eintrags
-                        // Falls der Titel dem Namen einer installierten App enspricht
-                        if(p.getAppname().contains(e.getTitle())){
-                            Drawable icon = p.getIcon();
-                            imageArray[x][y][1].setImageDrawable(icon);
-                            break;
-                        }
-                        // Falls der Titel Camera oder Kamera ist
-                        if(e.getTitle().contains("Camera") || e.getTitle().contains("Kamera")){
-                            // Intent für Aufnahme eines Bildes
-                            Intent camera_intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                            try {
-                                // Setzen des Icons auf das der für Bildeaufnahmen registrierten Activity (Im Normalfall die Kamera)
-                                Log.d(TAG, "trying to set camera");
-                                imageArray[x][y][1].setImageDrawable(pm.getActivityIcon(camera_intent));
-                            } catch (PackageManager.NameNotFoundException e1) {
-                                e1.printStackTrace();
-                                BugSenseHandler.sendException(e1);
-                            }
-                            break;
-                        }
-                        // Falls der Titel Phone oder Telefon ist
-                        if(e.getTitle().contains("Phone") || e.getTitle().contains("Telefon")){
-                            Intent dial_intent = new Intent(Intent.ACTION_DIAL);
-                            try {
-                                Log.d(TAG, "trying to set phone");
-                                imageArray[x][y][1].setImageDrawable(pm.getActivityIcon(dial_intent));
-                            } catch (PackageManager.NameNotFoundException e1) {
-                                e1.printStackTrace();
-                                BugSenseHandler.sendException(e1);
-                            }
-                            break;
-                        }
-                        if(e.getTitle().contains("Contacts") || e.getTitle().contains("Kontakte") || e.getTitle().contains("People")){
-                            Intent contacts_intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-                            try {
-                                Log.d(TAG, "trying to set contacts");
-                                imageArray[x][y][1].setImageDrawable(pm.getActivityIcon(contacts_intent));
-                            } catch (PackageManager.NameNotFoundException e1) {
-                                e1.printStackTrace();
-                                BugSenseHandler.sendException(e1);
-                            }
-                            break;
-                        }
+                    Intent i = null;
+                    try {
+                        i = Intent.parseUri(e.getIntent(), 0);
+                    } catch (URISyntaxException e1) {
+                        e1.printStackTrace();
                     }
+                    try {
+                        // Setzen des Icons auf das der für Bildeaufnahmen registrierten Activity (Im Normalfall die Kamera)
+                        Log.d(TAG, "trying to set from intent");
+                        imageArray[x][y][1].setImageDrawable(pm.getActivityIcon(i));
+                        Bitmap bitmap = ((BitmapDrawable) pm.getActivityIcon(i)).getBitmap();
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                        e.setIcon(stream.toByteArray());
+                    } catch (PackageManager.NameNotFoundException e1) {
+                        e1.printStackTrace();
+                        BugSenseHandler.sendException(e1);
+                    }
+//                    for (PackageInfo p : activities) {
+//                        ActivityInfo[] activities1 = p.activities;
+//                        if(activities1 != null){
+//                            for(int i = 0; i < activities1.length; i++){
+//                                Log.d(TAG, "applicationInfo.toString(): " + p.applicationInfo.loadLabel(pm).toString() + " i = " + i + " length: " + activities1.length);
+//                                if(p.applicationInfo.loadLabel(pm).toString().contains(e.getTitle())) {
+//                                    ComponentName cpname = new ComponentName(p.packageName, activities1[i].targetActivity);
+//                                    Bitmap bitmap = null;
+//                                    try {
+//                                        imageArray[x][y][1].setImageDrawable(pm.getActivityIcon(cpname));
+//                                        imageArray[x][y][1].invalidate();
+//                                        bitmap = ((BitmapDrawable) pm.getActivityIcon(cpname)).getBitmap();
+//                                    } catch (PackageManager.NameNotFoundException e1) {
+//                                        e1.printStackTrace();
+//                                    }
+//                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+//                                    e.setIcon(stream.toByteArray());
+//                                }
+//                            }
+//                        }
+//
+//
+//                    for(PInfo p : packages){
+//                        // Unterscheidung nach Titel des launcher.db-Eintrags
+//                        // Falls der Titel dem Namen einer installierten App enspricht
+//                        if(p.getAppname().contains(e.getTitle())){
+//                            Drawable icon = p.getIcon();
+//                            imageArray[x][y][1].setImageDrawable(icon);
+//                            break;
+//                        }
+//                        // Falls der Titel Camera oder Kamera ist
+//                        if(e.getTitle().contains("Camera") || e.getTitle().contains("Kamera")){
+//                            // Intent für Aufnahme eines Bildes
+//                            Intent camera_intent = new Intent("android.media.action.IMAGE_CAPTURE");
+//                            try {
+//                                // Setzen des Icons auf das der für Bildeaufnahmen registrierten Activity (Im Normalfall die Kamera)
+//                                Log.d(TAG, "trying to set camera");
+//                                imageArray[x][y][1].setImageDrawable(pm.getActivityIcon(camera_intent));
+//                                Bitmap bitmap = ((BitmapDrawable) pm.getActivityIcon(camera_intent)).getBitmap();
+//                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+//                                e.setIcon(stream.toByteArray());
+//                            } catch (PackageManager.NameNotFoundException e1) {
+//                                e1.printStackTrace();
+//                                BugSenseHandler.sendException(e1);
+//                            }
+//                            break;
+//                        }
+//                        // Falls der Titel Phone oder Telefon ist
+//                        if(e.getTitle().contains("Phone") || e.getTitle().contains("Telefon")){
+//                            Intent dial_intent = new Intent(Intent.ACTION_DIAL);
+//                            try {
+//                                Log.d(TAG, "trying to set phone");
+//                                imageArray[x][y][1].setImageDrawable(pm.getActivityIcon(dial_intent));
+//                                Bitmap bitmap = ((BitmapDrawable) pm.getActivityIcon(dial_intent)).getBitmap();
+//                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+//                                e.setIcon(stream.toByteArray());
+//                            } catch (PackageManager.NameNotFoundException e1) {
+//                                e1.printStackTrace();
+//                                BugSenseHandler.sendException(e1);
+//                            }
+//                            break;
+//                        }
+//                        if(e.getTitle().contains("Contacts") || e.getTitle().contains("Kontakte") || e.getTitle().contains("People")){
+//                            Intent contacts_intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+//                            try {
+//                                Log.d(TAG, "trying to set contacts");
+//                                imageArray[x][y][1].setImageDrawable(pm.getActivityIcon(contacts_intent));
+//                                Bitmap bitmap = ((BitmapDrawable) pm.getActivityIcon(contacts_intent)).getBitmap();
+//                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+//                                e.setIcon(stream.toByteArray());
+//                            } catch (PackageManager.NameNotFoundException e1) {
+//                                e1.printStackTrace();
+//                                BugSenseHandler.sendException(e1);
+//                            }
+//                            break;
+//                        }
+//                    }
                 }
 
                 // in solution eintragen
@@ -523,11 +584,9 @@ public class Test1_ddrop_alt extends Activity {
                 }
             }
         }
-//        Log.d(TAG, "y==" + y + " x==" + x);
         if (y == 4){
             for (int x_cont = x; x_cont < 8; x_cont++){
                 for (int y_cont = y ; y_cont < 6; y_cont++){
-//                    Log.d(TAG, "x_cont1:" + x_cont + " ,y_cont:" + y_cont);
                     imageArray[x_cont][y_cont][1].setVisibility(View.INVISIBLE);
                     imageArray[x_cont][y_cont][1].invalidate();
                 }
@@ -540,7 +599,6 @@ public class Test1_ddrop_alt extends Activity {
             x++;
             for (int x_cont = x; x_cont < 8; x_cont++){
                 for (int y_cont = y; y_cont < 6; y_cont++){
-//                    Log.d(TAG, "x_cont2:" + x_cont + " ,y_cont:" + y_cont);
                     imageArray[x_cont][y_cont][1].setVisibility(View.INVISIBLE);
                     imageArray[x_cont][y_cont][1].invalidate();
                 }
@@ -806,19 +864,5 @@ public class Test1_ddrop_alt extends Activity {
                 return true;
             }
         });
-    }
-
-    private ArrayList<PInfo> getPackages(){
-        List<PackageInfo> apps = pm.getInstalledPackages(0);
-        ArrayList<PInfo> toreturn = null;
-        for (PackageInfo p : apps) {
-            PInfo newInfo = new PInfo(p.applicationInfo.loadLabel(pm).toString(), p.packageName, p.versionName, p.versionCode, p.applicationInfo.loadIcon(pm));
-
-            toreturn.add(newInfo);
-            if (newInfo != null) {
-                newInfo.prettyPrint();
-            }
-        }
-        return toreturn;
     }
 }
