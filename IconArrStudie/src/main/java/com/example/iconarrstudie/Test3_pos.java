@@ -5,10 +5,13 @@ import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,8 +20,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import com.bugsense.trace.BugSenseHandler;
 
 import java.io.ByteArrayOutputStream;
+import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -30,6 +35,7 @@ public class Test3_pos extends Activity {
     float SCALE;
 
     private static int selected_screen;
+    private PackageManager pm;
     static boolean[][] input;
     static boolean[][] answer;
     static final String TITLE = "title";
@@ -41,6 +47,7 @@ public class Test3_pos extends Activity {
     static final String SPANX = "spanX";
     static final String SPANY = "spanY";
     static final String ICON = "icon";
+    static final String INTENT = "intent";
     static final String CONTAINER = "container";
 
     @SuppressLint("NewApi")
@@ -49,6 +56,7 @@ public class Test3_pos extends Activity {
         setContentView(R.layout.activity_test3);
         super.onCreate(savedInstanceState);
         SCALE = getResources().getDisplayMetrics().density;
+        pm = getPackageManager();
 
         // Wallpaper
         Log.d(TAG, "setting Wallpaper");
@@ -85,6 +93,7 @@ public class Test3_pos extends Activity {
 
         // Indizes
         final int titleIndex = c.getColumnIndex(TITLE);
+        final int intentIndex = c.getColumnIndex(INTENT);
         final int itemTypeIndex = c.getColumnIndex(ITEM_TYPE);
         final int screenIndex = c.getColumnIndex(SCREEN);
         final int appWidgetIdIndex = c.getColumnIndex(APPWIDGET_ID);
@@ -118,8 +127,9 @@ public class Test3_pos extends Activity {
         c.moveToFirst();
         while(c.moveToNext()){
             if(c.getInt(screenIndex) == selected_screen){
-                ContentValues values = new ContentValues(9);
+                ContentValues values = new ContentValues(10);
                 values.put(TITLE, c.getString(titleIndex));
+                values.put(INTENT, c.getString(intentIndex));
                 values.put(ITEM_TYPE, c.getInt(itemTypeIndex));
                 values.put(APPWIDGET_ID, c.getInt(appWidgetIdIndex));
                 values.put(CELLX, c.getInt(cellXIndex));
@@ -149,6 +159,7 @@ public class Test3_pos extends Activity {
                         cv.getAsByteArray(ICON),
                         cv.getAsInteger(ITEM_TYPE),
                         cv.getAsString(TITLE),
+                        cv.getAsString(INTENT),
                         cv.getAsInteger(CONTAINER));
                 entries.add(temp);
             }
@@ -209,14 +220,14 @@ public class Test3_pos extends Activity {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] bitmapdata = stream.toByteArray();
-            generated.add(new Entry(0, 0, 0, 0, bitmapdata, Entry.GENERATED, string_library[i], 0));
+            generated.add(new Entry(0, 0, 0, 0, bitmapdata, Entry.GENERATED, string_library[i], null, 0));
         }
 
         // vergleichen von entries mit bibliothek generated auf duplikate
         List<Entry> toRemove = new LinkedList<Entry>();
         for (Entry e : entries) {
             // falls entry ein Icon beschreibt
-            if (e.getTag() == Entry.ICON || e.getTag() == R.integer.ICON_TAG) {
+            if (e.getTag() == Entry.ICON || e.getTag() == getResources().getInteger(R.integer.ICON_TAG)) {
                 // falls icon in Bildbibliothek vorhanden
                 for (int i = 0; i < generated.size(); i++) {
                     if (e.getTitle().equals(generated.get(i).getTitle())) {
@@ -226,7 +237,7 @@ public class Test3_pos extends Activity {
                 }
             }
             // falls entry ein Widget beschreibt
-            if (e.getTag() == Entry.WIDGET || e.getTag() == R.integer.WIDGET_TAG) {
+            if (e.getTag() == Entry.WIDGET || e.getTag() == getResources().getInteger(R.integer.WIDGET_TAG)) {
                 // das Widget entfernen
                 toRemove.add(e);
             }
@@ -298,12 +309,12 @@ public class Test3_pos extends Activity {
             for(int y = 0; y < 4; y++){
                 Entry temp = returnRandomElement(entries);
                 // falls temp ein Ordner ist
-                if (temp.getTag() == Entry.FOLDER || temp.getTag() == R.integer.FOLDER_TAG){
+                if (temp.getTag() == Entry.FOLDER || temp.getTag() == getResources().getInteger(R.integer.FOLDER_TAG)){
                     Log.d(TAG, "drawing folder, title: " + temp.getTitle() + " to x: " + x + ", y: " + y);
                     imageArray[x][y][1].setImageResource(R.drawable.folder);
                     // falls an x,y in echt auch ein ordner liegt
                     for(Entry e : entries){
-                        if((e.getTag() == Entry.FOLDER || e.getTag() == R.integer.FOLDER_TAG) && e.getX() == x && e.getY() == y){
+                        if((e.getTag() == Entry.FOLDER || e.getTag() == getResources().getInteger(R.integer.FOLDER_TAG)) && e.getX() == x && e.getY() == y){
                             answer[x][y] = true;
                         }
                     }
@@ -320,12 +331,34 @@ public class Test3_pos extends Activity {
         // correct answers zeichnen
         for (Entry e : correct_answers){
             Log.i(TAG, "number of correct answers: " + correct_answers.size());
-            if(e.getTag() == Entry.ICON || e.getTag() == R.integer.ICON_TAG){
-                Bitmap bmp = BitmapFactory.decodeByteArray(e.getIcon(), 0, e.getIcon().length);
-                imageArray[e.getX()][e.getY()][1].setImageBitmap(bmp);
-                imageArray[e.getX()][e.getY()][1].invalidate();
+            if(e.getTag() == Entry.ICON || e.getTag() == getResources().getInteger(R.integer.ICON_TAG)){
+                if(e.getIcon() != null){
+                    Bitmap bmp = BitmapFactory.decodeByteArray(e.getIcon(), 0, e.getIcon().length);
+                    imageArray[e.getX()][e.getY()][1].setImageBitmap(bmp);
+                    imageArray[e.getX()][e.getY()][1].invalidate();
+                }
+                else{
+                    Intent i = null;
+                    try {
+                        i = Intent.parseUri(e.getIntent(), 0);
+                    } catch (URISyntaxException e1) {
+                        e1.printStackTrace();
+                    }
+                    try {
+                        // Setzen des Icons auf das der für Bildeaufnahmen registrierten Activity (Im Normalfall die Kamera)
+                        Log.d(TAG, "trying to set from intent");
+                        imageArray[e.getX()][e.getY()][1].setImageDrawable(pm.getActivityIcon(i));
+                        Bitmap bitmap = ((BitmapDrawable) pm.getActivityIcon(i)).getBitmap();
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                        e.setIcon(stream.toByteArray());
+                    } catch (PackageManager.NameNotFoundException e1) {
+                        e1.printStackTrace();
+                        BugSenseHandler.sendException(e1);
+                    }
+                }
             }
-            if(e.getTag() == Entry.FOLDER || e.getTag() == R.integer.FOLDER_TAG){
+            if(e.getTag() == Entry.FOLDER || e.getTag() == getResources().getInteger(R.integer.FOLDER_TAG)){
                 imageArray[e.getX()][e.getY()][1].setImageResource(R.drawable.folder);
                 imageArray[e.getX()][e.getY()][1].invalidate();
             }

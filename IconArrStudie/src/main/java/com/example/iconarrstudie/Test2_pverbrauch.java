@@ -118,7 +118,7 @@ public class Test2_pverbrauch extends Activity {
         for(ContentValues cv : row_values){
             if (cv != null){
                 // Prüfen ob die Zeile ein Widget ist
-                if((cv.getAsInteger(ITEM_TYPE) == Entry.WIDGET || cv.getAsInteger(ITEM_TYPE) == R.integer.WIDGET_TAG) && cv.getAsInteger(APPWIDGET_ID) != -1){
+                if((cv.getAsInteger(ITEM_TYPE) == Entry.WIDGET || cv.getAsInteger(ITEM_TYPE) == getResources().getInteger(R.integer.WIDGET_TAG)) && cv.getAsInteger(APPWIDGET_ID) != -1){
 //                    Log.d(TAG, "found fitting content value: \n" +
 //                            "ITEM_TYPE: " + cv.getAsInteger(ITEM_TYPE) + "\n" +
 //                            "APPWIDGET_ID: " + cv.getAsInteger(APPWIDGET_ID) + "\n" +
