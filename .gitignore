@@ -1,5 +1,4 @@
 *.iml
 .idea
 .apk
-build
 local.properties
