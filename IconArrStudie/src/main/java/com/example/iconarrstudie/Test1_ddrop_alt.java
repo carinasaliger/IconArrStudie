@@ -134,14 +134,6 @@ public class Test1_ddrop_alt extends Activity {
 
         // PackageInfos holen
         pm = this.getPackageManager();
-//        List<PackageInfo> apps = pm.getInstalledPackages(0);
-//        ArrayList<PInfo> packages = new ArrayList<PInfo>();
-//        List<PackageInfo> activities = pm.getInstalledPackages(PackageManager.GET_ACTIVITIES);
-//        for (PackageInfo p : apps) {
-//            PInfo newInfo = new PInfo(p.applicationInfo.loadLabel(pm).toString(), p.packageName, p.versionName, p.versionCode, p.applicationInfo.loadIcon(pm));
-//            newInfo.prettyPrint();
-//            packages.add(newInfo);
-//        }
 
         // Auslesen und speichern der relevanten Werte in ContentValues
         ContentValues[] row_values = new ContentValues[c.getCount()];
@@ -426,87 +418,6 @@ public class Test1_ddrop_alt extends Activity {
                         e1.printStackTrace();
                         BugSenseHandler.sendException(e1);
                     }
-//                    for (PackageInfo p : activities) {
-//                        ActivityInfo[] activities1 = p.activities;
-//                        if(activities1 != null){
-//                            for(int i = 0; i < activities1.length; i++){
-//                                Log.d(TAG, "applicationInfo.toString(): " + p.applicationInfo.loadLabel(pm).toString() + " i = " + i + " length: " + activities1.length);
-//                                if(p.applicationInfo.loadLabel(pm).toString().contains(e.getTitle())) {
-//                                    ComponentName cpname = new ComponentName(p.packageName, activities1[i].targetActivity);
-//                                    Bitmap bitmap = null;
-//                                    try {
-//                                        imageArray[x][y][1].setImageDrawable(pm.getActivityIcon(cpname));
-//                                        imageArray[x][y][1].invalidate();
-//                                        bitmap = ((BitmapDrawable) pm.getActivityIcon(cpname)).getBitmap();
-//                                    } catch (PackageManager.NameNotFoundException e1) {
-//                                        e1.printStackTrace();
-//                                    }
-//                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-//                                    e.setIcon(stream.toByteArray());
-//                                }
-//                            }
-//                        }
-//
-//
-//                    for(PInfo p : packages){
-//                        // Unterscheidung nach Titel des launcher.db-Eintrags
-//                        // Falls der Titel dem Namen einer installierten App enspricht
-//                        if(p.getAppname().contains(e.getTitle())){
-//                            Drawable icon = p.getIcon();
-//                            imageArray[x][y][1].setImageDrawable(icon);
-//                            break;
-//                        }
-//                        // Falls der Titel Camera oder Kamera ist
-//                        if(e.getTitle().contains("Camera") || e.getTitle().contains("Kamera")){
-//                            // Intent für Aufnahme eines Bildes
-//                            Intent camera_intent = new Intent("android.media.action.IMAGE_CAPTURE");
-//                            try {
-//                                // Setzen des Icons auf das der für Bildeaufnahmen registrierten Activity (Im Normalfall die Kamera)
-//                                Log.d(TAG, "trying to set camera");
-//                                imageArray[x][y][1].setImageDrawable(pm.getActivityIcon(camera_intent));
-//                                Bitmap bitmap = ((BitmapDrawable) pm.getActivityIcon(camera_intent)).getBitmap();
-//                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-//                                e.setIcon(stream.toByteArray());
-//                            } catch (PackageManager.NameNotFoundException e1) {
-//                                e1.printStackTrace();
-//                                BugSenseHandler.sendException(e1);
-//                            }
-//                            break;
-//                        }
-//                        // Falls der Titel Phone oder Telefon ist
-//                        if(e.getTitle().contains("Phone") || e.getTitle().contains("Telefon")){
-//                            Intent dial_intent = new Intent(Intent.ACTION_DIAL);
-//                            try {
-//                                Log.d(TAG, "trying to set phone");
-//                                imageArray[x][y][1].setImageDrawable(pm.getActivityIcon(dial_intent));
-//                                Bitmap bitmap = ((BitmapDrawable) pm.getActivityIcon(dial_intent)).getBitmap();
-//                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-//                                e.setIcon(stream.toByteArray());
-//                            } catch (PackageManager.NameNotFoundException e1) {
-//                                e1.printStackTrace();
-//                                BugSenseHandler.sendException(e1);
-//                            }
-//                            break;
-//                        }
-//                        if(e.getTitle().contains("Contacts") || e.getTitle().contains("Kontakte") || e.getTitle().contains("People")){
-//                            Intent contacts_intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-//                            try {
-//                                Log.d(TAG, "trying to set contacts");
-//                                imageArray[x][y][1].setImageDrawable(pm.getActivityIcon(contacts_intent));
-//                                Bitmap bitmap = ((BitmapDrawable) pm.getActivityIcon(contacts_intent)).getBitmap();
-//                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-//                                e.setIcon(stream.toByteArray());
-//                            } catch (PackageManager.NameNotFoundException e1) {
-//                                e1.printStackTrace();
-//                                BugSenseHandler.sendException(e1);
-//                            }
-//                            break;
-//                        }
-//                    }
                 }
 
                 // in solution eintragen
