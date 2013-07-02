@@ -11,8 +11,10 @@
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true">
+            android:layout_height="wrap_content" android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/linearLayout"
+            android:layout_above="@+id/sendReport">
 
         <Button
                 android:layout_width="fill_parent"
@@ -34,6 +36,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/save_file"
                 android:id="@+id/button_save"/>
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/send_logcat"
+            android:id="@+id/sendReport"
+            />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -65,4 +74,5 @@
                 android:layout_gravity="center"/>
 
     </LinearLayout>
+
 </RelativeLayout>

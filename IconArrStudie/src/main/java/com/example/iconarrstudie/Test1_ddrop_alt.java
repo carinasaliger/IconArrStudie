@@ -4,7 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.*;
-import android.content.pm.*;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,16 +16,13 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.*;
 import com.bugsense.trace.BugSenseHandler;
-
 import java.io.ByteArrayOutputStream;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -71,7 +69,7 @@ public class Test1_ddrop_alt extends Activity {
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
         final Drawable wallpaperDrawable = wallpaperManager.getFastDrawable();
         RelativeLayout ll = (RelativeLayout) findViewById(R.id.main_layout);
-
+        // Unterscheidung der verwendeten Methode nach Android-Version
         int sdk = Build.VERSION.SDK_INT;
         if(sdk < Build.VERSION_CODES.JELLY_BEAN) {
             ll.setBackgroundDrawable(wallpaperDrawable);
@@ -153,7 +151,6 @@ public class Test1_ddrop_alt extends Activity {
                 values.put(ICON, c.getBlob(iconIndex));
                 values.put(CONTAINER, c.getInt(containerIndex));
                 row_values[iterator++] = values;
-                //Log.d(TAG, "item_type:" + values.get(ITEM_TYPE) + "title: " + values.get(TITLE) + " x: " + values.get(CELLX) + " y: " + values.get(CELLY));
             }
         }
         c.close();
@@ -167,18 +164,67 @@ public class Test1_ddrop_alt extends Activity {
                 if(cv.getAsInteger(CELLX) > 3 || cv.getAsInteger(CELLY) > 3){
                     continue;
                 }
-                Entry temp = new Entry(
-                        cv.getAsInteger(CELLX),
-                        cv.getAsInteger(CELLY),
-                        cv.getAsInteger(SPANX),
-                        cv.getAsInteger(SPANY),
-                        cv.getAsByteArray(ICON),
-                        cv.getAsInteger(ITEM_TYPE),
-                        cv.getAsString(TITLE),
-                        cv.getAsString(INTENT),
-                        cv.getAsInteger(CONTAINER));
-//                Log.d(TAG, "adding entry: \n" + temp.toString());
-                entries.add(temp);
+                // Extrawurst für Trebuchet
+                if(cv.getAsString(TITLE) != null){
+                    Entry temp = new Entry(
+                            cv.getAsInteger(CELLX),
+                            cv.getAsInteger(CELLY),
+                            cv.getAsInteger(SPANX),
+                            cv.getAsInteger(SPANY),
+                            cv.getAsByteArray(ICON),
+                            cv.getAsInteger(ITEM_TYPE),
+                            cv.getAsString(TITLE),
+                            cv.getAsString(INTENT),
+                            cv.getAsInteger(CONTAINER));
+                    entries.add(temp);
+                }
+                else if(cv.getAsInteger(ITEM_TYPE) == Entry.ICON ||
+                        cv.getAsInteger(ITEM_TYPE) == Entry.FOLDER ||
+                        cv.getAsInteger(ITEM_TYPE) == getResources().getInteger(R.integer.ICON_TAG) ||
+                        cv.getAsInteger(ITEM_TYPE) == getResources().getInteger(R.integer.FOLDER_TAG)){
+                    Intent temp_intent = null;
+                    Log.d(TAG, "title is null, Intent: " + cv.getAsString(INTENT));
+                    try {
+                        temp_intent = Intent.parseUri(cv.getAsString(INTENT), 0);
+                    } catch (URISyntaxException e1) {
+                        e1.printStackTrace();
+                    }
+                    List<ResolveInfo> info_list = pm.queryIntentActivities(temp_intent, 0);
+                    String appLabel = null;
+                    for (ResolveInfo res : info_list){
+                        Log.d(TAG, "label: " + res.loadLabel(pm));
+                        if(res.loadLabel(pm) != null){
+                            appLabel = (String) res.loadLabel(pm);
+                        }
+                    }
+                    if(appLabel != null){
+                        Entry temp = new Entry(
+                                cv.getAsInteger(CELLX),
+                                cv.getAsInteger(CELLY),
+                                cv.getAsInteger(SPANX),
+                                cv.getAsInteger(SPANY),
+                                cv.getAsByteArray(ICON),
+                                cv.getAsInteger(ITEM_TYPE),
+                                appLabel,
+                                cv.getAsString(INTENT),
+                                cv.getAsInteger(CONTAINER));
+                        entries.add(temp);
+                    }
+                }
+                else{
+                    // hier dürften nur noch Widgets sein
+                    Entry temp = new Entry(
+                            cv.getAsInteger(CELLX),
+                            cv.getAsInteger(CELLY),
+                            cv.getAsInteger(SPANX),
+                            cv.getAsInteger(SPANY),
+                            cv.getAsByteArray(ICON),
+                            cv.getAsInteger(ITEM_TYPE),
+                            cv.getAsString(TITLE),
+                            cv.getAsString(INTENT),
+                            cv.getAsInteger(CONTAINER));
+                    entries.add(temp);
+                }
             }
         }
 
@@ -305,12 +351,6 @@ public class Test1_ddrop_alt extends Activity {
                             case DragEvent.ACTION_DRAG_ENTERED:
                                 imageArray[finalX][finalY][0].setColorFilter(Color.rgb(154, 204, 0), PorterDuff.Mode.OVERLAY);
                                 imageArray[finalX][finalY][0].invalidate();
-                                if(finalY < 2){
-//                                    scrollView.smoothScrollTo(0, 0);
-                                }
-                                else{
-//                                    scrollView.smoothScrollTo(0, scrollView.getBottom());
-                                }
                                 return true;
                             // falls Element wieder herausgezogen wird wieder blau färben
                             case DragEvent.ACTION_DRAG_EXITED:
@@ -393,10 +433,11 @@ public class Test1_ddrop_alt extends Activity {
             // falls e ein Icon ist und direkt auf dem Desktop liegt (nicht im Dock)
             if((e.getTag() == Entry.ICON || e.getTag() == getResources().getInteger(R.integer.ICON_TAG)) && e.getContainer() == (-100)){
                 Log.d(TAG, "found Icon " + "x: " + x + " y: " + y);
-                // Falls das Icon in der launcher.db gespeichert ist
-                if(e.getIcon() != null){
-                    Bitmap bmp = BitmapFactory.decodeByteArray(e.getIcon(), 0, e.getIcon().length);
-                    imageArray[x][y][1].setImageBitmap(bmp);
+                Intent i = null;
+                try {
+                    i = Intent.parseUri(e.getIntent(), 0);
+                } catch (URISyntaxException e1) {
+                    e1.printStackTrace();
                 }
                 // Falls dies nicht der Fall ist
                 else{

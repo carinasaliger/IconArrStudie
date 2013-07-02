@@ -7,6 +7,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,7 +22,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.bugsense.trace.BugSenseHandler;
-
 import java.io.ByteArrayOutputStream;
 import java.net.URISyntaxException;
 import java.util.LinkedList;
@@ -63,7 +63,7 @@ public class Test3_pos extends Activity {
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
         final Drawable wallpaperDrawable = wallpaperManager.getFastDrawable();
         RelativeLayout ll = (RelativeLayout) findViewById(R.id.main_layout);
-
+        // Unterscheidung der verwendeten Methode nach Android-Version
         int sdk = android.os.Build.VERSION.SDK_INT;
         if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
             ll.setBackgroundDrawable(wallpaperDrawable);
@@ -167,51 +167,14 @@ public class Test3_pos extends Activity {
 
         // generated füllen
         int[] icon_library = {
-                R.drawable.amazon,
-                R.drawable.barcodescanner,
-                R.drawable.chrome,
-                R.drawable.dropbox,
-                R.drawable.ebay,
-                R.drawable.facebook,
-                R.drawable.firefox,
-                R.drawable.instagram,
-                R.drawable.maps,
-                R.drawable.messenger,
-                R.drawable.oeffi,
-                R.drawable.opera,
-                R.drawable.shazam,
-                R.drawable.skype,
-                R.drawable.spotify,
-                R.drawable.templerun,
-                R.drawable.tuneinpro,
-                R.drawable.twitter,
-                R.drawable.whatsapp,
-                R.drawable.youtube
+                R.drawable.amazon, R.drawable.barcodescanner, R.drawable.chrome, R.drawable.dropbox, R.drawable.ebay, R.drawable.facebook, R.drawable.firefox, R.drawable.instagram, R.drawable.maps, R.drawable.messenger, R.drawable.oeffi, R.drawable.opera, R.drawable.shazam, R.drawable.skype, R.drawable.spotify, R.drawable.templerun, R.drawable.tuneinpro, R.drawable.twitter, R.drawable.whatsapp, R.drawable.youtube
         };
 
         String[] string_library = {
-                "Amazon",
-                "Barcode Scanner",
-                "Chrome",
-                "Dropbox",
-                "eBay",
-                "Facebook",
-                "Firefox",
-                "Instagram",
-                "Maps",
-                "Messenger",
-                "Öffi Verbindungen",
-                "Opera",
-                "Shazam",
-                "Skype",
-                "Spotify",
-                "Temple Run",
-                "TuneIn Radio Pro",
-                "Twitter",
-                "WhatsApp",
-                "YouTube"
+                "Amazon", "Barcode Scanner", "Chrome", "Dropbox", "eBay", "Facebook", "Firefox", "Instagram", "Maps", "Messenger", "Öffi Verbindungen", "Opera", "Shazam", "Skype", "Spotify", "Temple Run", "TuneIn Radio Pro", "Twitter", "WhatsApp", "YouTube"
         };
 
+        // icons der Library in generated einfügen
         for(int i = 0; i < icon_library.length; i++){
             Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), icon_library[i]);
             if(bitmap == null){
@@ -230,18 +193,49 @@ public class Test3_pos extends Activity {
             if (e.getTag() == Entry.ICON || e.getTag() == getResources().getInteger(R.integer.ICON_TAG)) {
                 // falls icon in Bildbibliothek vorhanden
                 for (int i = 0; i < generated.size(); i++) {
-                    if (e.getTitle().equals(generated.get(i).getTitle())) {
-                        // aus bibliothek entfernen
-                        generated.remove(generated.get(i));
+                    // falls der Launcher kein Arschloch ist und den Namen richtig in der Datenbank hat
+                    if(e.getTitle() != null){
+                        if (e.getTitle().equals(generated.get(i).getTitle())) {
+                            // aus bibliothek entfernen
+                            generated.remove(generated.get(i));
+                        }
                     }
+                    // sonst versuchen den Titel aus dem Intent zu holen
+                    else{
+                        Intent temp_intent = null;
+                        Log.d(TAG, "title is null, Intent: " + e.getIntent());
+                        try {
+                            temp_intent = Intent.parseUri(e.getIntent(), 0);
+                        } catch (URISyntaxException e1) {
+                            e1.printStackTrace();
+                        }
+                        List<ResolveInfo> info_list = pm.queryIntentActivities(temp_intent, 0);
+                        String appLabel = null;
+                        for (ResolveInfo res : info_list){
+                            Log.d(TAG, "label: " + res.loadLabel(pm));
+                            if(res.loadLabel(pm) != null){
+                                appLabel = (String) res.loadLabel(pm);
+                            }
+                        }
+                        if(appLabel != null){
+                            if (appLabel.equals(generated.get(i).getTitle())) {
+                                // aus bibliothek entfernen
+                                generated.remove(generated.get(i));
+                            }
+                        }
+                        e.setTitle(appLabel);
+                    }
+
                 }
             }
             // falls entry ein Widget beschreibt
             if (e.getTag() == Entry.WIDGET || e.getTag() == getResources().getInteger(R.integer.WIDGET_TAG)) {
-                // das Widget entfernen
+                // das Widget zum Entfernen markieren
                 toRemove.add(e);
             }
         }
+
+        // markierte Elemente löschen
         for(Entry e : toRemove){
             entries.remove(e);
         }
@@ -252,7 +246,7 @@ public class Test3_pos extends Activity {
             random = 0;
         }
         else{
-            // Zufallszahl zwischen 1 und 4
+            // Zufallszahl zwischen 1 und Anzahl der Icons und Ordner auf Screen
             random = 1 + (int)(Math.random() * ((entries.size() - 1) + 1));
         }
         Log.d(TAG, "random = " + random);
@@ -331,33 +325,27 @@ public class Test3_pos extends Activity {
         // correct answers zeichnen
         for (Entry e : correct_answers){
             Log.i(TAG, "number of correct answers: " + correct_answers.size());
+            // falls ein icon gezeichnet werden soll
             if(e.getTag() == Entry.ICON || e.getTag() == getResources().getInteger(R.integer.ICON_TAG)){
-                if(e.getIcon() != null){
-                    Bitmap bmp = BitmapFactory.decodeByteArray(e.getIcon(), 0, e.getIcon().length);
-                    imageArray[e.getX()][e.getY()][1].setImageBitmap(bmp);
-                    imageArray[e.getX()][e.getY()][1].invalidate();
-                }
-                else{
-                    Intent i = null;
-                    try {
-                        i = Intent.parseUri(e.getIntent(), 0);
-                    } catch (URISyntaxException e1) {
-                        e1.printStackTrace();
-                    }
-                    try {
-                        // Setzen des Icons auf das der für Bildeaufnahmen registrierten Activity (Im Normalfall die Kamera)
-                        Log.d(TAG, "trying to set from intent");
-                        imageArray[e.getX()][e.getY()][1].setImageDrawable(pm.getActivityIcon(i));
-                        Bitmap bitmap = ((BitmapDrawable) pm.getActivityIcon(i)).getBitmap();
-                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                        e.setIcon(stream.toByteArray());
-                    } catch (PackageManager.NameNotFoundException e1) {
-                        e1.printStackTrace();
-                        BugSenseHandler.sendException(e1);
-                    }
+                // neues Intent erstellen
+                Intent i = null;
+                // Versuchen den Intent-String aus der db zu parsen
+                try {
+                    i = Intent.parseUri(e.getIntent(), 0);
+                    // Setzen des Icons auf das der für Bildeaufnahmen registrierten Activity
+                    Log.d(TAG, "trying to set from intent");
+                    imageArray[e.getX()][e.getY()][1].setImageDrawable(pm.getActivityIcon(i));
+                    Bitmap bitmap = ((BitmapDrawable) pm.getActivityIcon(i)).getBitmap();
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//                    e.setIcon(stream.toByteArray());
+                } catch (URISyntaxException e1) {
+                    e1.printStackTrace();
+                } catch (PackageManager.NameNotFoundException e1) {
+                    e1.printStackTrace();
                 }
             }
+            // falls ein Ordner gezeichnet werden soll
             if(e.getTag() == Entry.FOLDER || e.getTag() == getResources().getInteger(R.integer.FOLDER_TAG)){
                 imageArray[e.getX()][e.getY()][1].setImageResource(R.drawable.folder);
                 imageArray[e.getX()][e.getY()][1].invalidate();
