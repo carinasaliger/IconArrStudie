@@ -20,17 +20,7 @@ public class Test2_pverbrauch extends Activity {
     // Tag für Logs
     private final static String TAG = Test2_pverbrauch.class.getSimpleName();
 
-    // density zum umrechnen von dp auf px
-    float SCALE;
-
     private static int selected_screen;
-    static final String ITEM_TYPE = "itemType";
-    static final String SCREEN = "screen";
-    static final String APPWIDGET_ID = "appWidgetId";
-    static final String CELLX = "cellX";
-    static final String CELLY = "cellY";
-    static final String SPANX = "spanX";
-    static final String SPANY = "spanY";
     static boolean[][] input;
     static boolean[][] answer;
 
@@ -39,7 +29,6 @@ public class Test2_pverbrauch extends Activity {
         Log.i(TAG, "Test2_pverbrauch started");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test2);
-        SCALE = getResources().getDisplayMetrics().density;
 
         Log.d(TAG, "setting Wallpaper");
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
@@ -72,15 +61,6 @@ public class Test2_pverbrauch extends Activity {
         ContentResolver cr = this.getContentResolver();
         Cursor c = cr.query(content_uri, null, null, null, null);
 
-        // Indizes
-        final int itemTypeIndex = c.getColumnIndex(ITEM_TYPE);
-        final int screenIndex = c.getColumnIndex(SCREEN);
-        final int appWidgetIdIndex = c.getColumnIndex(APPWIDGET_ID);
-        final int cellXIndex = c.getColumnIndex(CELLX);
-        final int cellYIndex = c.getColumnIndex(CELLY);
-        final int spanXIndex = c.getColumnIndex(SPANX);
-        final int spanYIndex = c.getColumnIndex(SPANY);
-
         ContentValues[] row_values = new ContentValues[c.getCount()];
 
         // Arrays zum auswerten der Antworten
@@ -98,18 +78,18 @@ public class Test2_pverbrauch extends Activity {
         // Auslesen und speichern der relevanten Werte in ContentValues
         int iterator = 0;
         c.moveToFirst();
-        while(c.moveToNext()){
-            if(c.getInt(screenIndex) == selected_screen){
+        do {
+            if (c.getInt(c.getColumnIndex("screen")) == selected_screen) {
                 ContentValues values = new ContentValues(6);
-                values.put(ITEM_TYPE, c.getInt(itemTypeIndex));
-                values.put(APPWIDGET_ID, c.getInt(appWidgetIdIndex));
-                values.put(CELLX, c.getInt(cellXIndex));
-                values.put(CELLY, c.getInt(cellYIndex));
-                values.put(SPANX, c.getInt(spanXIndex));
-                values.put(SPANY, c.getInt(spanYIndex));
+                values.put("itemType", c.getInt(c.getColumnIndex("itemType")));
+                values.put("appWidgetId", c.getInt(c.getColumnIndex("appWidgetId")));
+                values.put("cellX", c.getInt(c.getColumnIndex("cellX")));
+                values.put("cellY", c.getInt(c.getColumnIndex("cellY")));
+                values.put("spanX", c.getInt(c.getColumnIndex("spanX")));
+                values.put("spanY", c.getInt(c.getColumnIndex("spanY")));
                 row_values[iterator++] = values;
             }
-        }
+        } while (c.moveToNext());
         c.close();
 
         Log.i(TAG, "parsed " + iterator + " rows of launcher.db");
@@ -118,19 +98,11 @@ public class Test2_pverbrauch extends Activity {
         for(ContentValues cv : row_values){
             if (cv != null){
                 // Prüfen ob die Zeile ein Widget ist
-                if((cv.getAsInteger(ITEM_TYPE) == Entry.WIDGET || cv.getAsInteger(ITEM_TYPE) == getResources().getInteger(R.integer.WIDGET_TAG)) && cv.getAsInteger(APPWIDGET_ID) != -1){
-//                    Log.d(TAG, "found fitting content value: \n" +
-//                            "ITEM_TYPE: " + cv.getAsInteger(ITEM_TYPE) + "\n" +
-//                            "APPWIDGET_ID: " + cv.getAsInteger(APPWIDGET_ID) + "\n" +
-//                            "CELLX: " + cv.getAsInteger(CELLX) + "\n" +
-//                            "CELLY: " + cv.getAsInteger(CELLY) + "\n" +
-//                            "SPANX: " + cv.getAsInteger(SPANX) + "\n" +
-//                            "SPANY: " + cv.getAsInteger(SPANY) + "\n"
-//                    );
-                    int cell_x = cv.getAsInteger(CELLX);
-                    int cell_y = cv.getAsInteger(CELLY);
-                    for(int span_x = 0; span_x < cv.getAsInteger(SPANX); span_x++){
-                        for (int span_y = 0; span_y < cv.getAsInteger(SPANY); span_y++){
+                if ((cv.getAsInteger("itemType") == Entry.WIDGET || cv.getAsInteger("itemType") == getResources().getInteger(R.integer.WIDGET_TAG)) && cv.getAsInteger("appWidgetId") != -1) {
+                    int cell_x = cv.getAsInteger("cellX");
+                    int cell_y = cv.getAsInteger("cellY");
+                    for (int span_x = 0; span_x < cv.getAsInteger("spanX"); span_x++) {
+                        for (int span_y = 0; span_y < cv.getAsInteger("spanY"); span_y++) {
                             answer[cell_x + span_x][cell_y + span_y] = true;
                         }
                     }

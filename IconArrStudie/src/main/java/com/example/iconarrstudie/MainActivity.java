@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.*;
+import com.bugsense.trace.BugSenseHandler;
 import org.acra.ACRA;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public class MainActivity extends Activity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // BugSenseHandler.initAndStartSession(MainActivity.this, "adeb8e35");
+        BugSenseHandler.initAndStartSession(MainActivity.this, "adeb8e35");
         setContentView(R.layout.activity_main);
         Log.i(TAG, "onCreate()");
 

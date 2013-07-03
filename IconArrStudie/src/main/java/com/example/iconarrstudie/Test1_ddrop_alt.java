@@ -20,7 +20,7 @@ import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.*;
-import com.bugsense.trace.BugSenseHandler;
+
 import java.io.ByteArrayOutputStream;
 import java.net.URISyntaxException;
 import java.util.LinkedList;
@@ -32,7 +32,6 @@ public class Test1_ddrop_alt extends Activity {
     private final static String TAG = Test1_ddrop_alt.class.getSimpleName();
 
     // density zum umrechnen von dp auf px
-    float SCALE;
 
     private int selected_screen;
     private static boolean[][] in_use;
@@ -42,27 +41,15 @@ public class Test1_ddrop_alt extends Activity {
     private static String[][] solution;
     private static SlidingDrawer drawer;
 
-    private PackageManager pm;
-
-    static final String TITLE = "title";
-    static final String INTENT = "intent";
-    static final String ITEM_TYPE = "itemType";
-    static final String SCREEN = "screen";
-    static final String APPWIDGET_ID = "appWidgetId";
-    static final String CELLX = "cellX";
-    static final String CELLY = "cellY";
-    static final String SPANX = "spanX";
-    static final String SPANY = "spanY";
-    static final String ICON = "icon";
-    static final String CONTAINER = "container";
     static final ImageView[][][] imageArray = new ImageView[8][6][2];
 
     @SuppressLint("NewApi")
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "Test1_ddrop started!");
         super.onCreate(savedInstanceState);
+
+        // Layout setzen
         setContentView(R.layout.activity_test1);
-        SCALE = getResources().getDisplayMetrics().density;
 
         // Wallpaper
         Log.d(TAG, "setting Wallpaper");
@@ -72,8 +59,10 @@ public class Test1_ddrop_alt extends Activity {
         // Unterscheidung der verwendeten Methode nach Android-Version
         int sdk = Build.VERSION.SDK_INT;
         if(sdk < Build.VERSION_CODES.JELLY_BEAN) {
+            // falls älter als Jelly Bean
             ll.setBackgroundDrawable(wallpaperDrawable);
         } else {
+            // sonst die aktuelle Methode verwenden
             ll.setBackground(wallpaperDrawable);
         }
 
@@ -95,19 +84,6 @@ public class Test1_ddrop_alt extends Activity {
         // Cursor aus content_uri erstellen
         ContentResolver cr = this.getContentResolver();
         Cursor c = cr.query(content_uri, null, null, null, null);
-
-        // Indizes
-        final int titleIndex = c.getColumnIndex(TITLE);
-        final int intentIndex = c.getColumnIndex(INTENT);
-        final int itemTypeIndex = c.getColumnIndex(ITEM_TYPE);
-        final int screenIndex = c.getColumnIndex(SCREEN);
-        final int appWidgetIdIndex = c.getColumnIndex(APPWIDGET_ID);
-        final int cellXIndex = c.getColumnIndex(CELLX);
-        final int cellYIndex = c.getColumnIndex(CELLY);
-        final int spanXIndex = c.getColumnIndex(SPANX);
-        final int spanYIndex = c.getColumnIndex(SPANY);
-        final int iconIndex = c.getColumnIndex(ICON);
-        final int containerIndex = c.getColumnIndex(CONTAINER);
 
         // Listen
         List<Entry> entries = new LinkedList<Entry>();
@@ -131,28 +107,28 @@ public class Test1_ddrop_alt extends Activity {
         content.setBackgroundColor(Color.argb(120,0,0,0));
 
         // PackageInfos holen
-        pm = this.getPackageManager();
+        PackageManager pm = this.getPackageManager();
 
         // Auslesen und speichern der relevanten Werte in ContentValues
         ContentValues[] row_values = new ContentValues[c.getCount()];
         int iterator = 0;
         c.moveToFirst();
-        while(c.moveToNext()){
-            if(c.getInt(screenIndex) == selected_screen){
+        do {
+            if (c.getInt(c.getColumnIndex("screen")) == selected_screen) {
                 ContentValues values = new ContentValues(10);
-                values.put(TITLE, c.getString(titleIndex));
-                values.put(INTENT, c.getString(intentIndex));
-                values.put(ITEM_TYPE, c.getInt(itemTypeIndex));
-                values.put(APPWIDGET_ID, c.getInt(appWidgetIdIndex));
-                values.put(CELLX, c.getInt(cellXIndex));
-                values.put(CELLY, c.getInt(cellYIndex));
-                values.put(SPANX, c.getInt(spanXIndex));
-                values.put(SPANY, c.getInt(spanYIndex));
-                values.put(ICON, c.getBlob(iconIndex));
-                values.put(CONTAINER, c.getInt(containerIndex));
+                values.put("title", c.getString(c.getColumnIndex("title")));
+                values.put("intent", c.getString(c.getColumnIndex("intent")));
+                values.put("itemType", c.getInt(c.getColumnIndex("itemType")));
+                values.put("appWidgetId", c.getInt(c.getColumnIndex("appWidgetId")));
+                values.put("cellX", c.getInt(c.getColumnIndex("cellX")));
+                values.put("cellY", c.getInt(c.getColumnIndex("cellY")));
+                values.put("spanX", c.getInt(c.getColumnIndex("spanX")));
+                values.put("spanY", c.getInt(c.getColumnIndex("spanY")));
+                values.put("icon", c.getBlob(c.getColumnIndex("icon")));
+                values.put("container", c.getInt(c.getColumnIndex("container")));
                 row_values[iterator++] = values;
             }
-        }
+        } while (c.moveToNext());
         c.close();
 
         Log.i(TAG, "parsed " + iterator + " rows of launcher.db");
@@ -161,31 +137,33 @@ public class Test1_ddrop_alt extends Activity {
         for(ContentValues cv : row_values){
             if (cv != null){
                 // Weglassen aller Elemente die nicht auf dem 4x4 Grid sind
-                if(cv.getAsInteger(CELLX) > 3 || cv.getAsInteger(CELLY) > 3){
+                if (cv.getAsInteger("cellX") > 3 || cv.getAsInteger("cellY") > 3) {
                     continue;
                 }
                 // Extrawurst für Trebuchet
-                if(cv.getAsString(TITLE) != null){
+                if (cv.getAsString("title") != null && (cv.getAsInteger("itemType") != Entry.WIDGET || cv.getAsInteger("itemType") != getResources().getInteger(R.integer.WIDGET_TAG))) {
+                    // Falls der Title in der launcher.db steht den Entry mit diesem erstellen
                     Entry temp = new Entry(
-                            cv.getAsInteger(CELLX),
-                            cv.getAsInteger(CELLY),
-                            cv.getAsInteger(SPANX),
-                            cv.getAsInteger(SPANY),
-                            cv.getAsByteArray(ICON),
-                            cv.getAsInteger(ITEM_TYPE),
-                            cv.getAsString(TITLE),
-                            cv.getAsString(INTENT),
-                            cv.getAsInteger(CONTAINER));
+                            cv.getAsInteger("cellX"),
+                            cv.getAsInteger("cellY"),
+                            cv.getAsInteger("spanX"),
+                            cv.getAsInteger("spanY"),
+                            cv.getAsByteArray("icon"),
+                            cv.getAsInteger("itemType"),
+                            cv.getAsString("title"),
+                            cv.getAsString("intent"),
+                            cv.getAsInteger("container"));
                     entries.add(temp);
-                }
-                else if(cv.getAsInteger(ITEM_TYPE) == Entry.ICON ||
-                        cv.getAsInteger(ITEM_TYPE) == Entry.FOLDER ||
-                        cv.getAsInteger(ITEM_TYPE) == getResources().getInteger(R.integer.ICON_TAG) ||
-                        cv.getAsInteger(ITEM_TYPE) == getResources().getInteger(R.integer.FOLDER_TAG)){
+                    Log.d(TAG, "adding entry: " + temp.toString());
+                } else if (cv.getAsInteger("itemType") == Entry.ICON ||
+                        cv.getAsInteger("itemType") == Entry.FOLDER ||
+                        cv.getAsInteger("itemType") == getResources().getInteger(R.integer.ICON_TAG) ||
+                        cv.getAsInteger("itemType") == getResources().getInteger(R.integer.FOLDER_TAG)) {
+                    // Sonst falls es ein Icon oder Ordner ist und title=null den Titel aus Intent holen
                     Intent temp_intent = null;
-                    Log.d(TAG, "title is null, Intent: " + cv.getAsString(INTENT));
+                    Log.d(TAG, "title is null, Intent: " + cv.getAsString("intent"));
                     try {
-                        temp_intent = Intent.parseUri(cv.getAsString(INTENT), 0);
+                        temp_intent = Intent.parseUri(cv.getAsString("intent"), 0);
                     } catch (URISyntaxException e1) {
                         e1.printStackTrace();
                     }
@@ -198,31 +176,34 @@ public class Test1_ddrop_alt extends Activity {
                         }
                     }
                     if(appLabel != null){
+                        // Falls wir ein Label bekommen haben damit den Entry erstellen
                         Entry temp = new Entry(
-                                cv.getAsInteger(CELLX),
-                                cv.getAsInteger(CELLY),
-                                cv.getAsInteger(SPANX),
-                                cv.getAsInteger(SPANY),
-                                cv.getAsByteArray(ICON),
-                                cv.getAsInteger(ITEM_TYPE),
+                                cv.getAsInteger("cellX"),
+                                cv.getAsInteger("cellY"),
+                                cv.getAsInteger("spanX"),
+                                cv.getAsInteger("spanY"),
+                                cv.getAsByteArray("icon"),
+                                cv.getAsInteger("itemType"),
                                 appLabel,
-                                cv.getAsString(INTENT),
-                                cv.getAsInteger(CONTAINER));
+                                cv.getAsString("intent"),
+                                cv.getAsInteger("container"));
                         entries.add(temp);
+                        Log.d(TAG, "adding entry: " + temp.toString());
                     }
                 }
                 else{
                     // hier dürften nur noch Widgets sein
                     Entry temp = new Entry(
-                            cv.getAsInteger(CELLX),
-                            cv.getAsInteger(CELLY),
-                            cv.getAsInteger(SPANX),
-                            cv.getAsInteger(SPANY),
-                            cv.getAsByteArray(ICON),
-                            cv.getAsInteger(ITEM_TYPE),
-                            cv.getAsString(TITLE),
-                            cv.getAsString(INTENT),
-                            cv.getAsInteger(CONTAINER));
+                            cv.getAsInteger("cellX"),
+                            cv.getAsInteger("cellY"),
+                            cv.getAsInteger("spanX"),
+                            cv.getAsInteger("spanY"),
+                            cv.getAsByteArray("icon"),
+                            cv.getAsInteger("itemType"),
+                            cv.getAsString("title"),
+                            cv.getAsString("intent"),
+                            cv.getAsInteger("container"));
+                    Log.d(TAG, "adding entry: " + temp.toString());
                     entries.add(temp);
                 }
             }
@@ -395,8 +376,11 @@ public class Test1_ddrop_alt extends Activity {
                                     modified.add(modification);
                                     for(int startx = 0; startx < last[3]; startx++){
                                         for(int starty = 0; starty < last[4]; starty++){
+                                            // passendes icon setzen
                                             imageArray[finalX + startx][finalY + starty][1].setImageResource(R.drawable.widget_1x1);
+                                            // colorfilter entfernen
                                             imageArray[finalX + startx][finalY + starty][0].clearColorFilter();
+                                            // beide Imageviews neu zeichnen
                                             imageArray[finalX + startx][finalY + starty][0].invalidate();
                                             imageArray[finalX + startx][finalY + starty][1].invalidate();
                                             // In Input eintragen
@@ -433,32 +417,33 @@ public class Test1_ddrop_alt extends Activity {
             // falls e ein Icon ist und direkt auf dem Desktop liegt (nicht im Dock)
             if((e.getTag() == Entry.ICON || e.getTag() == getResources().getInteger(R.integer.ICON_TAG)) && e.getContainer() == (-100)){
                 Log.d(TAG, "found Icon " + "x: " + x + " y: " + y);
-                Intent i = null;
-                try {
-                    i = Intent.parseUri(e.getIntent(), 0);
-                } catch (URISyntaxException e1) {
-                    e1.printStackTrace();
+                if (e.getIcon() != null) {
+                    // falls das Icon in der launcher.db steht
+                    Bitmap bmp = BitmapFactory.decodeByteArray(e.getIcon(), 0, e.getIcon().length);
+                    imageArray[x][y][1].setImageBitmap(bmp);
+                    imageArray[x][y][1].invalidate();
                 }
-                // Falls dies nicht der Fall ist
+                // Falls dies nicht der Fall ist bild aus Intent holen
                 else{
-                    Intent i = null;
+                    Intent i;
                     try {
+                        // Parsen des Intents aus der launcher.db (sollte IMMER vorhanden sein)
                         i = Intent.parseUri(e.getIntent(), 0);
-                    } catch (URISyntaxException e1) {
-                        e1.printStackTrace();
-                    }
-                    try {
-                        // Setzen des Icons auf das der für Bildeaufnahmen registrierten Activity (Im Normalfall die Kamera)
-                        Log.d(TAG, "trying to set from intent");
+                        Log.d(TAG, "trying to set icon from intent");
+                        // Icon in ImageView setzen
                         imageArray[x][y][1].setImageDrawable(pm.getActivityIcon(i));
+                        // Zu PNG konvertieren
                         Bitmap bitmap = ((BitmapDrawable) pm.getActivityIcon(i)).getBitmap();
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                        // Im Entry das Icon setzen
                         e.setIcon(stream.toByteArray());
+                    } catch (URISyntaxException e1) {
+                        e1.printStackTrace();
                     } catch (PackageManager.NameNotFoundException e1) {
                         e1.printStackTrace();
-                        BugSenseHandler.sendException(e1);
                     }
+
                 }
 
                 // in solution eintragen
@@ -513,6 +498,7 @@ public class Test1_ddrop_alt extends Activity {
             }
             // falls e ein widget ist
             if(e.getTag() == Entry.WIDGET || e.getTag() == getResources().getInteger(R.integer.WIDGET_TAG)){
+                Log.d(TAG, "found Widget to draw");
                 // in solution eintragen
                 for(int xx = 0; xx < e.getSpan_x(); xx++){
                     for(int yy = 0; yy < e.getSpan_y(); yy++){
