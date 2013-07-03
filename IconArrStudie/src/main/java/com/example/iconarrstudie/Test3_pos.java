@@ -113,7 +113,7 @@ public class Test3_pos extends Activity {
         input = new boolean[4][4];
         answer = new boolean[4][4];
 
-        // boolean[][][] mit false initialisiern
+        // boolean[][][] mit false initialisiern
         for(int x = 0; x < 4; x++){
             for(int y = 0; y < 4; y++){
                 answer[x][y] = false;
@@ -191,6 +191,20 @@ public class Test3_pos extends Activity {
         for (Entry e : entries) {
             // falls entry ein Icon beschreibt
             if (e.getTag() == Entry.ICON || e.getTag() == getResources().getInteger(R.integer.ICON_TAG)) {
+                Intent temp_intent = null;
+                // Zunächst: parsen aller Icons aus dem Intent falls sie noch nicht in der db sind
+                if (e.getIcon() == null){
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = ((BitmapDrawable) pm.getActivityIcon(temp_intent)).getBitmap();
+                    } catch (PackageManager.NameNotFoundException e1) {
+                        e1.printStackTrace();
+                    }
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    // Schreiben des Icons in den Entry für spätere Verwendung
+                    e.setIcon(stream.toByteArray());
+                }
                 // falls icon in Bildbibliothek vorhanden
                 for (int i = 0; i < generated.size(); i++) {
                     // falls der Launcher kein Arschloch ist und den Namen richtig in der Datenbank hat
@@ -200,9 +214,8 @@ public class Test3_pos extends Activity {
                             generated.remove(generated.get(i));
                         }
                     }
-                    // sonst versuchen den Titel aus dem Intent zu holen
+                    // falls der Launcher ein Arschloch ist und null als Titel gespeichert hat aus dem Intent zu holen
                     else{
-                        Intent temp_intent = null;
                         Log.d(TAG, "title is null, Intent: " + e.getIntent());
                         try {
                             temp_intent = Intent.parseUri(e.getIntent(), 0);
@@ -225,7 +238,6 @@ public class Test3_pos extends Activity {
                         }
                         e.setTitle(appLabel);
                     }
-
                 }
             }
             // falls entry ein Widget beschreibt
@@ -333,6 +345,7 @@ public class Test3_pos extends Activity {
                 try {
                     i = Intent.parseUri(e.getIntent(), 0);
                     // Setzen des Icons auf das der für Bildeaufnahmen registrierten Activity
+
                     Log.d(TAG, "trying to set from intent");
                     imageArray[e.getX()][e.getY()][1].setImageDrawable(pm.getActivityIcon(i));
                     Bitmap bitmap = ((BitmapDrawable) pm.getActivityIcon(i)).getBitmap();
