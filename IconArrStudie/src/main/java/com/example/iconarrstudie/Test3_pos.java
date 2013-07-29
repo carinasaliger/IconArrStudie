@@ -165,7 +165,7 @@ public class Test3_pos extends Activity {
         };
 
         String[] string_library = {
-                "Amazon", "Barcode Scanner", "Chrome", "Dropbox", "eBay", "Facebook", "Firefox", "Instagram", "Maps", "Messenger", "Öffi Verbindungen", "Opera", "Shazam", "Skype", "Spotify", "Temple Run", "TuneIn Radio Pro", "Twitter", "WhatsApp", "YouTube"
+                "Amazon.de", "Barcode Scanner", "Chrome", "Dropbox", "eBay", "Facebook", "Firefox", "Instagram", "Maps", "Messenger", "Öffi Verbindungen", "Opera", "Shazam", "Skype", "Spotify", "Temple Run", "TuneIn Radio Pro", "Twitter", "WhatsApp", "YouTube"
         };
 
         // icons der Library in generated einfügen
