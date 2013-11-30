@@ -54,7 +54,7 @@ public class Pre_Test1 extends Activity {
                 Intent i1 = new Intent(Pre_Test1.this, Test1_ddrop_alt.class);
                 i1.putExtra("uri", content_uri.toString());
                 i1.putExtra("screen", selected_screen);
-                Log.i(TAG, "starting Test1_ddrop");
+                Log.i(TAG, "starting Test1_ddrop_alt");
                 startActivity(i1);
             }
         });

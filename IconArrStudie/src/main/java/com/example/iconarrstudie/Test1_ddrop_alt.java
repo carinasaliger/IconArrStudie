@@ -45,7 +45,7 @@ public class Test1_ddrop_alt extends Activity {
 
     @SuppressLint("NewApi")
     public void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "Test1_ddrop started!");
+        Log.i(TAG, "Test1_ddrop_alt started!");
         super.onCreate(savedInstanceState);
 
         // Layout setzen

@@ -77,8 +77,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Test1_ddrop"
-                android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"/>
         <activity android:name=".Test1_ddrop_alt"
                   android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"/>
         <activity android:name=".Test2_pverbrauch"
